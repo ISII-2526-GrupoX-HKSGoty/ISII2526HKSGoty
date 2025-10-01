@@ -1,10 +1,10 @@
 project:
-  name: 'ISII-2526-GrupoA-HKSGoty'
-  owner: 'GrupoA'
+  name: 'ISII2526HKSGoty'
+  owner: 'ISII-2526-GrupoX-HKSGoty'
   teamId: 'ISII-2526-GrupoX-HKSGoty'
   identities: {}
   notifications:
-    email: 'Amine.saghrouchni@alu.uclm.es,Fernando.Martinez22@alu.uclm.es,JavierLaureano.Calleja@alu.uclm.es,miguel.cifuentes@alu.uclm.es'
+    email: 'miguel.cifuentes@alu.uclm.es,Amine.saghrouchni@alu.uclm.es,Fernando.Martinez22@alu.uclm.es,JavierLaureano.Calleja@alu.uclm.es'
   members:
     member1:
       name: 'Miguel'
