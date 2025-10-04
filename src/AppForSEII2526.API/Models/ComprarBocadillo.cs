@@ -1,4 +1,5 @@
-﻿namespace AppForSEII2526.API.Models
+﻿
+namespace AppForSEII2526.API.Models
 {
     public class ComprarBocadillo
     {
@@ -7,7 +8,30 @@
         public int CompraId { get; set; }
         public string NombreBocadillo { get; set; }
         public decimal Precio { get; set; }
+        public Bocadillo Bocadillo { get; set; }
+        public Compra Compra { get; set; }
+        public Metodo_Pago Metodo_Pago { get; set; }
 
+        public ComprarBocadillo()
+        {
+            Bocadillo = new Bocadillo();
+            Compra = new Compra();
+        }
+        public override bool Equals(object? obj)
+        {
+            return obj is ComprarBocadillo bocadillo &&
+                   BocadilloId == bocadillo.BocadilloId &&
+                   Cantidad == bocadillo.Cantidad &&
+                   CompraId == bocadillo.CompraId &&
+                   NombreBocadillo == bocadillo.NombreBocadillo &&
+                   Precio == bocadillo.Precio &&
+                   EqualityComparer<Bocadillo>.Default.Equals(Bocadillo, bocadillo.Bocadillo) &&
+                   EqualityComparer<Compra>.Default.Equals(Compra, bocadillo.Compra);
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(BocadilloId, Cantidad, CompraId, NombreBocadillo, Precio, Bocadillo, Compra);
+        }
 
     }
 }

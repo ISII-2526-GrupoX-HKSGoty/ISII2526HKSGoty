@@ -17,6 +17,28 @@
 
         [Precision(10, 2)]
         public decimal PrecioTotal { get; set; }
+        public List<ComprarBocadillo> Bocadillos { get; set; }
 
+        public Compra()
+        {
+            Bocadillos = new List<ComprarBocadillo>();
+        }
+        public override bool Equals(object? obj)
+        {
+            return obj is Compra compra &&
+                   Apellido_1Cliente == compra.Apellido_1Cliente &&
+                   Apellido_2Cliente == compra.Apellido_2Cliente &&
+                   Id == compra.Id &&
+                   FechaCompra == compra.FechaCompra &&
+                   nBocadillos == compra.nBocadillos &&
+                   NombreCliente == compra.NombreCliente &&
+                   PrecioTotal == compra.PrecioTotal &&
+                   EqualityComparer<List<ComprarBocadillo>>.Default.Equals(Bocadillos, compra.Bocadillos);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Apellido_1Cliente, Apellido_2Cliente, Id, FechaCompra, nBocadillos, NombreCliente, PrecioTotal, Bocadillos);
+        }
     }
 }
