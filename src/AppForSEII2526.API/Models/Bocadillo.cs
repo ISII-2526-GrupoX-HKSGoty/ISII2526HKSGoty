@@ -20,7 +20,7 @@ public class Bocadillo
     public string nombre { get; set; }
 
     [Precision(10,2)]
-    public int pvp { get; set; }
+    public decimal PVP { get; set; }
 
     public int stock { get; set; }
 
