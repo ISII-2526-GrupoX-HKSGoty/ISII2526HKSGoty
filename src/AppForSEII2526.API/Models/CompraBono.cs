@@ -4,6 +4,7 @@ namespace AppForSEII2526.API.Models
 {
     public class CompraBono
     {
+        public CompraBono() { }
         public CompraBono(int compraBonoId, ApplicationUser user, DateTime releaseDate, int nBonos, double precioTotalBono, MetodoPago metodoPago, IList<BonosComprados> bonosComprados)
         {
             CompraBonoId = compraBonoId;

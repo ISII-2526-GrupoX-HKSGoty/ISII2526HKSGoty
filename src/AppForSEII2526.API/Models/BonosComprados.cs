@@ -4,6 +4,7 @@ namespace AppForSEII2526.API.Models
     [PrimaryKey(nameof(BonoId), nameof(CompraBonoId))]
     public class BonosComprados
     {
+        public BonosComprados() { }
         public BonosComprados(BonoBocadillo bonoBocadillo, int bonoId, CompraBono compraBono, int compraBonoId, int cantidad, int precio)
         {
             BonoBocadillo = bonoBocadillo;
