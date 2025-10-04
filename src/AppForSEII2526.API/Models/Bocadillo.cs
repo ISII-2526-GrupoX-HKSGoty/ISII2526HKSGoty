@@ -5,11 +5,11 @@ public class Bocadillo
 
     public Bocadillo() { }
 
-    public Bocadillo(int id, string nombre, int pvp, int stock, TipoPan tipoPan)
+    public Bocadillo(int id, string nombre, int PVP, int stock, TipoPan tipoPan)
     {
         Id = id;
         this.nombre = nombre;
-        this.pvp = pvp;
+        this.PVP = PVP;
         this.stock = stock;
         this.tipoPan = tipoPan;
     }
@@ -33,13 +33,13 @@ public class Bocadillo
         return obj is Bocadillo bocadillo &&
                Id == bocadillo.Id &&
                nombre == bocadillo.nombre &&
-               pvp == bocadillo.pvp &&
+               PVP == bocadillo.PVP &&
                stock == bocadillo.stock &&
                EqualityComparer<TipoPan>.Default.Equals(tipoPan, bocadillo.tipoPan);
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, nombre, pvp, stock, tipoPan);
+        return HashCode.Combine(Id, nombre, PVP, stock, tipoPan);
     }
 }
