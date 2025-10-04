@@ -1,9 +1,20 @@
 ﻿
+
 namespace AppForSEII2526.API.Models
 {
     public class CompraBono
     {
-        
+        public CompraBono(int compraBonoId, ApplicationUser user, DateTime releaseDate, int nBonos, double precioTotalBono, MetodoPago metodoPago, IList<BonosComprados> bonosComprados)
+        {
+            CompraBonoId = compraBonoId;
+            User = user;
+            ReleaseDate = releaseDate;
+            this.nBonos = nBonos;
+            PrecioTotalBono = precioTotalBono;
+            this.metodoPago = metodoPago;
+            BonosComprados = bonosComprados;
+        }
+
         [Key] 
         public int CompraBonoId { get; set; }
 
@@ -25,15 +36,7 @@ namespace AppForSEII2526.API.Models
         [Required]
         public MetodoPago metodoPago { get; set; }
 
-        public CompraBono(int compraBonoId, ApplicationUser user, DateTime releaseDate, int nBonos, double precioTotalBono, MetodoPago metodoPago)
-        {
-            CompraBonoId = compraBonoId;
-            User = user;
-            ReleaseDate = releaseDate;
-            this.nBonos = nBonos;
-            PrecioTotalBono = precioTotalBono;
-            this.metodoPago = metodoPago;
-        }
+        public IList<BonosComprados> BonosComprados { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -43,12 +46,13 @@ namespace AppForSEII2526.API.Models
                    ReleaseDate == bono.ReleaseDate &&
                    nBonos == bono.nBonos &&
                    PrecioTotalBono == bono.PrecioTotalBono &&
-                   metodoPago == bono.metodoPago;
+                   metodoPago == bono.metodoPago &&
+                   EqualityComparer<IList<BonosComprados>>.Default.Equals(BonosComprados, bono.BonosComprados);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(CompraBonoId, User, ReleaseDate, nBonos, PrecioTotalBono, metodoPago);
+            return HashCode.Combine(CompraBonoId, User, ReleaseDate, nBonos, PrecioTotalBono, metodoPago, BonosComprados);
         }
     }
 }
