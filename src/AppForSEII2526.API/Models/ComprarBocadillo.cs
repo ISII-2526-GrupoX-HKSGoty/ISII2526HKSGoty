@@ -1,16 +1,19 @@
 ﻿
 namespace AppForSEII2526.API.Models
 {
+    [PrimaryKey(nameof(BocadilloId), nameof(CompraId))]
     public class ComprarBocadillo
     {
         public int BocadilloId { get; set; }
         public int Cantidad { get; set; }
+
         public int CompraId { get; set; }
         public string NombreBocadillo { get; set; }
+        [Precision(10, 2)]
         public decimal Precio { get; set; }
         public Bocadillo Bocadillo { get; set; }
         public Compra Compra { get; set; }
-        public Metodo_Pago Metodo_Pago { get; set; }
+        
 
         public ComprarBocadillo()
         {

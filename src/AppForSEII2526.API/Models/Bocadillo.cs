@@ -13,7 +13,7 @@ public class Bocadillo
         this.stock = stock;
         this.tipoPan = tipoPan;
     }
-
+    [Key]
     public int Id { get; set; }
 
     [StringLength(30, ErrorMessage = "El nombre no debe superar los 30 caracteres")]

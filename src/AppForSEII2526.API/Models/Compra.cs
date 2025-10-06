@@ -2,22 +2,28 @@
 {
     public class Compra
     {
-        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 10", MinimumLength = 5)]
+        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 5", MinimumLength = 5)]
         public string Apellido_1Cliente { get; set; }
 
-        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 10", MinimumLength = 5)]
+        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 5", MinimumLength = 5)]
         public string Apellido_2Cliente { get; set; }
 
-        public int Id { get; set; }
+        [Key]
+        public int CompraId { get; set; }
         public DateTime FechaCompra { get; set; }
         public int nBocadillos { get; set; }
 
-        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 10", MinimumLength = 5)]
+        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 5", MinimumLength = 5)]
         public string NombreCliente { get; set; }
+        
+        [Display(Name = "Metodo de Pago")]
+        public Metodo_Pago Metodo_Pago { get; set; }
 
         [Precision(10, 2)]
         public decimal PrecioTotal { get; set; }
         public List<ComprarBocadillo> Bocadillos { get; set; }
+
+        
 
         public Compra()
         {
@@ -28,7 +34,7 @@
             return obj is Compra compra &&
                    Apellido_1Cliente == compra.Apellido_1Cliente &&
                    Apellido_2Cliente == compra.Apellido_2Cliente &&
-                   Id == compra.Id &&
+                   CompraId == compra.CompraId &&
                    FechaCompra == compra.FechaCompra &&
                    nBocadillos == compra.nBocadillos &&
                    NombreCliente == compra.NombreCliente &&
@@ -38,7 +44,7 @@
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Apellido_1Cliente, Apellido_2Cliente, Id, FechaCompra, nBocadillos, NombreCliente, PrecioTotal, Bocadillos);
+            return HashCode.Combine(Apellido_1Cliente, Apellido_2Cliente, CompraId, FechaCompra, nBocadillos, NombreCliente, PrecioTotal, Bocadillos);
         }
     }
 }
