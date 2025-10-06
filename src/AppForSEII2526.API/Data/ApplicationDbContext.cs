@@ -11,4 +11,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CompraBono> CompraBono { get; set; }
     public DbSet<TipoBocadillo> TipoBocadillo { get; set; }
 
-}
+    public DbSet<Bocadillo> Bocadillos { get; set; }
+    public DbSet<Resenya> Resenyas { get; set; }
+    public DbSet<ResenyaBocadillo> ResenyaBocadillos { get; set; }
+    public DbSet<TipoPan> TipoPanes { get; set; }  
+    }
