@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AppForSEII2526.API.Models.BonoBocadillo">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAgEAACCAgAAAAAAAAAAAAIAAAAAQAAAAQAA=</HashCode>
+      <FileName>Models\BonoBocadillo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TipoBocadillo" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="BonosComprados" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.BonosComprados">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAEAAgAAQAAAgAAABAAQAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BonosComprados.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="BonoBocadillo" />
+      <Property Name="CompraBono" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.CompraBono">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="AppForSEII2526.API.Models.CompraBono.MetodoPago" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\CompraBono.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAgEIAAAAgAAAAAAgAAAAAIAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\CompraBono.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="BonosComprados" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.TipoBocadillo">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAIAIAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TipoBocadillo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="BonoBocadillos" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
