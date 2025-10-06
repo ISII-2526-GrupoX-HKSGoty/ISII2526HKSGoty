@@ -55,5 +55,12 @@ namespace AppForSEII2526.API.Models
         {
             return HashCode.Combine(CompraBonoId, User, ReleaseDate, nBonos, PrecioTotalBono, metodoPago, BonosComprados);
         }
+
+        public enum MetodoPago
+        {
+            Tarjeta,
+            Paypal,
+            GooglePay
+        }
     }
 }
