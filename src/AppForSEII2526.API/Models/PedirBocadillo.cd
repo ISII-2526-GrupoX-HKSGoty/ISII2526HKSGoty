@@ -14,7 +14,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.Compra">
-    <Position X="8.25" Y="0.75" Width="1.5" />
+    <Position X="9.75" Y="0.5" Width="1.5" />
     <AssociationLine Name="Metodo_Pago" Type="AppForSEII2526.API.Models.Metodo_Pago">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.154" Y="0.133" />
@@ -32,7 +32,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.CompraBocadillo">
-    <Position X="5.25" Y="0.75" Width="1.5" />
+    <Position X="6.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAwAAEAAIAAAAAAgAAAAAAQAAAAAIAAAAAEAAIAAAA=</HashCode>
       <FileName>Models\CompraBocadillo.cs</FileName>
@@ -53,7 +53,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Enum Name="AppForSEII2526.API.Models.Metodo_Pago">
-    <Position X="8.25" Y="5" Width="1.5" />
+    <Position X="9.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAACAQAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Metodo_Pago.cs</FileName>
