@@ -6,6 +6,7 @@
         {
             get; set;
         }
+
         [Key]
         public int PanId { get; set; }
 

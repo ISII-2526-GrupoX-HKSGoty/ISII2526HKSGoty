@@ -4,15 +4,17 @@ using AppForSEII2526.API.Models;
 
 namespace AppForSEII2526.API.Data;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
-{
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options) {
+    public DbSet<Bocadillo> Bocadillos { get; set; }
+    public DbSet<Compra> Compras { get; set; }
+    public DbSet<CompraBocadillo> ComprarBocadillos { get; set; }
+    public DbSet<TipoPan> tipoPan { get; set; }
+
     public DbSet<BonoBocadillo> BonoBocadillos{get; set;}
     public DbSet<BonosComprados> BonosComprados { get; set; }
     public DbSet<CompraBono> CompraBono { get; set; }
     public DbSet<TipoBocadillo> TipoBocadillo { get; set; }
 
-    public DbSet<Bocadillo> Bocadillos { get; set; }
     public DbSet<Resenya> Resenyas { get; set; }
-    public DbSet<ResenyaBocadillo> ResenyaBocadillos { get; set; }
-    public DbSet<TipoPan> TipoPanes { get; set; }  
+    public DbSet<ResenyaBocadillo> ResenyaBocadillos { get; set; }  
     }
