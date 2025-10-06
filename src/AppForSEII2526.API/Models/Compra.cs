@@ -21,13 +21,13 @@
 
         [Precision(10, 2)]
         public decimal PrecioTotal { get; set; }
-        public List<ComprarBocadillo> Bocadillos { get; set; }
+        public List<CompraBocadillo> BocadillosComprados { get; set; }
 
         
 
         public Compra()
         {
-            Bocadillos = new List<ComprarBocadillo>();
+            BocadillosComprados = new List<CompraBocadillo>();
         }
         public override bool Equals(object? obj)
         {
@@ -39,12 +39,12 @@
                    nBocadillos == compra.nBocadillos &&
                    NombreCliente == compra.NombreCliente &&
                    PrecioTotal == compra.PrecioTotal &&
-                   EqualityComparer<List<ComprarBocadillo>>.Default.Equals(Bocadillos, compra.Bocadillos);
+                   EqualityComparer<List<CompraBocadillo>>.Default.Equals(BocadillosComprados, compra.BocadillosComprados);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Apellido_1Cliente, Apellido_2Cliente, CompraId, FechaCompra, nBocadillos, NombreCliente, PrecioTotal, Bocadillos);
+            return HashCode.Combine(Apellido_1Cliente, Apellido_2Cliente, CompraId, FechaCompra, nBocadillos, NombreCliente, PrecioTotal, BocadillosComprados);
         }
     }
 }

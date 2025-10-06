@@ -2,7 +2,7 @@
 namespace AppForSEII2526.API.Models
 {
     [PrimaryKey(nameof(BocadilloId), nameof(CompraId))]
-    public class ComprarBocadillo
+    public class CompraBocadillo
     {
         public int BocadilloId { get; set; }
         public int Cantidad { get; set; }
@@ -13,16 +13,17 @@ namespace AppForSEII2526.API.Models
         public decimal Precio { get; set; }
         public Bocadillo Bocadillo { get; set; }
         public Compra Compra { get; set; }
+        public TipoPan Tipopan { get; set; }
         
 
-        public ComprarBocadillo()
+        public CompraBocadillo()
         {
             Bocadillo = new Bocadillo();
             Compra = new Compra();
         }
         public override bool Equals(object? obj)
         {
-            return obj is ComprarBocadillo bocadillo &&
+            return obj is CompraBocadillo bocadillo &&
                    BocadilloId == bocadillo.BocadilloId &&
                    Cantidad == bocadillo.Cantidad &&
                    CompraId == bocadillo.CompraId &&
