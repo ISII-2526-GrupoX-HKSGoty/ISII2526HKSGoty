@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Bocadillo">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAACAAAAABAAAACAgAAAAAAAAAAAAIAAAAABAAAQAAA=</HashCode>
+      <FileName>Models\Bocadillo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="tipoPan" />
+      <Property Name="tamaño" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ResenyaBocadillos" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.Resenya">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="AppForSEII2526.API.Models.Resenya.Valoracion_General">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\Resenya.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAgAEAAAAAAAAAAIAAAAAAEICAAAA=</HashCode>
+      <FileName>Models\Resenya.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ResenyaBocadillo" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.ResenyaBocadillo">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAIAAAAAAgAAAAAAAAAAAAIAAkAAAAAAAQAA=</HashCode>
+      <FileName>Models\ResenyaBocadillo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Bocadillo" />
+      <Property Name="Resenya" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.TipoPan">
+    <Position X="0.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAkAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TipoPan.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Bocadillos" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="AppForSEII2526.API.Models.Tamaño">
+    <Position X="4.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgBAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Tamaño.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

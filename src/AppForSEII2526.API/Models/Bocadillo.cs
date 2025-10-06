@@ -5,7 +5,17 @@ public class Bocadillo
 
     public Bocadillo() { }
 
-   
+    public Bocadillo(int id, string nombre, int pvp, int stock, TipoPan tipoPan, Tamaño tamaño, IList<ResenyaBocadillo> resenyaBocadillos)
+    {
+        Id = id;
+        this.nombre = nombre;
+        this.PVP = pvp;
+        this.stock = stock;
+        this.tipoPan = tipoPan;
+        this.tamaño = tamaño;
+        ResenyaBocadillos = resenyaBocadillos;
+    }
+
     [Key]
     public int Id { get; set; }
 
@@ -20,6 +30,7 @@ public class Bocadillo
     public TipoPan tipoPan { get; set; }
 
     public Tamaño tamaño { get; set; }
+    public IList<ResenyaBocadillo> ResenyaBocadillos { get; set; }
 
     public IList<CompraBocadillo> ComprasDelBocadillo { get; set; }
 
@@ -43,11 +54,12 @@ public class Bocadillo
                stock == bocadillo.stock &&
                EqualityComparer<TipoPan>.Default.Equals(tipoPan, bocadillo.tipoPan) &&
                tamaño == bocadillo.tamaño &&
+               EqualityComparer<IList<ResenyaBocadillo>>.Default.Equals(ResenyaBocadillos, bocadillo.ResenyaBocadillos) &&
                EqualityComparer<IList<CompraBocadillo>>.Default.Equals(ComprasDelBocadillo, bocadillo.ComprasDelBocadillo);
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, nombre, PVP, stock, tipoPan, tamaño, ComprasDelBocadillo);
+        return HashCode.Combine(Id, nombre, PVP, stock, tipoPan, tamaño, ResenyaBocadillos, ComprasDelBocadillo);
     }
 }
