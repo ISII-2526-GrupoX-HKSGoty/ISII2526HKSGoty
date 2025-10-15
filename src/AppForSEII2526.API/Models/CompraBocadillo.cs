@@ -7,6 +7,7 @@ namespace AppForSEII2526.API.Models
     {
         public Bocadillo Bocadillo { get; set; }
         public int BocadilloId { get; set; }
+        [Required]
         public int Cantidad { get; set; }
         public Compra Compra { get; set; }
         public int CompraId { get; set; }
