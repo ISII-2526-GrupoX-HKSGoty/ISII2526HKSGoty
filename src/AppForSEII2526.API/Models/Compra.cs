@@ -2,17 +2,23 @@
 {
     public class Compra
     {
+
         public ApplicationUser User { get; set; }
 
         [Key]
         public int CompraId { get; set; }
+
+        [Required]
         public DateTime FechaCompra { get; set; }
+
+        [Required]
         public int nBocadillos { get; set; }
 
         [Required]
         [Display(Name = "Metodo de Pago")]
         public Metodo_Pago Metodo_Pago { get; set; }
 
+        [Required]
         [Precision(10, 2)]
         public decimal PrecioTotal { get; set; }
         public List<CompraBocadillo> BocadillosComprados { get; set; }
