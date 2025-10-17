@@ -12,10 +12,10 @@ public class ApplicationUser : IdentityUser {
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
     }
-
+    [Required]
     public string nombre { get; set; }
-
+    [Required]
     public string apellido1 { get; set; }
 
-    public string apellido2 { get; set; }
+    public string? apellido2 { get; set; }
 }
