@@ -3,11 +3,13 @@ namespace AppForSEII2526.API.Models
 {
     public class Resenya
     {
+        [Required]
         public string descripcion { get; set; }
         public DateTime fechaPublicacion { get; set;}
         [Key]
         public int Id { get; set; }
         public string nombreUsuario { get; set; }
+        [Required]
         public string titulo { get; set; }
 
         public IList<ResenyaBocadillo> ResenyaBocadillo { get; set; }
@@ -27,6 +29,8 @@ namespace AppForSEII2526.API.Models
         {
             Una, Dos, Tres, Cuatro, Cinco
         }
+        [Required]
+        public Valoracion_General valoracion_General { get; set; }
 
         public override bool Equals(object? obj)
         {
