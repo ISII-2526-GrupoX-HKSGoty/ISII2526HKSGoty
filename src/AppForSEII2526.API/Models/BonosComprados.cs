@@ -25,7 +25,6 @@ namespace AppForSEII2526.API.Models
         [Range(1, int.MaxValue, ErrorMessage = "no acepta valores menores a 1")]
         public int Cantidad { get; set; }
 
-        [Required]
         [Range(0, int.MaxValue, ErrorMessage = "no acepta valores menores a 0")]
         public int Precio { get; set; }
 
