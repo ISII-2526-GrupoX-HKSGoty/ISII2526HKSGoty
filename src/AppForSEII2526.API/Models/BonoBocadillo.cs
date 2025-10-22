@@ -19,7 +19,6 @@ namespace AppForSEII2526.API.Models
         [Key]
         public int BonoId { get; set; }
 
-        [Required]
         [Range(0, int.MaxValue, ErrorMessage ="no acepta valores menores a 0")]
         public int cantidadDisponible { get; set; }
 

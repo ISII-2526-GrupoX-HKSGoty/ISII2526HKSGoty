@@ -21,16 +21,13 @@ namespace AppForSEII2526.API.Models
 
         public ApplicationUser User { get; set; }
 
-        [Required]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ReleaseDate { get; set; }
 
-        [Required]
         [Range(0, int.MaxValue, ErrorMessage = "no acepta valores menores a 0")]
         public int nBonos { get; set; }
 
-        [Required]
         [Range(0, double.MaxValue, ErrorMessage = "no acepta valores menores a 0")]
         public double PrecioTotalBono { get; set; }
 
