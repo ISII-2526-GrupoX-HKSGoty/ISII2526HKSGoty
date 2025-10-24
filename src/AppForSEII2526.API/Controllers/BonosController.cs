@@ -25,7 +25,7 @@ namespace AppForSEII2526.API.Controllers
         {
             if(_context.BonoBocadillos == null)
             {
-                _logger.LogError("no existe la tabla");
+                _logger.LogError("no hay bonos, sadge");
                 return NotFound();
             }
 
