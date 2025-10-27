@@ -16,5 +16,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<TipoBocadillo> TipoBocadillo { get; set; }
 
     public DbSet<Resenya> Resenyas { get; set; }
-    public DbSet<ResenyaBocadillo> ResenyaBocadillos { get; set; }  
-    }
+    public DbSet<ResenyaBocadillo> ResenyaBocadillos { get; set; }
+
+    public DbSet<ApplicationUser> ApplicationUser { get; set; }
+}
