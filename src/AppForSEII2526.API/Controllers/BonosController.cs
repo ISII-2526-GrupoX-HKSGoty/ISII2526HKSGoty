@@ -40,7 +40,8 @@ namespace AppForSEII2526.API.Controllers
 
         }
 
-        /*[HttpPost]
+
+        [HttpPost]
         [Route("[action]")]
         [ProducesResponseType(typeof(DETAIL_Bono_DTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -84,7 +85,7 @@ namespace AppForSEII2526.API.Controllers
                 }
                 else
                 {
-                    compraBono.BonosComprados.Add(new BonosComprados());
+                    compraBono.BonosComprados.Add(new BonosComprados(bono, bono.BonoId, compraBono, compraBono.CompraBonoId, item.numero, bono.PVP));
                     bono.cantidadDisponible = bono.cantidadDisponible - item.numero;
                     compraBono.PrecioTotalBono = compraBono.PrecioTotalBono + (bono.PVP * item.numero);
                 }
@@ -106,12 +107,15 @@ namespace AppForSEII2526.API.Controllers
             {
                 _logger.LogError(ex.Message);
                 ModelState.AddModelError("Rental", $"Error! There was an error while saving your rental, plese, try again later");
+                return Conflict("Error" + ex.Message);
 
             }
 
-            return CreatedAtAction = ("GetBonos", new { id = compraBono.CompraBonoId });
+            var bonoDetail = new DETAIL_Bono_DTO(user.nombre, user.apellido1, user.apellido2, postBonoDTO.metodoPago, compraBono.PrecioTotalBono, DateTime.Now,compraBono.BonosComprados);
 
-        }*/
+            return CreatedAtAction ("GetBonos", new { id = compraBono.CompraBonoId }, bonoDetail);
+
+        }
         
     } 
 

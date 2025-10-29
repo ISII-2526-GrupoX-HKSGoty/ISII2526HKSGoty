@@ -5,7 +5,7 @@ namespace AppForSEII2526.API.Models
     public class BonosComprados
     {
         public BonosComprados() { }
-        public BonosComprados(BonoBocadillo bonoBocadillo, int bonoId, CompraBono compraBono, int compraBonoId, int cantidad, int precio)
+        public BonosComprados(BonoBocadillo bonoBocadillo, int bonoId, CompraBono compraBono, int compraBonoId, int cantidad, double precio)
         {
             BonoBocadillo = bonoBocadillo;
             BonoId = bonoId;
@@ -26,7 +26,7 @@ namespace AppForSEII2526.API.Models
         public int Cantidad { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "no acepta valores menores a 0")]
-        public int Precio { get; set; }
+        public double Precio { get; set; }
 
         public override bool Equals(object? obj)
         {
