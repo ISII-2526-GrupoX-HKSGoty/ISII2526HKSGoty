@@ -5,7 +5,7 @@
         public string Nombre { get; set; }
         public Tamaño Tamaño { get; set; }
         public string TipoPan { get; set; }
-        public float PVP { get; set; }
+        public decimal PVP { get; set; }
         public int Id { get; set; }
 
         public BocadilloDTO()
@@ -13,7 +13,7 @@
 
         }
 
-        public BocadilloDTO(int id, string nombre, Tamaño tamaño, string tipoPan, float PVP)
+        public BocadilloDTO(int id, string nombre, Tamaño tamaño, string tipoPan, decimal PVP)
         {
             Id = id;
             Nombre = nombre;
