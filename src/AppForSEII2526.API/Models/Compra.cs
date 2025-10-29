@@ -24,7 +24,7 @@
         public List<CompraBocadillo> BocadillosComprados { get; set; }
 
         
-
+        /*
         public Compra()
         {
             BocadillosComprados = new List<CompraBocadillo>();
@@ -45,6 +45,6 @@
         public override int GetHashCode()
         {
             return HashCode.Combine(User, CompraId, FechaCompra, nBocadillos, Metodo_Pago, PrecioTotal, BocadillosComprados);
-        }
+        }*/
     }
 }

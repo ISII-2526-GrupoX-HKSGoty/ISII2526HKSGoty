@@ -13,8 +13,10 @@ namespace AppForSEII2526.API.Models
         public int CompraId { get; set; }
         public string NombreBocadillo { get; set; }
         [Precision(10, 2)]
-        public decimal Precio { get; set; }        
+        public decimal Precio { get; set; }  
+        public TipoPan TipoPan { get; set; }
 
+        /*
         public CompraBocadillo()
         {
             
@@ -35,6 +37,6 @@ namespace AppForSEII2526.API.Models
         public override int GetHashCode()
         {
             return HashCode.Combine(Bocadillo, BocadilloId, Cantidad, Compra, CompraId, NombreBocadillo, Precio);
-        }
+        }*/
     }
 }
