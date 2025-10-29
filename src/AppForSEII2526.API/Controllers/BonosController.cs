@@ -18,8 +18,8 @@ namespace AppForSEII2526.API.Controllers
             _logger = logger;
         }
 
-        [System.Web.Mvc.HttpGet]
-        [System.Web.Mvc.Route("[action]")]
+        [HttpGet]
+        [Route("[action]")]
         [ProducesResponseType(typeof(GET_Bono_DTO), (int)HttpStatusCode.OK)]
 
         public async Task<ActionResult> GetBonos(string? nombre, string? tipo)
@@ -40,12 +40,12 @@ namespace AppForSEII2526.API.Controllers
 
         }
 
-        [HttpPost]
+        /*[HttpPost]
         [Route("[action]")]
         [ProducesResponseType(typeof(DETAIL_Bono_DTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
-        public async Task<System.Web.Mvc.ActionResult> PostBonos(POST_Bono_DTO postBonoDTO)
+        public async Task<ActionResult> PostBonos(POST_Bono_DTO postBonoDTO)
         {
             if (postBonoDTO.ItemCompra.Count == 0)
             {
@@ -60,6 +60,10 @@ namespace AppForSEII2526.API.Controllers
                 ModelState.AddModelError("Usuario", "El usuario no existe.");
             }
 
+            if (ModelState.ErrorCount > 0)
+            {
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
 
             var nombrebono = postBonoDTO.ItemCompra.Select(b => b.nombre).ToList();
             var bonos = _context.BonoBocadillos
@@ -87,6 +91,11 @@ namespace AppForSEII2526.API.Controllers
 
             }
 
+            if (ModelState.ErrorCount > 0)
+            {
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+
             _context.Add(compraBono);
 
             try
@@ -102,7 +111,7 @@ namespace AppForSEII2526.API.Controllers
 
             return CreatedAtAction = ("GetBonos", new { id = compraBono.CompraBonoId });
 
-        }
+        }*/
         
     } 
 
