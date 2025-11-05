@@ -20,7 +20,38 @@ namespace AppForSEII2526.API.Models
         public CompraBocadillo()
         {
             
-        }/*
+        }
+
+        public CompraBocadillo(int bocadilloId, int cantidad, Compra compra)
+        {
+            BocadilloId = bocadilloId;
+            Cantidad = cantidad;
+            Compra = compra;
+            CompraId = compra.CompraId;
+        }
+
+        public CompraBocadillo(int bocadilloId, int cantidad, Compra compra, int compraId, string nombreBocadillo, decimal precio, TipoPan tipoPan)
+        {   
+            BocadilloId = bocadilloId;
+            Cantidad = cantidad;
+            Compra = compra;
+            CompraId = compraId;
+            NombreBocadillo = nombreBocadillo;
+            Precio = precio;
+            TipoPan = tipoPan;
+        }
+
+        public CompraBocadillo(Bocadillo bocadillo, Compra compra, int cantidad)
+        {
+            Bocadillo = bocadillo;
+            BocadilloId = bocadillo.Id;
+            Compra = compra;
+
+            Cantidad = cantidad;
+            Precio = bocadillo.PVP;
+            TipoPan = bocadillo.tipoPan;
+            NombreBocadillo = bocadillo.nombre;
+        }
 
         public override bool Equals(object? obj)
         {
@@ -37,6 +68,6 @@ namespace AppForSEII2526.API.Models
         public override int GetHashCode()
         {
             return HashCode.Combine(Bocadillo, BocadilloId, Cantidad, Compra, CompraId, NombreBocadillo, Precio);
-        }*/
+        }
     }
 }

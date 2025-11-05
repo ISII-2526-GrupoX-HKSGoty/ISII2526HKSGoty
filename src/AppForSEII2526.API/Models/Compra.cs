@@ -26,7 +26,15 @@
         public Compra()
         {
             BocadillosComprados = new List<CompraBocadillo>();
-        }/*
+        }
+
+        public Compra(ApplicationUser user, DateTime fechaCompra, Metodo_Pago metodo_Pago, List<CompraBocadillo> bocadillosComprados)
+        {
+            User = user;
+            FechaCompra = fechaCompra;
+            Metodo_Pago = metodo_Pago;
+            BocadillosComprados = bocadillosComprados;
+        }
 
         public override bool Equals(object? obj)
         {
@@ -43,6 +51,6 @@
         public override int GetHashCode()
         {
             return HashCode.Combine(User, CompraId, FechaCompra, nBocadillos, Metodo_Pago, PrecioTotal, BocadillosComprados);
-        }*/
+        }
     }
 }

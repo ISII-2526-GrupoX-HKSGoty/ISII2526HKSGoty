@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AppForSEII2526.API.Models;
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Bocadillo
 {
@@ -14,6 +16,16 @@ public class Bocadillo
         this.tipoPan = tipoPan;
         this.tamaño = tamaño;
         ResenyaBocadillos = resenyaBocadillos;
+    }
+    public Bocadillo(string nombre, decimal pVP, int stock, Tamaño tamaño)
+    {
+        this.nombre = nombre;
+        PVP = pVP;
+        this.stock = stock;
+        tamaño = tamaño;
+        ResenyaBocadillos = new List<ResenyaBocadillo>();
+        ComprasDelBocadillo = new List<CompraBocadillo>();
+        tipoPan = null!;
     }
 
     [Key]
