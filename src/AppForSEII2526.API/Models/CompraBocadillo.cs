@@ -16,11 +16,11 @@ namespace AppForSEII2526.API.Models
         public decimal Precio { get; set; }  
         public TipoPan TipoPan { get; set; }
 
-        /*
+        
         public CompraBocadillo()
         {
             
-        }
+        }/*
 
         public override bool Equals(object? obj)
         {

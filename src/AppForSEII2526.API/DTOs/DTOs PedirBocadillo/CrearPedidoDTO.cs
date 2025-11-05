@@ -2,7 +2,7 @@
 
 namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
-    public class CrearPedidoDTO
+    public class CrearPedidoDTO //post
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor introduzca su nombre")]
         public string nombre { get; set; }

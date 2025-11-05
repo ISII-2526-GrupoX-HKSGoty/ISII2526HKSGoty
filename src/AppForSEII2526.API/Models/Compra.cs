@@ -23,12 +23,10 @@
         public decimal PrecioTotal { get; set; }
         public List<CompraBocadillo> BocadillosComprados { get; set; }
 
-        
-        /*
         public Compra()
         {
             BocadillosComprados = new List<CompraBocadillo>();
-        }
+        }/*
 
         public override bool Equals(object? obj)
         {
