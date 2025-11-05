@@ -3,16 +3,12 @@ using AppForSEII2526.API.DTOs;
 
 public class DETAIL_Bono_DTO: POST_Bono_DTO
 {
-    public DETAIL_Bono_DTO(int id, string nombre, string apellido1, string apellido2, CompraBono.MetodoPago metodopago, double preciototalbono, DateTime fecha, IList<BonosComprados> bonoscomprados)
+    public DETAIL_Bono_DTO(int id, string nombre, string apellido1, string apellido2, CompraBono.MetodoPago metodopago, double preciototalbono, DateTime fecha, IList<Item_Bono_DTO> bonoscomprados)
+        :base(nombre, apellido1, apellido2, metodopago, bonoscomprados)
     {
-        this.id = id
-        this.nombre = nombre;
-        this.apellido1 = apellido1;
-        this.apellido2 = apellido2;
-        this.metodopago = metodopago;
+        this.id = id;
         this.preciototalbono = preciototalbono;
         this.fecha = fecha;
-        this.bonoscomprados = bonoscomprados;
     }
 
     public int id { get; set; }

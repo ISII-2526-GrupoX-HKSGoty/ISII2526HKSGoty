@@ -1,9 +1,9 @@
 ﻿
 namespace AppForSEII2526.API.DTOs
 {
-    public class Item_DTO
+    public class Item_Bono_DTO
     {
-        public Item_DTO(int compraId, int bonoId,string nombre, TipoBocadillo tipoBocadillo, double precio, int cantidad)
+        public Item_Bono_DTO(int compraId, int bonoId,string nombre, TipoBocadillo tipoBocadillo, double precio, int cantidad)
         {
             this.compraId = compraId;
             this.bonoId = bonoId;
@@ -26,7 +26,7 @@ namespace AppForSEII2526.API.DTOs
 
         public override bool Equals(object? obj)
         {
-            return obj is Item_DTO dTO &&
+            return obj is Item_Bono_DTO dTO &&
                    nombre == dTO.nombre &&
                    EqualityComparer<TipoBocadillo>.Default.Equals(TipoBocadillo, dTO.TipoBocadillo) &&
                    precio == dTO.precio &&

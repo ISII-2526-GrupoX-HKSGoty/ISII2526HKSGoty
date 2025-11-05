@@ -56,12 +56,19 @@ namespace AppForSEII2526.API.Controllers
 
             var compra = await _context.CompraBono
                 .Where(r => r.CompraBonoId == id)
-                .Include(r => r.BonosComprados)
-                .ThenInclude(ri => ri.BonoBocadillo)
+                    .Include(r => r.BonosComprados)
+                        .ThenInclude(ri => ri.BonoBocadillo)
                 .Select(r => new DETAIL_Bono_DTO(r.CompraBonoId, r.User.nombre, r.User.apellido1, r.User.apellido2, r.metodoPago, r.PrecioTotalBono, r.ReleaseDate, r.BonosComprados
-                .Select(ri => new Item_DTO(ri.CompraBonoId, ri.BonoId, ri.BonoBocadillo.nombre, ri.BonoBocadillo.TipoBocadillo, ri.BonoBocadillo.PVP,ri.Cantidad)).ToList<Item_DTO>()))
+                    .Select(ri => new Item_Bono_DTO(ri.CompraBonoId, ri.BonoId, ri.BonoBocadillo.nombre, ri.BonoBocadillo.TipoBocadillo, ri.BonoBocadillo.PVP,ri.Cantidad)).ToList<Item_Bono_DTO>()))
                 .FirstOrDefaultAsync();
 
+            if(compra == null)
+            {
+                _logger.LogError("Compra no encontrada");
+                return NotFound();
+            }
+
+            return Ok(compra);
 
         }
 
@@ -104,15 +111,15 @@ namespace AppForSEII2526.API.Controllers
             {
                 var bono = bonos.FirstOrDefault(b => b.nombre == item.nombre);
 
-                if ((bono.cantidadDisponible < item.numero) || (bono == null))
+                if ((bono.cantidadDisponible < item.cantidad) || (bono == null))
                 {
                     ModelState.AddModelError("Items", $"Error! Bono '{item.nombre}' no esta disponible");
                 }
                 else
                 {
-                    compraBono.BonosComprados.Add(new BonosComprados(bono, bono.BonoId, compraBono, compraBono.CompraBonoId, item.numero, bono.PVP));
-                    bono.cantidadDisponible = bono.cantidadDisponible - item.numero;
-                    compraBono.PrecioTotalBono = compraBono.PrecioTotalBono + (bono.PVP * item.numero);
+                    compraBono.BonosComprados.Add(new BonosComprados(bono, bono.BonoId, compraBono, compraBono.CompraBonoId, item.cantidad, bono.PVP));
+                    bono.cantidadDisponible = bono.cantidadDisponible - item.cantidad;
+                    compraBono.PrecioTotalBono = compraBono.PrecioTotalBono + (bono.PVP * item.cantidad);
                 }
 
             }
@@ -136,7 +143,7 @@ namespace AppForSEII2526.API.Controllers
 
             }
 
-            var bonoDetail = new DETAIL_Bono_DTO(compraBono.CompraBonoId,user.nombre, user.apellido1, user.apellido2, postBonoDTO.metodoPago, compraBono.PrecioTotalBono, DateTime.Now,compraBono.BonosComprados);
+            var bonoDetail = new DETAIL_Bono_DTO(compraBono.CompraBonoId,user.nombre, user.apellido1, user.apellido2, postBonoDTO.metodoPago, compraBono.PrecioTotalBono, DateTime.Now,postBonoDTO.ItemCompra);
 
             return CreatedAtAction ("GetBonos", new { id = compraBono.CompraBonoId }, bonoDetail);
 
