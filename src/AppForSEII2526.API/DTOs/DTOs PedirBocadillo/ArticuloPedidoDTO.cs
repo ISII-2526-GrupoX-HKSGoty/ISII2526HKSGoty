@@ -9,7 +9,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         [Required]
         public int Cantidad { get; set; }
         public decimal PVP { get; set; }
-        public string TipoPan { get; set; }
+        public TipoPan TipoPan { get; set; }
 
         public ArticuloPedidoDTO()
         {

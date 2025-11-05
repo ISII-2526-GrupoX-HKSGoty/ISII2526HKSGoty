@@ -22,6 +22,7 @@ namespace AppForSEII2526.API.Models
             
         }
 
+
         public CompraBocadillo(int bocadilloId, int cantidad, Compra compra)
         {
             BocadilloId = bocadilloId;
