@@ -1,10 +1,11 @@
 ﻿using System;
 using AppForSEII2526.API.DTOs;
 
-public class DETAIL_Bono_DTO
+public class DETAIL_Bono_DTO: POST_Bono_DTO
 {
-    public DETAIL_Bono_DTO(string nombre, string apellido1, string apellido2, CompraBono.MetodoPago metodopago, double preciototalbono, DateTime fecha, IList<BonosComprados> bonoscomprados)
+    public DETAIL_Bono_DTO(int id, string nombre, string apellido1, string apellido2, CompraBono.MetodoPago metodopago, double preciototalbono, DateTime fecha, IList<BonosComprados> bonoscomprados)
     {
+        this.id = id
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
@@ -13,6 +14,8 @@ public class DETAIL_Bono_DTO
         this.fecha = fecha;
         this.bonoscomprados = bonoscomprados;
     }
+
+    public int id { get; set; }
 
     public string nombre { get; set; }
 

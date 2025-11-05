@@ -26,7 +26,7 @@ namespace AppForSEII2526.API.Controllers
         {
             if(_context.BonoBocadillos == null)
             {
-                _logger.LogError("no hay bonos, sadge");
+                _logger.LogError("no hay bonos");
                 return NotFound();
             }
 
@@ -37,6 +37,31 @@ namespace AppForSEII2526.API.Controllers
                 .Select(b=> new GET_Bono_DTO(b.nombre, b.PVP, b.nBocadillos, b.TipoBocadillo))
                 .ToListAsync();
             return Ok(bonos);
+
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(DETAIL_Bono_DTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult> getCompraBono(int id)
+        {
+            if(_context.CompraBono == null)
+            {
+
+                _logger.LogError("Error");
+                return NotFound();
+
+            }
+
+            var compra = await _context.CompraBono
+                .Where(r => r.CompraBonoId == id)
+                .Include(r => r.BonosComprados)
+                .ThenInclude(ri => ri.BonoBocadillo)
+                .Select(r => new DETAIL_Bono_DTO(r.CompraBonoId, r.User.nombre, r.User.apellido1, r.User.apellido2, r.metodoPago, r.PrecioTotalBono, r.ReleaseDate, r.BonosComprados
+                .Select(ri => new Item_DTO(ri.CompraBonoId, ri.BonoId, ri.BonoBocadillo.nombre, ri.BonoBocadillo.TipoBocadillo, ri.BonoBocadillo.PVP,ri.Cantidad)).ToList<Item_DTO>()))
+                .FirstOrDefaultAsync();
+
 
         }
 
@@ -111,7 +136,7 @@ namespace AppForSEII2526.API.Controllers
 
             }
 
-            var bonoDetail = new DETAIL_Bono_DTO(user.nombre, user.apellido1, user.apellido2, postBonoDTO.metodoPago, compraBono.PrecioTotalBono, DateTime.Now,compraBono.BonosComprados);
+            var bonoDetail = new DETAIL_Bono_DTO(compraBono.CompraBonoId,user.nombre, user.apellido1, user.apellido2, postBonoDTO.metodoPago, compraBono.PrecioTotalBono, DateTime.Now,compraBono.BonosComprados);
 
             return CreatedAtAction ("GetBonos", new { id = compraBono.CompraBonoId }, bonoDetail);
 
