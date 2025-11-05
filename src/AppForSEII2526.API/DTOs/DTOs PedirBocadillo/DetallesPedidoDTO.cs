@@ -2,13 +2,13 @@
 
 namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
-    public class DetallesPedido:CrearPedidoDTO
+    public class DetallesPedidoDTO:CrearPedidoDTO
     {
-        public DetallesPedido()
+        public DetallesPedidoDTO()
         {
         }
 
-        public DetallesPedido(string nombre, CompraBono.MetodoPago metododepago, string apellido1, string apellido2, DateTime fechaPedido, decimal precioTotal, IList<ArticuloPedidoDTO> articulopedido) : base(nombre, metododepago, apellido1, apellido2, articulopedido)
+        public DetallesPedidoDTO(string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, decimal precioTotal, IList<ArticuloPedidoDTO> articuloPedido) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
         {
             FechaPedido = fechaPedido;
             PrecioTotal = precioTotal;
@@ -20,7 +20,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 
         public override bool Equals(object? obj)
         {
-            return obj is DetallesPedido pedido &&
+            return obj is DetallesPedidoDTO pedido &&
                    base.Equals(obj) &&
                    nombre == pedido.nombre &&
                    Metodo_Pago == pedido.Metodo_Pago &&

@@ -3,6 +3,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
     public class ArticuloPedidoDTO
     {
+        public int Id { get; set; }
         public string nombreBocadillo { get; set; }
 
         [Required]
@@ -14,8 +15,9 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         {
         }
 
-        public ArticuloPedidoDTO(string nombreBocadillo, int cantidad, decimal pVP, string tipoPan)
+        public ArticuloPedidoDTO(int id, string nombreBocadillo, int cantidad, decimal pVP, string tipoPan)
         {
+            Id = id;
             this.nombreBocadillo = nombreBocadillo;
             Cantidad = cantidad;
             PVP = pVP;
