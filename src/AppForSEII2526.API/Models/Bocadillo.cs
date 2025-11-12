@@ -34,7 +34,7 @@ public class Bocadillo
 
     public IList<CompraBocadillo> ComprasDelBocadillo { get; set; }
 
-    public Bocadillo(int id, string nombre, decimal pVP, int stock, TipoPan tipoPan, Tamaño tamaño, IList<CompraBocadillo> comprasDelBocadillo)
+    public Bocadillo(int id, string nombre, decimal pVP, int stock, TipoPan tipoPan, Tamaño tamaño/*, IList<CompraBocadillo> comprasDelBocadillo*/)
     {
         Id = id;
         this.nombre = nombre;
@@ -42,7 +42,7 @@ public class Bocadillo
         this.stock = stock;
         this.tipoPan = tipoPan;
         this.tamaño = tamaño;
-        ComprasDelBocadillo = comprasDelBocadillo;
+        //ComprasDelBocadillo = comprasDelBocadillo;
     }
 
     public override bool Equals(object? obj)

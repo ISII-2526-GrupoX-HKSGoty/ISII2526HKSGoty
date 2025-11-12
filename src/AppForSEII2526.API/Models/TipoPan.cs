@@ -9,12 +9,14 @@
 
         [Key]
         public int PanId { get; set; }
+        
 
         public IList<Bocadillo> Bocadillos { get; set; }
 
         public TipoPan() { }
-        public TipoPan(string nombre)
+        public TipoPan(string nombre, int id)
         {
+            PanId = id;
             Nombre = nombre;
         }
 
