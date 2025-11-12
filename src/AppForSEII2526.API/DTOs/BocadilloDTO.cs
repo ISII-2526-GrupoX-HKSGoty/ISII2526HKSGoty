@@ -1,6 +1,6 @@
 ﻿namespace AppForSEII2526.API.DTOs
 {
-    public class BocadilloDTO
+    public class BocadilloDTO//GET
     {
         public string Nombre { get; set; }
         public Tamaño Tamaño { get; set; }
