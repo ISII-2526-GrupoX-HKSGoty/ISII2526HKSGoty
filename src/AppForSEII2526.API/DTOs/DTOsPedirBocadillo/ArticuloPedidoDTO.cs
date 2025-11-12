@@ -15,7 +15,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         {
         }
 
-        public ArticuloPedidoDTO(int id, string nombreBocadillo, int cantidad, decimal pVP, string tipoPan)
+        public ArticuloPedidoDTO(int id, string nombreBocadillo, int cantidad, decimal pVP, TipoPan tipoPan)
         {
             Id = id;
             this.nombreBocadillo = nombreBocadillo;
