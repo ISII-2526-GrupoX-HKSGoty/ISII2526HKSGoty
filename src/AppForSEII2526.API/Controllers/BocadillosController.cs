@@ -1,5 +1,6 @@
 ﻿using AppForSEII2526.API.DTOs;
 using AppForSEII2526.API.Models;
+using System;
 
 namespace AppForSEII2526.API.Controllers
 {
@@ -21,30 +22,39 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(List<BocadilloDTO>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetBocadillosParaPedir(Tamaño? tamaño, string? tipoPan)
+        public async Task<IActionResult> GetBocadillosParaPedir(string? filTamaño, string? filTipoPan)
         {
-            IList<BocadilloDTO> bocadillos = await _context.Bocadillos
-                .Include(b => b.tipoPan)
-                .Where(b =>
+            Tamaño? tamanoFiltrado = null;
 
-                tipoPan == null || b.tipoPan.Nombre.Contains(tipoPan)
+            if (!string.IsNullOrWhiteSpace(filTamaño) &&
+                Enum.TryParse<Tamaño>(filTamaño, ignoreCase: true, out var parsed))
+            {
+                tamanoFiltrado = parsed;
+            }
 
+            var query = _context.Bocadillos
+            .AsNoTracking()
+            .Include(b => b.tipoPan)
+            .Include(b => b.ComprasDelBocadillo).ThenInclude(cb => cb.Compra)
+            .AsQueryable();
 
-                && tamaño == null || b.tamaño == tamaño)
+            if (tamanoFiltrado.HasValue)
+                query = query.Where(b => b.tamaño == tamanoFiltrado.Value);  //filtro por string
 
-                .Select(b => new BocadilloDTO
-                {
-                    Id = b.Id,
-                    Nombre = b.nombre,
-                    Tamaño = b.tamaño,
-                    TipoPan = b.tipoPan.Nombre,
-                    PVP = b.PVP,
-                })
+            if (!string.IsNullOrWhiteSpace(filTipoPan))
+                query = query.Where(b => b.tipoPan.Nombre == filTipoPan);
 
-            .ToListAsync();
+            var bocadillos = await query
+                .OrderBy(b => b.nombre)
+                    .Select(b => new BocadilloDTO(b.Id, b.nombre, b.tipoPan.Nombre, b.tamaño, b.PVP))
+                    .ToListAsync();
+
+            if (!bocadillos.Any())
+                return NotFound("No hay bocadillos que cumplan los requisitos");
+
             return Ok(bocadillos);
 
-        }
 
+        }
     }
 }
