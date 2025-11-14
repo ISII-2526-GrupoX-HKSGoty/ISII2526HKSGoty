@@ -48,7 +48,6 @@ namespace AppForSEII2526.UT.Pedido_test
             new TipoPan("Chapata", 3),
             new TipoPan("Cereal", 4),
             new TipoPan("Sin gluten", 5)
-
             };
             var bocadilloDTOs = new List<BocadilloDTO>()
             {
