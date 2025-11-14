@@ -10,11 +10,11 @@ public class POST_Bono_DTO
 
     public POST_Bono_DTO(string nombre, string apellido1, string apellido2, CompraBono.MetodoPago metodoPago, IList<Item_Bono_DTO> ItemCompra)
     {
-        nombre = nombre?? throw new ArgumentNullException(nameof(nombre));
-        apellido1 = apellido1 ?? throw new ArgumentNullException(nameof(apellido1));
-        apellido2 = apellido2 ?? throw new ArgumentNullException(nameof(apellido2));
+        this.nombre = nombre?? throw new ArgumentNullException(nameof(nombre));
+        this.apellido1 = apellido1 ?? throw new ArgumentNullException(nameof(apellido1));
+        this.apellido2 = apellido2 ?? throw new ArgumentNullException(nameof(apellido2));
         this.metodoPago = metodoPago; 
-        ItemCompra = ItemCompra ?? throw new ArgumentNullException(nameof(ItemCompra));
+        this.ItemCompra = ItemCompra ?? throw new ArgumentNullException(nameof(ItemCompra));
     }
     [Required]
     public string nombre { get; set; }
