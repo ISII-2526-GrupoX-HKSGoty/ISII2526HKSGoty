@@ -2,10 +2,13 @@
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static AppForSEII2526.API.Models.CompraBono;
 
@@ -16,15 +19,15 @@ namespace AppForSEII2526.UT.Pedido_test
         public class Post_CrearPedido_test : AppForMovies4SqliteUT
         {
             private readonly ApplicationUser _user;
-            private readonly MetodoPago _metodo;
+            private readonly Metodo_Pago _metodo;
             private readonly Bocadillo _bocadillo;
             private readonly TipoPan _tipoPan;
 
             public Post_CrearPedido_test()
             {
-                _tipoPan = new TipoPan { Nombre = "Integral" };
+                _tipoPan = new TipoPan {PanId=1, Nombre = "Integral" };
 
-                _metodo = MetodoPago.Tarjeta;
+                _metodo = Metodo_Pago.Tarjeta;
 
                 _user = new ApplicationUser("Fernando", "Martinez", "Panadero") { Id = Guid.NewGuid().ToString() };
 
@@ -51,7 +54,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 var sinAticulosDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
-                    metododepago: MetodoPago.Tarjeta,
+                    metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
                     articulopedido: new List<ArticuloPedidoDTO>()
@@ -60,7 +63,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 var sinStockDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
-                    metododepago: MetodoPago.Tarjeta,
+                    metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
                     articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 0, PVP = 4.5M } }
@@ -69,7 +72,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 var noUserDto = new CrearPedidoDTO
                 (
                     nombre: "NoExiste",
-                    metododepago: MetodoPago.Tarjeta,
+                    metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "X",
                     apellido2: null,
                     articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1, PVP = 4.5M } }
@@ -78,7 +81,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 var metodoNoRegistradoDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
-                    metododepago: MetodoPago.MetodoInexistente,
+                    metododepago: (Metodo_Pago)999, // Valor fuera de los definidos en el enum
                     apellido1: "Martinez",
                     apellido2: "Panadero",
                     articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1, PVP = 4.5M } }
@@ -87,7 +90,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 var stockInsuficienteDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
-                    metododepago: MetodoPago.Tarjeta,
+                    metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
                     articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 10, PVP = 4.5M } }
@@ -96,7 +99,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 var bocadilloNoExisteDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
-                    metododepago: MetodoPago.Tarjeta,
+                    metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
                     articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 999, nombreBocadillo = "NoExiste", TipoPan = "Integral", Cantidad = 1, PVP = 1.0M } }
@@ -156,11 +159,10 @@ namespace AppForSEII2526.UT.Pedido_test
                 var created = Assert.IsType<CreatedAtActionResult>(result);
                 var detalles = Assert.IsType<DetallesPedidoDTO>(created.Value);
 
-                // Comparaciones robustas: comprobamos datos relevantes (evitamos comparar Fecha/Id generados runtime).
                 Assert.Equal(_user.nombre, detalles.nombre);
                 Assert.Equal(_user.apellido1, detalles.apellido1);
-                Assert.Equal(_metodo.ToString, detalles.Metodo_Pago.ToString);
-                Assert.Equal(1, _context.Compras.Count()); // se ha creado una compra en la BBDD de pruebas
+                Assert.Equal(_metodo, detalles.Metodo_Pago);
+                Assert.Equal(1, _context.Compras.Count());
                 Assert.Equal(2, detalles.ArticuloPedido.First().Cantidad);
             }
         }
