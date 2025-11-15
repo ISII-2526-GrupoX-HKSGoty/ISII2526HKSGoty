@@ -12,6 +12,11 @@ namespace AppForSEII2526.API.Models
             BonoBocadillos = bonoBocadillos;
         }
 
+        public TipoBocadillo(string nombreTipo)
+        {
+            this.nombreTipo = nombreTipo;
+        }
+
         [Key]
         public int idTipo { get; set; }
 

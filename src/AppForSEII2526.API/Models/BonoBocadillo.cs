@@ -1,5 +1,7 @@
 ﻿
 
+using System.Threading.Tasks.Dataflow;
+
 namespace AppForSEII2526.API.Models
 {
     public class BonoBocadillo
@@ -14,6 +16,15 @@ namespace AppForSEII2526.API.Models
             PVP = pVP;
             BonosComprados = bonosComprados;
             TipoBocadillo = tipoBocadillo;
+        }
+
+        public BonoBocadillo(int cantidadDisponible, int nBocadillos, string nombre, double pVP, TipoBocadillo tipoBocadillo)
+        {
+            this.cantidadDisponible = cantidadDisponible;
+            this.nBocadillos = nBocadillos;
+            this.nombre = nombre;
+            this.PVP = pVP;
+            this.TipoBocadillo = tipoBocadillo;
         }
 
         [Key]
