@@ -1,5 +1,6 @@
 ﻿
 
+
 namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
     public class DetallesPedidoDTO:CrearPedidoDTO
@@ -8,32 +9,40 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         {
         }
 
-        public DetallesPedidoDTO(string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, decimal precioTotal, IList<ArticuloPedidoDTO> articuloPedido) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
+        public DetallesPedidoDTO(int id, string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, IList<ArticuloPedidoDTO> articuloPedido) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
         {
+            Id = id;
             FechaPedido = fechaPedido;
-            PrecioTotal = precioTotal;
         }
 
+        public int Id { get; set; }
         public DateTime FechaPedido { get; set; }
-
-        public decimal PrecioTotal { get; set; }
 
         public override bool Equals(object? obj)
         {
-            return obj is DetallesPedidoDTO pedido &&
+            return obj is DetallesPedidoDTO dTO &&
                    base.Equals(obj) &&
-                   nombre == pedido.nombre &&
-                   Metodo_Pago == pedido.Metodo_Pago &&
-                   apellido1 == pedido.apellido1 &&
-                   apellido2 == pedido.apellido2 &&
-                   EqualityComparer<IList<ArticuloPedidoDTO>>.Default.Equals(ArticuloPedido, pedido.ArticuloPedido) &&
-                   FechaPedido == pedido.FechaPedido &&
-                   PrecioTotal == pedido.PrecioTotal;
+                   nombre == dTO.nombre &&
+                   Metodo_Pago == dTO.Metodo_Pago &&
+                   apellido1 == dTO.apellido1 &&
+                   apellido2 == dTO.apellido2 &&
+                   EqualityComparer<IList<ArticuloPedidoDTO>>.Default.Equals(ArticuloPedido, dTO.ArticuloPedido) &&
+                   Id == dTO.Id &&
+                   FechaPedido == dTO.FechaPedido;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), nombre, Metodo_Pago, apellido1, apellido2, ArticuloPedido, FechaPedido, PrecioTotal);
+            HashCode hash = new HashCode();
+            hash.Add(base.GetHashCode());
+            hash.Add(nombre);
+            hash.Add(Metodo_Pago);
+            hash.Add(apellido1);
+            hash.Add(apellido2);
+            hash.Add(ArticuloPedido);
+            hash.Add(Id);
+            hash.Add(FechaPedido);
+            return hash.ToHashCode();
         }
     }
 }
