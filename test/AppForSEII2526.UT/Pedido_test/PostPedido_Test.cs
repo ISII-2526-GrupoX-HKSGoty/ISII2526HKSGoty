@@ -156,25 +156,40 @@ namespace AppForSEII2526.UT.Pedido_test
                 ILogger<PedidoController> logger = mock.Object;
                 var controller = new PedidoController(_context, logger);
 
-                var dto = new CrearPedidoDTO
+                var item = new List<ArticuloPedidoDTO>()
+            {
+                new ArticuloPedidoDTO(2, "Vegetal", 2, 3, "Integral")
+            };
+
+
+                var pedidoDto = new CrearPedidoDTO
                 (
                     nombre: _user.nombre,
+                    metododepago: _metodo,
                     apellido1: _user.apellido1,
                     apellido2: _user.apellido2,
-                    metododepago: _metodo,
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = _bocadillo.Id, nombreBocadillo = _bocadillo.nombre, TipoPan = _tipoPan.Nombre, Cantidad = 2, PVP = _bocadillo.PVP } }
+                    articulopedido: item
                 );
 
-                var result = await controller.CrearPedido(dto);
+                var expectedDetalles = new DetallesPedidoDTO
+                (
+                    _user.nombre,
+                    _metodo,
+                    _user.apellido1,
+                    _user.apellido2,
+                    DateTime.Today,
+                    new List<ArticuloPedidoDTO>()
+                    {
+                        new ArticuloPedidoDTO(2, "Vegetal", 2, 3, "Integral")
+                    }
+                );
+
+                var result = await controller.CrearPedido(pedidoDto);
 
                 var created = Assert.IsType<CreatedAtActionResult>(result);
                 var detalles = Assert.IsType<DetallesPedidoDTO>(created.Value);
 
-                Assert.Equal(_user.nombre, detalles.nombre);
-                Assert.Equal(_user.apellido1, detalles.apellido1);
-                Assert.Equal(_metodo, detalles.Metodo_Pago);
-                Assert.Equal(1, _context.Compras.Count());
-                Assert.Equal(2, detalles.ArticuloPedido.First().Cantidad);
+                Assert.Equal(expectedDetalles, detalles);
             }
         }
     } 

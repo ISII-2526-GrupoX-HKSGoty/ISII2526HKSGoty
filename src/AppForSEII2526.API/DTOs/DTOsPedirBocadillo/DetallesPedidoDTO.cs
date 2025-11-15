@@ -9,9 +9,8 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         {
         }
 
-        public DetallesPedidoDTO(int id, string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, IList<ArticuloPedidoDTO> articuloPedido) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
+        public DetallesPedidoDTO(string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, IList<ArticuloPedidoDTO> articuloPedido) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
         {
-            Id = id;
             FechaPedido = fechaPedido;
         }
 
