@@ -1,4 +1,4 @@
-using AppForSEII2526.API.Repositories.TipoProducto;
+using AppForSEII2526.API.Repositories;
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
 

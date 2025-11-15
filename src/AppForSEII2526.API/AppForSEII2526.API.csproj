@@ -33,8 +33,4 @@
     <ProjectReference Include="..\..\Shared\AppForSEII2526.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
