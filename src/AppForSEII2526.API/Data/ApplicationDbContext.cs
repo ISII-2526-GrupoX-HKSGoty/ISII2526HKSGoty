@@ -20,4 +20,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<TipoProducto> TipoProductos { get; set; }
 
+    public DbSet<Producto> Productos { get; set; }
+    public DbSet<Producto_Compra> Productos_Compras { get; set; }
+
+    public DbSet<Compra_Producto> Compra_Productos { get; set; }
+
 }

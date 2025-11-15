@@ -50,8 +50,9 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
-//TipoProducto
-builder.Services.AddScoped<TipoProductoRepository, TipoProductoRepository>();
+//TipoProducto, Producto 
+builder.Services.AddScoped<TipoProductoRepository>();
+builder.Services.AddScoped<ProductoRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
