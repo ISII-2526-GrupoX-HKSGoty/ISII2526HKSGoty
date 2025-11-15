@@ -37,20 +37,18 @@ namespace AppForSEII2526.API.Controllers
                 .ThenInclude(cb => cb.Bocadillo)
                 .ThenInclude(b => b.tipoPan)
                 .Select(c=> new DetallesPedidoDTO(
+                    c.CompraId,
                     c.User.nombre, 
                     c.Metodo_Pago,
                     c.User.apellido1,
                     c.User.apellido2,
                     c.FechaCompra,
-                    c.PrecioTotal,
-                    c.BocadillosComprados.Select(cb => new ArticuloPedidoDTO
-                    {
+                    c.BocadillosComprados.Select(
+                        cb => new ArticuloPedidoDTO {
                         Id = cb.BocadilloId,
-
                         nombreBocadillo = cb.NombreBocadillo,
                         Cantidad = cb.Cantidad,
-                        PVP = cb.Precio,
-                        TipoPan = cb.TipoPan
+                        PVP = cb.Precio
                     }).ToList()
                 )).FirstOrDefaultAsync();
 
@@ -111,7 +109,7 @@ namespace AppForSEII2526.API.Controllers
                 }
                 else
                 {
-                    compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, item.Cantidad, compra, compra.CompraId, bocadillo.nombre, bocadillo.PVP, item.TipoPan));
+                    compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, item.Cantidad, compra, compra.CompraId, bocadillo.nombre, bocadillo.PVP));
                     item.PVP = bocadillo.PVP;
                 }
 
@@ -136,20 +134,20 @@ namespace AppForSEII2526.API.Controllers
                 _logger.LogError(ex, "Error al guardar el pedido");
             }
 
-            var PedidoDetailsDTO = new DetallesPedidoDTO(
-                usuario.nombre,
+            var detallesPedidoDTO = new DetallesPedidoDTO(
+                compra.CompraId, 
+                usuario.nombre, 
                 compra.Metodo_Pago,
                 usuario.apellido1,
                 usuario.apellido2,
                 compra.FechaCompra,
-                compra.PrecioTotal,
                 pedidoParaCrear.ArticuloPedido.ToList()
                 );
 
             return CreatedAtAction(
                 "GetPedidos",
                 new { id = compra.CompraId },
-                PedidoDetailsDTO
+                detallesPedidoDTO
                 );
         }
     }

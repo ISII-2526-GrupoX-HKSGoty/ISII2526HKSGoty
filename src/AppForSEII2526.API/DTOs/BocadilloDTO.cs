@@ -4,7 +4,9 @@
     {
         public string Nombre { get; set; }
         public Tamaño Tamaño { get; set; }
-        public string TipoPan { get; set; }
+        public string TipoPanNombre { get; set; }
+
+        [Precision(10, 2)]
         public decimal PVP { get; set; }
         public int Id { get; set; }
 
@@ -13,12 +15,12 @@
 
         }
 
-        public BocadilloDTO(int id, string nombre, Tamaño tamaño, string tipoPan, decimal PVP)
+        public BocadilloDTO(int id, string nombre, string tipoPanNombre, Tamaño tamaño, decimal PVP)
         {
             Id = id;
             Nombre = nombre;
             Tamaño = tamaño;
-            TipoPan = tipoPan;
+            TipoPanNombre = tipoPanNombre;
             this.PVP = PVP;
 
         }
@@ -29,14 +31,14 @@
                    Id == dTO.Id &&
                    Nombre == dTO.Nombre &&
                    Tamaño == dTO.Tamaño &&
-                   TipoPan == dTO.TipoPan &&
+                   TipoPanNombre == dTO.TipoPanNombre &&
                    PVP == dTO.PVP;
         }
 
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Nombre, Tamaño, TipoPan, PVP);
+            return HashCode.Combine(Id, Nombre, Tamaño, TipoPanNombre, PVP);
         }
     }
 }
