@@ -1,15 +1,16 @@
 ﻿using AppForMovies.UT;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
+using AppForSEII2526.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 using static AppForSEII2526.API.Models.CompraBono;
 
 namespace AppForSEII2526.UT.Pedido_test
@@ -34,23 +35,32 @@ namespace AppForSEII2526.UT.Pedido_test
                 _bocadillo = new Bocadillo
                 {
                     Id = 10,
-                    nombre = "Pollo",
+                    nombre = "Politecnico",
                     PVP = 4.5M,
                     stock = 5,
                     tamaño = Tamaño.normal,
                     tipoPan = _tipoPan,
-                    ResenyaBocadillos = new List<ResenyaBocadillo>() // evita SQLite NOT NULL constraint failed
+                    ResenyaBocadillos = new List<ResenyaBocadillo>() 
                 };
 
-                // Añadimos todas las entidades al contexto de pruebas y guardamos.
-                _context.AddRange(_tipoPan, _metodo, _user, _bocadillo);
+                var _compra = new Compra(_user, DateTime.Today, _metodo, new List<CompraBocadillo>());
+
+                _compra.BocadillosComprados.Add(new CompraBocadillo(_bocadillo, _compra, 2));
+
+                _context.ApplicationUser.Add(_user);
+                _context.AddRange(_tipoPan);
+                _context.AddRange(_bocadillo);
+                _context.Add(_compra);
                 _context.SaveChanges();
             }
 
-            // Método que proporciona casos de prueba parametrizados para errores en CreatePedido.
-            // Cada elemento devuelto es un array con: (CrearPedidoDTO dto, string mensajeEsperado).
             public static IEnumerable<object[]> TestParaCasos_CrearPedido()
             {
+                var bocadillo = new List<ArticuloPedidoDTO>()
+                {
+                    new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Politecnico", TipoPan = "Normal", Cantidad = 4, PVP = 4.5M }
+                };
+
                 var sinAticulosDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
@@ -60,7 +70,7 @@ namespace AppForSEII2526.UT.Pedido_test
                     articulopedido: new List<ArticuloPedidoDTO>()
                 );
 
-                var sinStockDto = new CrearPedidoDTO
+                var sinCantidadDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
                     metododepago: Metodo_Pago.Tarjeta,
@@ -75,16 +85,16 @@ namespace AppForSEII2526.UT.Pedido_test
                     metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "X",
                     apellido2: null,
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1, PVP = 4.5M } }
+                    articulopedido: bocadillo
                 );
 
                 var metodoNoRegistradoDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
-                    metododepago: (Metodo_Pago)999, // Valor fuera de los definidos en el enum
+                    metododepago: (Metodo_Pago)999,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1, PVP = 4.5M } }
+                    articulopedido: bocadillo
                 );
 
                 var stockInsuficienteDto = new CrearPedidoDTO
@@ -93,8 +103,9 @@ namespace AppForSEII2526.UT.Pedido_test
                     metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 10, PVP = 4.5M } }
-                ); 
+                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1000, PVP = 4.5M } }
+                );
+
 
                 var bocadilloNoExisteDto = new CrearPedidoDTO
                 (
@@ -102,13 +113,13 @@ namespace AppForSEII2526.UT.Pedido_test
                     metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 999, nombreBocadillo = "NoExiste", TipoPan = "Integral", Cantidad = 1, PVP = 1.0M } }
+                    articulopedido: new List<ArticuloPedidoDTO>(){new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2M, "Normal")}
                 );
 
                 var allTests = new List<object[]>
             {
                 new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
-                new object[] { sinStockDto, "La cantidad es obligatoria y debe ser mayor que 0." },
+                new object[] { sinCantidadDto, "La cantidad es obligatoria y debe ser mayor que 0." },
                 new object[] { noUserDto, "Error! Nombre y/o apellidos no registrados." },
                 new object[] { metodoNoRegistradoDto, "El método de pago 'MetodoInexistente' no está registrado." },
                 new object[] { stockInsuficienteDto, "Error! se han pedido 10 bocadillos, pero no hay suficientes" },
