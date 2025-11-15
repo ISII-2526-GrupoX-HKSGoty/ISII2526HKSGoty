@@ -34,7 +34,7 @@ namespace AppForSEII2526.API.Controllers
                 .Include(b => b.TipoBocadillo)
                 .Where(b=>((b.nombre.Contains(nombre)) || nombre == null) &&
                           ((b.TipoBocadillo.nombreTipo.Contains(tipo)) || tipo == null))
-                .Select(b=> new GET_Bono_DTO(b.nombre, b.PVP, b.nBocadillos, b.TipoBocadillo))
+                .Select(b=> new GET_Bono_DTO(b.nombre, b.PVP, b.nBocadillos, b.TipoBocadillo.nombreTipo))
                 .ToListAsync();
             return Ok(bonos);
 

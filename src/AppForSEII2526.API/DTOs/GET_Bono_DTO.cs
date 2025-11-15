@@ -3,7 +3,7 @@ namespace AppForSEII2526.API.DTOs
 {
     public class GET_Bono_DTO
     {
-        public GET_Bono_DTO(string nombre, double PVP, int numero, TipoBocadillo tipo) {
+        public GET_Bono_DTO(string nombre, double PVP, int numero, string tipo) {
 
             this.nombre = nombre;
             this.PVP = PVP;
@@ -18,7 +18,7 @@ namespace AppForSEII2526.API.DTOs
 
         public int numero { get; set; }
 
-        public TipoBocadillo tipo { get; set; }
+        public string tipo { get; set; }
 
         public override bool Equals(object? obj)
         {
