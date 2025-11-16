@@ -14,6 +14,14 @@ namespace AppForSEII2526.API.Models
             BonosComprados = bonosComprados;
         }
 
+        public CompraBono (ApplicationUser user, DateTime releaseDate, MetodoPago metodoPago, IList<BonosComprados> bonosComprados)
+        {
+            User = user;
+            ReleaseDate = releaseDate;
+            this.metodoPago = metodoPago;
+            BonosComprados = bonosComprados;
+        }
+
         [Key] 
         public int CompraBonoId { get; set; }
 
@@ -33,23 +41,6 @@ namespace AppForSEII2526.API.Models
         public MetodoPago metodoPago { get; set; }
 
         public IList<BonosComprados> BonosComprados { get; set; }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is CompraBono bono &&
-                   CompraBonoId == bono.CompraBonoId &&
-                   EqualityComparer<ApplicationUser>.Default.Equals(User, bono.User) &&
-                   ReleaseDate == bono.ReleaseDate &&
-                   nBonos == bono.nBonos &&
-                   PrecioTotalBono == bono.PrecioTotalBono &&
-                   metodoPago == bono.metodoPago &&
-                   EqualityComparer<IList<BonosComprados>>.Default.Equals(BonosComprados, bono.BonosComprados);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(CompraBonoId, User, ReleaseDate, nBonos, PrecioTotalBono, metodoPago, BonosComprados);
-        }
 
         public enum MetodoPago
         {

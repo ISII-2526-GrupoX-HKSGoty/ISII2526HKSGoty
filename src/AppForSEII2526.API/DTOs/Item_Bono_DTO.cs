@@ -1,4 +1,5 @@
 ﻿
+
 namespace AppForSEII2526.API.DTOs
 {
     public class Item_Bono_DTO
@@ -24,5 +25,20 @@ namespace AppForSEII2526.API.DTOs
 
         public int cantidad { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is Item_Bono_DTO dTO &&
+                   compraId == dTO.compraId &&
+                   bonoId == dTO.bonoId &&
+                   nombre == dTO.nombre &&
+                   tipoBocadillo == dTO.tipoBocadillo &&
+                   precio == dTO.precio &&
+                   cantidad == dTO.cantidad;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(compraId, bonoId, nombre, tipoBocadillo, precio, cantidad);
+        }
     }
 }

@@ -49,21 +49,5 @@ namespace AppForSEII2526.API.Models
 
         public TipoBocadillo TipoBocadillo { get; set; }
 
-        public override bool Equals(object? obj)
-        {
-            return obj is BonoBocadillo bocadillo &&
-                   BonoId == bocadillo.BonoId &&
-                   cantidadDisponible == bocadillo.cantidadDisponible &&
-                   nBocadillos == bocadillo.nBocadillos &&
-                   nombre == bocadillo.nombre &&
-                   PVP == bocadillo.PVP &&
-                   EqualityComparer<IList<BonosComprados>>.Default.Equals(BonosComprados, bocadillo.BonosComprados) &&
-                   EqualityComparer<TipoBocadillo>.Default.Equals(TipoBocadillo, bocadillo.TipoBocadillo);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(BonoId, cantidadDisponible, nBocadillos, nombre, PVP, BonosComprados, TipoBocadillo);
-        }
     }
 }

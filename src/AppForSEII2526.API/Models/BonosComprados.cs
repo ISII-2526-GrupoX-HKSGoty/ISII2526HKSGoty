@@ -15,6 +15,14 @@ namespace AppForSEII2526.API.Models
             Precio = precio;
         }
 
+        public BonosComprados(BonoBocadillo bonoBocadillo, CompraBono compraBono)
+        {
+            BonoBocadillo = bonoBocadillo;
+            BonoId = bonoBocadillo.BonoId;
+            CompraBono = compraBono;
+            CompraBonoId = compraBono.CompraBonoId;
+        }
+
         public BonoBocadillo BonoBocadillo { get; set; }
         public int BonoId { get; set; }
 
@@ -28,20 +36,5 @@ namespace AppForSEII2526.API.Models
         [Range(0, int.MaxValue, ErrorMessage = "no acepta valores menores a 0")]
         public double Precio { get; set; }
 
-        public override bool Equals(object? obj)
-        {
-            return obj is BonosComprados comprados &&
-                   EqualityComparer<BonoBocadillo>.Default.Equals(BonoBocadillo, comprados.BonoBocadillo) &&
-                   BonoId == comprados.BonoId &&
-                   EqualityComparer<CompraBono>.Default.Equals(CompraBono, comprados.CompraBono) &&
-                   CompraBonoId == comprados.CompraBonoId &&
-                   Cantidad == comprados.Cantidad &&
-                   Precio == comprados.Precio;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(BonoBocadillo, BonoId, CompraBono, CompraBonoId, Cantidad, Precio);
-        }
     }
 }

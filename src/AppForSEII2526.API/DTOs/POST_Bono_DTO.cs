@@ -36,4 +36,25 @@ public class POST_Bono_DTO
         }
 
     }
+
+    protected bool CompareDate(DateTime date1, DateTime date2)
+    {
+        return (date1.Subtract(date2) < new TimeSpan(0, 1, 0));
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is POST_Bono_DTO dTO &&
+               nombre == dTO.nombre &&
+               apellido1 == dTO.apellido1 &&
+               apellido2 == dTO.apellido2 &&
+               metodoPago == dTO.metodoPago &&
+               EqualityComparer<IList<Item_Bono_DTO>>.Default.Equals(ItemCompra, dTO.ItemCompra) &&
+               PrecioTotal == dTO.PrecioTotal;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(nombre, apellido1, apellido2, metodoPago, ItemCompra, PrecioTotal);
+    }
 }

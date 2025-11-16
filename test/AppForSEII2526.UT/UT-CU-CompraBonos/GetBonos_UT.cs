@@ -66,6 +66,8 @@ namespace AppForSEII2526.UT.UT_CU_CompraBonos
             return allTests;
         }
 
+ 
+
         [Theory]
         [MemberData(nameof(test_getBonos_OK))]
         [Trait("Database", "WithoutFixture")]

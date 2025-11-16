@@ -59,7 +59,7 @@ namespace AppForSEII2526.API.Controllers
                     .Include(r => r.BonosComprados)
                         .ThenInclude(ri => ri.BonoBocadillo)
                 .Select(r => new DETAIL_Bono_DTO(r.CompraBonoId, r.User.nombre, r.User.apellido1, r.User.apellido2, r.metodoPago, r.PrecioTotalBono, r.ReleaseDate, r.BonosComprados
-                    .Select(ri => new Item_Bono_DTO(ri.CompraBonoId, ri.BonoId, ri.BonoBocadillo.nombre, ri.BonoBocadillo.TipoBocadillo.nombreTipo, ri.BonoBocadillo.PVP,ri.Cantidad)).ToList<Item_Bono_DTO>()))
+                    .Select(ri => new Item_Bono_DTO(ri.CompraBonoId, ri.BonoId, ri.BonoBocadillo.nombre, ri.BonoBocadillo.TipoBocadillo.nombreTipo, ri.BonoBocadillo.PVP,ri.BonoBocadillo.nBocadillos)).ToList<Item_Bono_DTO>()))
                 .FirstOrDefaultAsync();
 
             if(compra == null)
