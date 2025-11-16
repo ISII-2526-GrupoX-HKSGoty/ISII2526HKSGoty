@@ -1,4 +1,5 @@
 ﻿using AppForSEII2526.API.Repositories;
+using AppForSEII2526.Models;
 using AppForSEII2526.Shared;
 using AppForSEII2526.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
