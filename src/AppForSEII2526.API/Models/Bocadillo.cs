@@ -17,16 +17,7 @@ public class Bocadillo
         this.tamaño = tamaño;
         ResenyaBocadillos = resenyaBocadillos;
     }
-    public Bocadillo(string nombre, float pVP, int stock, Tamaño tamaño)
-    {
-        this.nombre = nombre;
-        PVP = pVP;
-        this.stock = stock;
-        tamaño = tamaño;
-        ResenyaBocadillos = new List<ResenyaBocadillo>();
-        ComprasDelBocadillo = new List<CompraBocadillo>();
-        tipoPan = ;
-    }
+    
 
     [Key]
     public int Id { get; set; }
@@ -54,7 +45,7 @@ public class Bocadillo
         this.tipoPan = tipoPan;
         this.tamaño = tamaño;
     }
-    public Bocadillo(string nombre, float pVP, int stock, TipoPan tipoPan, Tamaño tamaño, IList<CompraBocadillo> comprasDelBocadillo*/)
+    public Bocadillo(string nombre, float pVP, int stock, TipoPan tipoPan, Tamaño tamaño, IList<CompraBocadillo> comprasDelBocadillo)
     {
         this.nombre = nombre;
         PVP = pVP;

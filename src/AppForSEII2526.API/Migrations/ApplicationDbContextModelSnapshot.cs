@@ -165,9 +165,7 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("Metodo_Pago")
                         .HasColumnType("int");
 
-                    b.Property<
-                        
-                        >("PrecioTotal")
+                    b.Property<float>("PrecioTotal")
                         .HasPrecision(10, 2)
                         .HasColumnType("float(10,2)");
 

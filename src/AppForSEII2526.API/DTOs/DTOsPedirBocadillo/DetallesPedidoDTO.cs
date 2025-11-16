@@ -1,6 +1,7 @@
 ﻿
 
 
+
 namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
     public class DetallesPedidoDTO:CrearPedidoDTO
@@ -27,22 +28,13 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
                    apellido1 == dTO.apellido1 &&
                    apellido2 == dTO.apellido2 &&
                    EqualityComparer<IList<ArticuloPedidoDTO>>.Default.Equals(ArticuloPedido, dTO.ArticuloPedido) &&
-                   Id == dTO.Id &&
-                   FechaPedido == dTO.FechaPedido;
+                   FechaPedido == dTO.FechaPedido &&
+                   PrecioTotal == dTO.PrecioTotal;
         }
 
         public override int GetHashCode()
         {
-            HashCode hash = new HashCode();
-            hash.Add(base.GetHashCode());
-            hash.Add(nombre);
-            hash.Add(Metodo_Pago);
-            hash.Add(apellido1);
-            hash.Add(apellido2);
-            hash.Add(ArticuloPedido);
-            hash.Add(Id);
-            hash.Add(FechaPedido);
-            return hash.ToHashCode();
+            return HashCode.Combine(base.GetHashCode(), nombre, Metodo_Pago, apellido1, apellido2, ArticuloPedido, FechaPedido, PrecioTotal);
         }
     }
 }

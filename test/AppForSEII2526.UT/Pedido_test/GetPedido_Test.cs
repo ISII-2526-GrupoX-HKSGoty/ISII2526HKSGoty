@@ -1,4 +1,5 @@
-﻿using AppForSEII2526.API.Controllers;
+﻿using AppForMovies.UT;
+using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
 using AppForSEII2526.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static AppForSEII2526.API.Models.CompraBono;
 
 namespace AppForSEII2526.UT.PedidoContrller_test
 {
@@ -27,12 +27,12 @@ namespace AppForSEII2526.UT.PedidoContrller_test
                 new Bocadillo("Vegetal", 3, 15, tipoPan[1], Tamaño.pequeño)
             };
 
-            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero", "Fernando@uclm.es");
+            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
 
-            var compra = new Compra(DateTime.Today, new List<CompraBocadillo>(), MetodoPago.Paypal, user);
-            compra.CompraBocadillos.Add(new CompraBocadillo(bocadillo[0], compra, 2));
+            var compra = new Compra(user, DateTime.Today, Metodo_Pago.Paypal, new List<CompraBocadillo>());
+            compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo[0], compra, 2));
 
-            compra.PrecioTotal = compra.CompraBocadillos.Sum(cb => cb.Precio * cb.Cantidad);
+            compra.PrecioTotal = compra.BocadillosComprados.Sum(cb => cb.Precio * cb.Cantidad);
 
             _context.Add(user);
             _context.AddRange(bocadillo);
@@ -54,7 +54,7 @@ namespace AppForSEII2526.UT.PedidoContrller_test
 
             var controller = new PedidoController(_context, logger);
 
-            var result = await controller.GetPedidos(0);
+            var result = await controller.GetPedido(0);
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -73,15 +73,14 @@ namespace AppForSEII2526.UT.PedidoContrller_test
 
             var controller = new PedidoController(_context, logger);
 
-            var expectedPedido = new DetallesPedidoDTO("Fernando", MetodoPago.Paypal, "Martinez", "Panadero", DateTime.Today, 4, new List<ArticuloPedidoDTO>());
+            var expectedPedido = new DetallesPedidoDTO("Fernando", Metodo_Pago.Paypal, "Martinez", "Panadero", DateTime.Today, new List<ArticuloPedidoDTO>(), 4);
 
             expectedPedido.ArticuloPedido.Add(new ArticuloPedidoDTO(1, "Atun", 2, 2.0f, "Semillas"));
 
-
-            var result = await controller.GetPedidos(1);
+            var result = await controller.GetPedido(1);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var pedidoDTOActual = Assert.IsType<DetaPedidoDDTO>(okResult.Value);
+            var pedidoDTOActual = Assert.IsType<DetallesPedidoDTO>(okResult.Value);
             var eq = expectedPedido.Equals(pedidoDTOActual);
             Assert.Equal(expectedPedido, pedidoDTOActual);
         }

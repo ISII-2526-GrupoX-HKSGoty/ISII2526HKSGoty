@@ -11,24 +11,24 @@ namespace AppForSEII2526.UT.Pedido_test
         public GetPedido_Test()
         {
             var tipoPan = new List<TipoPan>() {
-            new TipoPan("Baguette", 0),
-            new TipoPan("Integral", 1),
-            new TipoPan("Molde", 2),
-            new TipoPan("Chapata", 3),
-            new TipoPan("Cereal", 4),
-            new TipoPan("Sin gluten", 5)
+            new TipoPan("Baguette"),
+            new TipoPan("Integral"),
+            new TipoPan("Molde"),
+            new TipoPan("Chapata"),
+            new TipoPan("Cereal"),
+            new TipoPan("Sin gluten")
             };
 
             var bocadillos = new List<Bocadillo>()
             {
-                new Bocadillo(1, "Vegetal", 5, 20, tipoPan[1], Tamaño.normal),
-                new Bocadillo(2, "Atún", 5, 15, tipoPan[0], Tamaño.pequeño),
-                new Bocadillo(3, "Jamón y queso", 7, 10, tipoPan[3], Tamaño.normal),
-                new Bocadillo(4, "Politecnico", 4, 5, tipoPan[2], Tamaño.pequeño),
-                new Bocadillo(5, "Completo", 9, 8, tipoPan[4], Tamaño.normal),
-                new Bocadillo(6, "Trifasico", 3, 12, tipoPan[5], Tamaño.pequeño), 
-                new Bocadillo(7, "Bufalo", 2, 7, tipoPan[0], Tamaño.normal),
-                new Bocadillo(8, "Sumarino", 6, 9, tipoPan[1], Tamaño.pequeño)
+                new Bocadillo("Vegetal", 5, 20, tipoPan[1], Tamaño.normal),
+                new Bocadillo("Atún", 5, 15, tipoPan[0], Tamaño.pequeño),
+                new Bocadillo("Jamón y queso", 7, 10, tipoPan[3], Tamaño.normal),
+                new Bocadillo("Politecnico", 4, 5, tipoPan[2], Tamaño.pequeño),
+                new Bocadillo("Completo", 9, 8, tipoPan[4], Tamaño.normal),
+                new Bocadillo("Trifasico", 3, 12, tipoPan[5], Tamaño.pequeño), 
+                new Bocadillo("Bufalo", 2, 7, tipoPan[0], Tamaño.normal),
+                new Bocadillo("Sumarino", 6, 9, tipoPan[1], Tamaño.pequeño)
             };
             
             ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
@@ -42,12 +42,12 @@ namespace AppForSEII2526.UT.Pedido_test
         public static IEnumerable<object[]> TestCasosPara_GetPedido_Test_Ok()
         {
             var tipoPan = new List<TipoPan>() {
-            new TipoPan("Baguette", 0),
-            new TipoPan("Integral", 1),
-            new TipoPan("Molde", 2),
-            new TipoPan("Chapata", 3),
-            new TipoPan("Cereal", 4),
-            new TipoPan("Sin gluten", 5)
+            new TipoPan("Baguette"),
+            new TipoPan("Integral"),
+            new TipoPan("Molde"),
+            new TipoPan("Chapata"),
+            new TipoPan("Cereal"),
+            new TipoPan("Sin gluten")
             };
             var bocadilloDTOs = new List<BocadilloDTO>()
             {

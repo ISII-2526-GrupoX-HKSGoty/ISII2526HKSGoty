@@ -36,7 +36,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 {
                     Id = 10,
                     nombre = "Politecnico",
-                    PVP = 4.5M,
+                    PVP = 4.5f,
                     stock = 5,
                     tamaño = Tamaño.normal,
                     tipoPan = _tipoPan,
@@ -58,7 +58,7 @@ namespace AppForSEII2526.UT.Pedido_test
             {
                 var bocadillo = new List<ArticuloPedidoDTO>()
                 {
-                    new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Politecnico", TipoPan = "Normal", Cantidad = 4, PVP = 4.5M }
+                    new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Politecnico", TipoPan = "Normal", Cantidad = 4, PVP = 4.5f }
                 };
 
                 var sinAticulosDto = new CrearPedidoDTO
@@ -76,7 +76,7 @@ namespace AppForSEII2526.UT.Pedido_test
                     metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 0, PVP = 4.5M } }
+                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 0, PVP = 4.5f } }
                 );
 
                 var noUserDto = new CrearPedidoDTO
@@ -103,7 +103,7 @@ namespace AppForSEII2526.UT.Pedido_test
                     metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1000, PVP = 4.5M } }
+                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1000, PVP = 4.5f } }
                 );
 
 
@@ -113,7 +113,7 @@ namespace AppForSEII2526.UT.Pedido_test
                     metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO>(){new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2M, "Normal")}
+                    articulopedido: new List<ArticuloPedidoDTO>(){new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2f, "Normal")}
                 );
 
                 var allTests = new List<object[]>
@@ -178,7 +178,6 @@ namespace AppForSEII2526.UT.Pedido_test
 
                 var expectedDetalles = new DetallesPedidoDTO
                 (
-                    detalles.Id,
                     _user.nombre,
                     _metodo,
                     _user.apellido1,
@@ -187,10 +186,11 @@ namespace AppForSEII2526.UT.Pedido_test
                     new List<ArticuloPedidoDTO>()
                     {
                         new ArticuloPedidoDTO(2, "Vegetal", 2, 3, "Integral")
-                    }
+                    },
+                    6
                 );
 
-                Assert.Equal(expectedDetalles.Id, detalles.Id);
+                Assert.Equal(expectedDetalles, detalles);
             }
         }
     } 
