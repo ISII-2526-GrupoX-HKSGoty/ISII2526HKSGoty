@@ -4,6 +4,7 @@ using AppForSEII2526.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251116003846_UpdateTests")]
+    partial class UpdateTests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,20 +252,20 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompraId")
+                    b.Property<int>("IdCompra")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProducto")
                         .HasColumnType("int");
 
                     b.Property<decimal>("PrecioUnitario")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductoId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CompraId");
+                    b.HasIndex("IdCompra");
 
-                    b.HasIndex("ProductoId");
+                    b.HasIndex("IdProducto");
 
                     b.ToTable("Compra_Productos");
                 });
@@ -668,13 +671,13 @@ namespace AppForSEII2526.API.Migrations
                 {
                     b.HasOne("AppForSEII2526.API.Models.Compra", "Compra")
                         .WithMany()
-                        .HasForeignKey("CompraId")
+                        .HasForeignKey("IdCompra")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AppForSEII2526.API.Models.Producto", "Producto")
                         .WithMany()
-                        .HasForeignKey("ProductoId")
+                        .HasForeignKey("IdProducto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
