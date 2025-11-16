@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using AppForSEII2526.API.Models;
+using AppForSEII2526.Models;
 
 namespace AppForSEII2526.API.Data;
 
@@ -16,5 +16,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<TipoBocadillo> TipoBocadillo { get; set; }
 
     public DbSet<Resenya> Resenyas { get; set; }
-    public DbSet<ResenyaBocadillo> ResenyaBocadillos { get; set; }  
-    }
+    public DbSet<ResenyaBocadillo> ResenyaBocadillos { get; set; }
+
+    public DbSet<TipoProducto> TipoProductos { get; set; }
+
+    public DbSet<Producto> Productos { get; set; }
+    public DbSet<Producto_Compra> Producto_Compras { get; set; }
+
+    public DbSet<Compra_Producto> Compra_Productos { get; set; }
+
+}

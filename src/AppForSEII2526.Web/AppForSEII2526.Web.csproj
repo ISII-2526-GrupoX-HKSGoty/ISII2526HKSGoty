@@ -32,4 +32,9 @@
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppForSEII2526.Shared\AppForSEII2526.Shared.csproj" />
+    <ProjectReference Include="..\..\Shared\AppForSEII2526.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
