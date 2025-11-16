@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AppForSEII2526.API.Models;
 using Microsoft.EntityFrameworkCore;
+using AppForSEII2526.Shared.DTOs;
 
 namespace AppForSEII2526.API.Controllers
 {
@@ -43,14 +44,20 @@ namespace AppForSEII2526.API.Controllers
         // POST: api/ProductoCompra
 
         [HttpPost]
-
-
-        public async Task<ActionResult<Producto_Compra>> PostProductoCompra(Producto_Compra productoCompra)
+        public async Task<ActionResult<Producto_Compra>> PostProductoCompra([FromBody] ProductoCompraDTO dto)
         {
+            var productoCompra = new Producto_Compra
+            {
+                ProductoId = dto.ProductoId,
+                CompraId = dto.CompraId,
+                Cantidad = dto.Cantidad
+            };
+
             _context.Producto_Compras.Add(productoCompra);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProductoCompra), new { id = productoCompra.Id }, productoCompra);
+            return CreatedAtAction(nameof(GetProductoCompras), new { id = productoCompra.Id }, productoCompra);
         }
+
     }
 }
