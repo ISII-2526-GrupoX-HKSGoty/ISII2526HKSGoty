@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251006170216_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20251115100418_PruebaPedido")]
+    partial class PruebaPedido
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,7 +82,6 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("apellido2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("nombre")
@@ -163,35 +162,26 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompraId"));
 
-                    b.Property<string>("Apellido_1Cliente")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Apellido_2Cliente")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<DateTime>("FechaCompra")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Metodo_Pago")
                         .HasColumnType("int");
 
-                    b.Property<string>("NombreCliente")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<decimal>("PrecioTotal")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("nBocadillos")
                         .HasColumnType("int");
 
                     b.HasKey("CompraId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Compras");
                 });
@@ -237,6 +227,7 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("metodoPago")
@@ -275,6 +266,9 @@ namespace AppForSEII2526.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("valoracion_General")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Resenyas");
@@ -288,7 +282,7 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("ResenyaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Puntiación")
+                    b.Property<int>("Puntuacion")
                         .HasColumnType("int");
 
                     b.HasKey("BocadilloId", "ResenyaId");
@@ -324,11 +318,19 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PanId"));
 
+                    b.Property<int?>("CompraBocadilloBocadilloId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CompraBocadilloCompraId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PanId");
+
+                    b.HasIndex("CompraBocadilloBocadilloId", "CompraBocadilloCompraId");
 
                     b.ToTable("tipoPan");
                 });
@@ -529,6 +531,17 @@ namespace AppForSEII2526.API.Migrations
                     b.Navigation("CompraBono");
                 });
 
+            modelBuilder.Entity("AppForSEII2526.API.Models.Compra", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AppForSEII2526.API.Models.CompraBocadillo", b =>
                 {
                     b.HasOne("Bocadillo", "Bocadillo")
@@ -552,7 +565,9 @@ namespace AppForSEII2526.API.Migrations
                 {
                     b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -574,6 +589,13 @@ namespace AppForSEII2526.API.Migrations
                     b.Navigation("Bocadillo");
 
                     b.Navigation("Resenya");
+                });
+
+            modelBuilder.Entity("AppForSEII2526.API.Models.TipoPan", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.CompraBocadillo", null)
+                        .WithMany("TipoPan")
+                        .HasForeignKey("CompraBocadilloBocadilloId", "CompraBocadilloCompraId");
                 });
 
             modelBuilder.Entity("Bocadillo", b =>
@@ -646,6 +668,11 @@ namespace AppForSEII2526.API.Migrations
             modelBuilder.Entity("AppForSEII2526.API.Models.Compra", b =>
                 {
                     b.Navigation("BocadillosComprados");
+                });
+
+            modelBuilder.Entity("AppForSEII2526.API.Models.CompraBocadillo", b =>
+                {
+                    b.Navigation("TipoPan");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.CompraBono", b =>

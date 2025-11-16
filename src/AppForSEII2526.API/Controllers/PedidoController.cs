@@ -65,7 +65,7 @@ namespace AppForSEII2526.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(ArticuloPedidoDTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
-        public async Task<ActionResult> CreatePedido(CrearPedidoDTO pedidoParaCrear)
+        public async Task<ActionResult> CrearPedido(CrearPedidoDTO pedidoParaCrear)
         {
             var usuario = _context.ApplicationUser.FirstOrDefault(au => au.nombre == pedidoParaCrear.nombre && au.apellido1 == pedidoParaCrear.apellido1);
             if (usuario == null)
