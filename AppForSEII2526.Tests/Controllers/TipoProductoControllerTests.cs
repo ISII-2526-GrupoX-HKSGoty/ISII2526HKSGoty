@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.Repositories;
 using AppForSEII2526.Models;
+using AppForSEII2526.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace AppForSEII2526.Tests
 {
@@ -30,9 +32,8 @@ namespace AppForSEII2526.Tests
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var items = Assert.IsAssignableFrom<IEnumerable<TipoProducto>>(okResult.Value);
-            Assert.NotEmpty(items);
+            var items = Assert.IsAssignableFrom<IEnumerable<TipoProductoDTO>>(okResult.Value);
+            Assert.Equal(2, items.Count());
         }
     }
 }
-

@@ -14,17 +14,17 @@ namespace AppForSEII2526.API.Repositories
             _context = context;
         }
 
-        public async Task<List<Producto>> GetAllAsync()
+        public virtual async Task<List<Producto>> GetAllAsync()
         {
             return await _context.Productos.ToListAsync();
         }
 
-        public async Task<Producto> GetByIdAsync(int id)
+        public virtual async Task<Producto> GetByIdAsync(int id)
         {
             return await _context.Productos.FindAsync(id);
         }
 
-        public async Task<Producto> CreateAsync(Producto producto)
+        public virtual async Task<Producto> CreateAsync(Producto producto)
         {
             _context.Productos.Add(producto);
             await _context.SaveChangesAsync();

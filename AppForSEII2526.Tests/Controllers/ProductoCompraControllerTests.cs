@@ -1,42 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
-using Moq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using AppForSEII2526.API.Data;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.InMemory;
 
 namespace AppForSEII2526.Tests.Controllers
 {
     public class ProductoCompraControllerTests
     {
-        private readonly DbContextOptions<ApplicationDbContext> _options;
-
-        public ProductoCompraControllerTests()
+        private ApplicationDbContext GetDbContext()
         {
-            _options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestProductoCompra")
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // bd nueva por test
                 .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            // Inserta datos previos para el test GET
+            context.Producto_Compras.Add(new Producto_Compra
+            {
+                Id = 1,
+                ProductoId = 1,
+                CompraId = 1,
+                Cantidad = 2,
+            });
+
+            context.SaveChanges();
+            return context;
         }
 
         [Fact]
         public async Task GetProductoCompras_ReturnsAll()
         {
-            using (var context = new ApplicationDbContext(_options))
-            {
-                context.Productos_Compras.Add(new Producto_Compra { Id = 1, Cantidad = 2, ProductoId = 1, CompraId = 1, PVP = 5.5m });
-                context.SaveChanges();
+            // Arrange
+            var context = GetDbContext();
+            var controller = new ProductoCompraController(context);
 
-                var controller = new ProductoCompraController(context);
-                var result = await controller.GetProductoCompras();
+            // Act
+            var result = await controller.GetProductoCompras();
 
-                var okResult = Assert.IsType<ActionResult<IEnumerable<Producto_Compra>>>(result);
-                Assert.NotEmpty(okResult.Value);
-            }
+            // Assert
+            var okResult = Assert.IsType<ActionResult<IEnumerable<Producto_Compra>>>(result);
+            Assert.NotEmpty(okResult.Value);
         }
     }
 }

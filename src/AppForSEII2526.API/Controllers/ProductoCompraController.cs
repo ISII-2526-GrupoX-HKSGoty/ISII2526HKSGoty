@@ -19,7 +19,7 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Producto_Compra>>> GetProductoCompras()
         {
-            return await _context.Productos_Compras
+            return await _context.Producto_Compras
                 .Include(pc => pc.Producto)
                 .Include(pc => pc.Compra)
                 .ToListAsync();
@@ -29,7 +29,7 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Producto_Compra>> GetProductoCompra(int id)
         {
-            var item = await _context.Productos_Compras
+            var item = await _context.Producto_Compras
                 .Include(pc => pc.Producto)
                 .Include(pc => pc.Compra)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -47,7 +47,7 @@ namespace AppForSEII2526.API.Controllers
 
         public async Task<ActionResult<Producto_Compra>> PostProductoCompra(Producto_Compra productoCompra)
         {
-            _context.Productos_Compras.Add(productoCompra);
+            _context.Producto_Compras.Add(productoCompra);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetProductoCompra), new { id = productoCompra.Id }, productoCompra);

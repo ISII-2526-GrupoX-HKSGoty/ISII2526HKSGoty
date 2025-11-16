@@ -2,34 +2,67 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
-using Moq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AppForSEII2526.API.Data;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.Models;
-using Microsoft.EntityFrameworkCore.InMemory;
-
+using AppForSEII2526.Models;
 
 namespace AppForSEII2526.Tests.Controllers
 {
     public class CompraProductoControllerTests
     {
-        private ApplicationDbContext GetDbContext()
+        private ApplicationDbContext GetDbContextWithData()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDbCompraProducto")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
             var context = new ApplicationDbContext(options);
+
+            // Insertar TipoProducto dummy necesario para Producto
+            var tipoProducto = new TipoProducto
+            {
+                TipoProductoId = 1,
+                Nombre = "Merch"
+            };
+            context.TipoProductos.Add(tipoProducto);
+
+            // Insertar Producto válido
+            var producto = new Producto
+            {
+                Id = 1,
+                Nombre = "Camisa",
+                Precio = 20.99m,
+                TipoProductoId = tipoProducto.TipoProductoId,
+                Stock = 10
+            };
+            context.Productos.Add(producto);
+
+            // Insertar Compra válida
+            var compra = new Compra
+            {
+                CompraId = 1,
+                FechaCompra = DateTime.Now,
+                Metodo_Pago = Metodo_Pago.Tarjeta,
+                PrecioTotal = 20.99m,
+                nBocadillos = 1
+            };
+            context.Compras.Add(compra);
+
+            context.SaveChanges();
+
+            // Insertar Compra_Producto relacionada
             context.Compra_Productos.Add(new Compra_Producto
             {
                 Id = 1,
-                IdProducto = 1,
-                IdCompra = 1,
-                Cantidad = 2,
-                PrecioUnitario = 9.99m
+                IdProducto = producto.Id,
+                IdCompra = compra.CompraId,
+                Cantidad = 1,
+                PrecioUnitario = 20.99m
             });
+
             context.SaveChanges();
             return context;
         }
@@ -37,34 +70,73 @@ namespace AppForSEII2526.Tests.Controllers
         [Fact]
         public async Task GetCompraProductos_ReturnsCompraProductos()
         {
-            var context = GetDbContext();
+            var context = GetDbContextWithData();
             var controller = new CompraProductoController(context);
 
             var result = await controller.GetCompraProductos();
 
-            var okResult = Assert.IsType<ActionResult<IEnumerable<Compra_Producto>>>(result);
-            Assert.Single(okResult.Value);
+            var actionResult = Assert.IsType<ActionResult<IEnumerable<Compra_Producto>>>(result);
+            var compraProductos = Assert.IsAssignableFrom<IEnumerable<Compra_Producto>>(actionResult.Value);
+            Assert.NotEmpty(compraProductos);
         }
 
         [Fact]
         public async Task PostCompraProducto_CreatesNewCompraProducto()
         {
-            var context = GetDbContext();
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            // TipoProducto para el Producto
+            var tipoProducto = new TipoProducto
+            {
+                TipoProductoId = 2,
+                Nombre = "Accesorios"
+            };
+            context.TipoProductos.Add(tipoProducto);
+
+            // Producto válido
+            var producto = new Producto
+            {
+                Id = 2,
+                Nombre = "Gorra",
+                Precio = 10.50m,
+                TipoProductoId = tipoProducto.TipoProductoId,
+                Stock = 20
+            };
+            context.Productos.Add(producto);
+
+            // Compra válida
+            var compra = new Compra
+            {
+                CompraId = 2,
+                FechaCompra = DateTime.Now,
+                Metodo_Pago = Metodo_Pago.Tarjeta,
+                PrecioTotal = 10.50m,
+                nBocadillos = 1
+            };
+            context.Compras.Add(compra);
+
+            context.SaveChanges();
+
             var controller = new CompraProductoController(context);
 
             var nuevo = new Compra_Producto
             {
-                IdProducto = 2,
-                IdCompra = 2,
+                IdProducto = producto.Id,
+                IdCompra = compra.CompraId,
                 Cantidad = 1,
-                PrecioUnitario = 5.50m
+                PrecioUnitario = 10.50m
             };
 
             var result = await controller.PostCompraProducto(nuevo);
             var created = Assert.IsType<CreatedAtActionResult>(result.Result);
-
             var createdValue = Assert.IsType<Compra_Producto>(created.Value);
+
             Assert.Equal(nuevo.IdProducto, createdValue.IdProducto);
+            Assert.Equal(nuevo.IdCompra, createdValue.IdCompra);
         }
     }
 }
