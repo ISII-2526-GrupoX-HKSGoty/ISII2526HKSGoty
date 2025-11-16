@@ -25,7 +25,7 @@ public class DETAIL_Bono_DTO: POST_Bono_DTO
                base.Equals(obj) &&
                id == dTO.id &&
                preciototalbono == dTO.preciototalbono &&
-               CompareDate(fecha, dTO.fecha);
+               fecha.Date == dTO.fecha.Date;
     }
 
     public override int GetHashCode()

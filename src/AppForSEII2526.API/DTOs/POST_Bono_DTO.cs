@@ -37,11 +37,6 @@ public class POST_Bono_DTO
 
     }
 
-    protected bool CompareDate(DateTime date1, DateTime date2)
-    {
-        return date1.Date == date2.Date;
-    }
-
     public override bool Equals(object? obj)
     {
         return obj is POST_Bono_DTO dTO &&

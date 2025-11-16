@@ -119,7 +119,7 @@ namespace AppForSEII2526.API.Controllers
                 {
                     compraBono.BonosComprados.Add(new BonosComprados(bono, bono.BonoId, compraBono, compraBono.CompraBonoId, item.cantidad, bono.PVP));
                     bono.cantidadDisponible = bono.cantidadDisponible - item.cantidad;
-                    compraBono.PrecioTotalBono = compraBono.PrecioTotalBono + (bono.PVP * item.cantidad);
+                    compraBono.PrecioTotalBono = compraBono.PrecioTotalBono + (bono.nBocadillos * bono.PVP * item.cantidad);
                 }
 
             }
