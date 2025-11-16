@@ -9,7 +9,7 @@ public class Bocadillo
     {
         Id = id;
         this.nombre = nombre;
-        this.pvp = pvp;
+        this.PVP = pvp;
         this.stock = stock;
         this.tipoPan = tipoPan;
         this.tamaño = tamaño;
@@ -23,7 +23,7 @@ public class Bocadillo
     public string nombre { get; set; }
 
     [Precision(10,2)]
-    public int pvp { get; set; }
+    public decimal PVP { get; set; }
 
     public int stock { get; set; }
 
@@ -32,20 +32,34 @@ public class Bocadillo
     public Tamaño tamaño { get; set; }
     public IList<ResenyaBocadillo> ResenyaBocadillos { get; set; }
 
+    public IList<CompraBocadillo> ComprasDelBocadillo { get; set; }
+
+    public Bocadillo(int id, string nombre, decimal pVP, int stock, TipoPan tipoPan, Tamaño tamaño, IList<CompraBocadillo> comprasDelBocadillo)
+    {
+        Id = id;
+        this.nombre = nombre;
+        PVP = pVP;
+        this.stock = stock;
+        this.tipoPan = tipoPan;
+        this.tamaño = tamaño;
+        ComprasDelBocadillo = comprasDelBocadillo;
+    }
+
     public override bool Equals(object? obj)
     {
         return obj is Bocadillo bocadillo &&
                Id == bocadillo.Id &&
                nombre == bocadillo.nombre &&
-               pvp == bocadillo.pvp &&
+               PVP == bocadillo.PVP &&
                stock == bocadillo.stock &&
                EqualityComparer<TipoPan>.Default.Equals(tipoPan, bocadillo.tipoPan) &&
                tamaño == bocadillo.tamaño &&
-               EqualityComparer<IList<ResenyaBocadillo>>.Default.Equals(ResenyaBocadillos, bocadillo.ResenyaBocadillos);
+               EqualityComparer<IList<ResenyaBocadillo>>.Default.Equals(ResenyaBocadillos, bocadillo.ResenyaBocadillos) &&
+               EqualityComparer<IList<CompraBocadillo>>.Default.Equals(ComprasDelBocadillo, bocadillo.ComprasDelBocadillo);
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, nombre, pvp, stock, tipoPan, tamaño, ResenyaBocadillos);
+        return HashCode.Combine(Id, nombre, PVP, stock, tipoPan, tamaño, ResenyaBocadillos, ComprasDelBocadillo);
     }
 }
