@@ -1,3 +1,4 @@
+using AppForSEII2526.API.Repositories;
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
 
@@ -47,6 +48,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+//TipoProducto, Producto 
+builder.Services.AddScoped<TipoProductoRepository>();
+builder.Services.AddScoped<ProductoRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
