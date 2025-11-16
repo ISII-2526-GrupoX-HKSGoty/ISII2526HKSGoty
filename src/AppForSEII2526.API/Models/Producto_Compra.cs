@@ -18,6 +18,9 @@ namespace AppForSEII2526.API.Models
         [Required]
         public int Cantidad { get; set; }
 
+        [Required]
+        public decimal PVP { get; set; }
+
         [ForeignKey(nameof(ProductoId))]
         public Producto Producto { get; set; }
 

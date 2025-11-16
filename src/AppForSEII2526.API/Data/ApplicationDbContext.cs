@@ -25,4 +25,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<Compra_Producto> Compra_Productos { get; set; }
 
+    public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
 }
+    
+
+    
+
