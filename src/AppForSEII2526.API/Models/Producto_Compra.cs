@@ -5,6 +5,7 @@ namespace AppForSEII2526.API.Models
 {
     public class Producto_Compra
     {
+
         [Key]
         public int Id { get; set; }
 
