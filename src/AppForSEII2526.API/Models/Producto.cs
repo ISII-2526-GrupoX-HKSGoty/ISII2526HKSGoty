@@ -1,5 +1,4 @@
-﻿using AppForSEII2526.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppForSEII2526.API.Models

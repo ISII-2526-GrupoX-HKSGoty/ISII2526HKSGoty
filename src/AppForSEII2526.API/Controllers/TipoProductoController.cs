@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AppForSEII2526.API.Repositories;
-using AppForSEII2526.Models;
 using AppForSEII2526.Shared.DTOs;
 using System.Collections.Generic;
 using System.Linq;
