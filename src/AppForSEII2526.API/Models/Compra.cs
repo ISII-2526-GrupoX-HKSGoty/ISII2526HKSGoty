@@ -2,6 +2,8 @@
 {
     public class Compra
     {
+        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 10", MinimumLength = 5)]
+        public string Apellido_1Cliente { get; set; }
 
         public ApplicationUser User { get; set; }
 
