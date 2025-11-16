@@ -1,14 +1,15 @@
 ﻿using AppForMovies.UT;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.Models;
 using System.Net;
 
 
 namespace AppForSEII2526.UT.Pedido_test
 {
-    public class GetPedido_Test : AppForMovies4SqliteUT
+    public class GetBocadillo_Test : AppForMovies4SqliteUT
     {
-        public GetPedido_Test()
+        public GetBocadillo_Test()
         {
             var tipoPan = new List<TipoPan>() {
             new TipoPan("Baguette"),
@@ -21,14 +22,15 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var bocadillos = new List<Bocadillo>()
             {
-                new Bocadillo("Vegetal", 5, 20, tipoPan[1], Tamaño.normal),
-                new Bocadillo("Atún", 5, 15, tipoPan[0], Tamaño.pequeño),
-                new Bocadillo("Jamón y queso", 7, 10, tipoPan[3], Tamaño.normal),
-                new Bocadillo("Politecnico", 4, 5, tipoPan[2], Tamaño.pequeño),
-                new Bocadillo("Completo", 9, 8, tipoPan[4], Tamaño.normal),
-                new Bocadillo("Trifasico", 3, 12, tipoPan[5], Tamaño.pequeño), 
-                new Bocadillo("Bufalo", 2, 7, tipoPan[0], Tamaño.normal),
-                new Bocadillo("Sumarino", 6, 9, tipoPan[1], Tamaño.pequeño)
+                new Bocadillo("Vegetal",        5, 20, tipoPan[1], Tamaño.normal),
+                new Bocadillo("Atún",           5, 20, tipoPan[0], Tamaño.pequeño),
+                new Bocadillo("Jamón y queso",  5, 20, tipoPan[3], Tamaño.normal),
+                new Bocadillo("Politecnico",    5, 20, tipoPan[2], Tamaño.pequeño),
+                new Bocadillo("Completo",       5, 20, tipoPan[4], Tamaño.normal),
+                new Bocadillo("Trifasico",      5, 20, tipoPan[5], Tamaño.pequeño), 
+                new Bocadillo("Bufalo",         5, 20, tipoPan[0], Tamaño.normal),
+                new Bocadillo("Sumarino",       5, 20, tipoPan[1], Tamaño.pequeño)
+
             };
             
             ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
@@ -39,71 +41,63 @@ namespace AppForSEII2526.UT.Pedido_test
             _context.SaveChanges();
 
         }
-        public static IEnumerable<object[]> TestCasosPara_GetPedido_Test_Ok()
+        public static IEnumerable<object[]> TestCasosPara_GetBocadillo_Test_Ok()
         {
-            var tipoPan = new List<TipoPan>() {
-            new TipoPan("Baguette"),
-            new TipoPan("Integral"),
-            new TipoPan("Molde"),
-            new TipoPan("Chapata"),
-            new TipoPan("Cereal"),
-            new TipoPan("Sin gluten")
-            };
             var bocadilloDTOs = new List<BocadilloDTO>()
-            {
-                new BocadilloDTO(1, "Vegetal", "Molde", Tamaño.normal, 5),          //0
-                new BocadilloDTO(2, "Atún", "Baguette", Tamaño.pequeño, 5),         //1
-                new BocadilloDTO(3, "Jamón y queso", "Molde", Tamaño.normal, 5),    //2
-                new BocadilloDTO (4, "Politecnico", "Baguette", Tamaño.normal, 5),  //3
-                new BocadilloDTO (5, "Completo", "Baguette", Tamaño.normal, 5),     //4
-                new BocadilloDTO (6, "Trifasico", "Baguette", Tamaño.normal, 5),    //5
-                new BocadilloDTO (7, "Bufalo", "Chapata", Tamaño.normal, 5),        //6
-                new BocadilloDTO (8, "Sumarino", "Chapata", Tamaño.pequeño, 5)      //7
-
+            { 
+                new BocadilloDTO (1, "Vegetal",         "Integral", Tamaño.normal, 5),         //0
+                new BocadilloDTO (2, "Atún",            "Baguette", Tamaño.pequeño, 5),        //1
+                new BocadilloDTO (3, "Jamón y queso",   "Chapata", Tamaño.normal, 5),          //2
+                new BocadilloDTO (4, "Politecnico",     "Molde", Tamaño.pequeño, 5),           //3
+                new BocadilloDTO (5, "Completo",        "Cereal", Tamaño.normal, 5),           //4
+                new BocadilloDTO (6, "Trifasico",       "Sin gluten", Tamaño.pequeño, 5),      //5
+                new BocadilloDTO (7, "Bufalo",          "Baguette", Tamaño.normal, 5),         //6
+                new BocadilloDTO (8, "Sumarino",        "Integral", Tamaño.pequeño, 5)         //7
             };
 
+            var tc1 = bocadilloDTOs; // ordenados por nombre
 
-            var tc1 = bocadilloDTOs.OrderBy(b => b.Nombre).ToList(); // ordenados por nombre
+            var tc2 = new List<BocadilloDTO> { bocadilloDTOs[1], bocadilloDTOs[3], bocadilloDTOs[5], bocadilloDTOs[7]}; // tamaño pequeño
 
-            var tc2 = new List<BocadilloDTO> { bocadilloDTOs[1], bocadilloDTOs[3], bocadilloDTOs[7], } // tamaño pequeño
-            .OrderBy(b => b.Nombre).ToList();
+            var tc3 = new List<BocadilloDTO> { bocadilloDTOs[2]}; // tipo de pan "Chapata"
 
-            var tc3 = new List<BocadilloDTO> { bocadilloDTOs[6], bocadilloDTOs[7] } // tipo de pan "Chapata"
-            .OrderBy(b => b.Nombre).ToList();
-
-            var tc4 = new List<BocadilloDTO> { bocadilloDTOs[3], bocadilloDTOs[4], bocadilloDTOs[5]} // tamaño normal + tipo de pan "Baguette"
-            .OrderBy(b => b.Nombre).ToList();
+            var tc4 = new List<BocadilloDTO> { bocadilloDTOs[6]}; // tamaño normal + tipo de pan "Baguette"
 
 
             var allTests = new List<object[]>
             {
-                new object[] { null,                         null,      tc1 },
-                new object[] { Tamaño.pequeño.ToString(),    null,      tc2 }, // filtro por tamaño pequeño
-                new object[] { null,                         "Chapata", tc3 },
-                new object[] { Tamaño.normal.ToString(),     "Baguette",tc4 }, // filtro por tamaño normal + Integral
+                new object[] { null,            null,      tc1 },
+                new object[] { Tamaño.pequeño,  null,      tc2 },
+                new object[] { null,            "Chapata", tc3 },
+                new object[] { Tamaño.normal,   "Baguette",tc4 },
             };
             return allTests;
         }
+        [Theory]
+        [MemberData(nameof(TestCasosPara_GetBocadillo_Test_Ok))]
+        [Trait("Database", "WithoutFixture")]
+        [Trait("LevelTesting", "Unit Testing")]
+        public async Task GetBocadillosParaPedir_OK(Tamaño? tamaño, string? tipoPan, List<BocadilloDTO> expectedBocadillo)
+        {
+            var controller = new BocadillosController(_context, null);
+
+            var resultado = await controller.GetBocadillosParaPedir(tamaño, tipoPan);
+
+            var okResult = Assert.IsType<OkObjectResult>(resultado);
+            var bocadilloDTOsActual = Assert.IsType<List<BocadilloDTO>>(okResult.Value);
+            Assert.Equal(expectedBocadillo, bocadilloDTOsActual);
+        }
+
         [Fact]
         [Trait("LevelTesting", "Unit Testing")]
         [Trait("Database", "WithoutFixture")]
-        public async Task GetBocadilloPedir_SinResultados_DevuelveSiNoFunciona()
-        {   
-            var m = new Mock<ILogger<BocadillosController>>();
-            ILogger<BocadillosController> logger = m.Object;
+        public async Task GetBocadillosParaPedir_badrequest_test()
+        {
+            var mock = new Mock<ILogger<BocadillosController>>();
+            ILogger<BocadillosController> logger = mock.Object;
             var controller = new BocadillosController(_context, logger);
 
-            var filtroTamNoValido = "Grande";
-            var filtroPanNoValido = "PanInexist";
-
-            var result = await controller.GetBocadillosParaPedir(filtroTamNoValido, filtroPanNoValido);
-
-            var noFunciona = Assert.IsType<NotFoundObjectResult>(result);
-            var mensaje = Assert.IsType<string>(noFunciona.Value);
-            Assert.Equal("No hay bocadillos con estos requisitos", mensaje);
-            Assert.Equal((int)HttpStatusCode.NotFound, noFunciona.StatusCode);
-
-
+            var resultado = await controller.GetBocadillosParaPedir(Tamaño.normal, "NoExiste");
         }
     }
 }

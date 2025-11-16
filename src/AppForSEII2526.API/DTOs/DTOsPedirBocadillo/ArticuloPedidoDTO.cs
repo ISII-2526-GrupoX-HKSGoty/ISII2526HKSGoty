@@ -6,7 +6,6 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         public int Id { get; set; }
         public string nombreBocadillo { get; set; }
 
-        [Required]
         public int Cantidad { get; set; }
         public float PVP { get; set; }
         public string TipoPan { get; set; }

@@ -4,13 +4,10 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
     public class CrearPedidoDTO //post
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor introduzca su nombre")]
         public string nombre { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor elija el metodo de pago")]
         public Metodo_Pago Metodo_Pago { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor introduzca su primer apellido")]
         public string apellido1 { get; set; }
         public string? apellido2 { get; set; }
         public IList<ArticuloPedidoDTO> ArticuloPedido { get; set; }

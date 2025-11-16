@@ -47,6 +47,9 @@ namespace AppForSEII2526.API.Models
             BocadilloId = bocadillo.Id;
             Compra = compra;
             Cantidad = cantidad;
+            CompraId = compra.CompraId;
+            NombreBocadillo = bocadillo.nombre;
+            Precio = bocadillo.PVP;
         }
 
         public override bool Equals(object? obj)

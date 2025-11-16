@@ -23,8 +23,8 @@ namespace AppForSEII2526.UT.PedidoContrller_test
 
             var bocadillo = new List<Bocadillo>()
             {
-                new Bocadillo("Atun", 2, 15,tipoPan[0], Tamaño.normal),
-                new Bocadillo("Vegetal", 3, 15, tipoPan[1], Tamaño.pequeño)
+                new Bocadillo(1, "Poli", 5, 20, tipoPan[0], Tamaño.normal),
+                new Bocadillo(2, "Vegetal", 5, 20, tipoPan[1], Tamaño.pequeño)
             };
 
             ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
@@ -41,12 +41,9 @@ namespace AppForSEII2526.UT.PedidoContrller_test
             _context.SaveChanges();
         }
 
-
         [Fact]
         [Trait("Database", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
-
-
         public async Task GetPedidos_NotFound_Test()
         {
             var mock = new Mock<ILogger<PedidoController>>();
@@ -59,13 +56,9 @@ namespace AppForSEII2526.UT.PedidoContrller_test
             Assert.IsType<NotFoundResult>(result);
         }
 
-
-
-
         [Fact]
         [Trait("LevelTesting", "Unit Testing")]
         [Trait("Database", "WithoutFixture")]
-
         public async Task GetPedidos_Found_test()
         {
             var mock = new Mock<ILogger<PedidoController>>();
@@ -73,9 +66,9 @@ namespace AppForSEII2526.UT.PedidoContrller_test
 
             var controller = new PedidoController(_context, logger);
 
-            var expectedPedido = new DetallesPedidoDTO("Fernando", Metodo_Pago.Paypal, "Martinez", "Panadero", DateTime.Today, new List<ArticuloPedidoDTO>(), 4);
+            var expectedPedido = new DetallesPedidoDTO("Fernando", Metodo_Pago.Paypal, "Martinez", "Panadero", DateTime.Today, new List<ArticuloPedidoDTO>(), 10);
 
-            expectedPedido.ArticuloPedido.Add(new ArticuloPedidoDTO(1, "Atun", 2, 2.0f, "Semillas"));
+            expectedPedido.ArticuloPedido.Add(new ArticuloPedidoDTO(1, "Poli", 2, 5, "Semillas"));
 
             var result = await controller.GetPedido(1);
 

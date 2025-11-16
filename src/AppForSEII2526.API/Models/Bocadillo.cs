@@ -17,7 +17,16 @@ public class Bocadillo
         this.tamaño = tamaño;
         ResenyaBocadillos = resenyaBocadillos;
     }
-    
+    /*public Bocadillo(int id, string nombre, int pvp, int stock, string nombreTipoPan, Tamaño tamaño)
+    {
+        Id = id;
+        this.nombre = nombre;
+        this.PVP = pvp;
+        this.stock = stock;
+        NombreTipoPan = nombreTipoPan;
+        this.tamaño = tamaño;
+    }*/
+
 
     [Key]
     public int Id { get; set; }
@@ -29,7 +38,7 @@ public class Bocadillo
     public float PVP { get; set; }
 
     public int stock { get; set; }
-
+    //public string NombreTipoPan { get; set; }
     public TipoPan tipoPan { get; set; }
 
     public Tamaño tamaño { get; set; }
@@ -45,6 +54,15 @@ public class Bocadillo
         this.tipoPan = tipoPan;
         this.tamaño = tamaño;
     }
+    public Bocadillo(int id, string nombre, float pVP, int stock, TipoPan tipoPan, Tamaño tamaño)
+    {
+        Id = id;
+        this.nombre = nombre;
+        PVP = pVP;
+        this.stock = stock;
+        this.tipoPan = tipoPan;
+        this.tamaño = tamaño;
+    }
     public Bocadillo(string nombre, float pVP, int stock, TipoPan tipoPan, Tamaño tamaño, IList<CompraBocadillo> comprasDelBocadillo)
     {
         this.nombre = nombre;
@@ -54,6 +72,8 @@ public class Bocadillo
         this.tamaño = tamaño;
         ComprasDelBocadillo = comprasDelBocadillo;
     }
+
+    
 
     public override bool Equals(object? obj)
     {
