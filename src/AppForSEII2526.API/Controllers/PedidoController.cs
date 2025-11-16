@@ -37,7 +37,6 @@ namespace AppForSEII2526.API.Controllers
                 .ThenInclude(cb => cb.Bocadillo)
                 .ThenInclude(b => b.tipoPan)
                 .Select(c=> new DetallesPedidoDTO(
-                    c.CompraId,
                     c.User.nombre, 
                     c.Metodo_Pago,
                     c.User.apellido1,
@@ -49,7 +48,8 @@ namespace AppForSEII2526.API.Controllers
                         nombreBocadillo = cb.NombreBocadillo,
                         Cantidad = cb.Cantidad,
                         PVP = cb.Precio
-                    }).ToList()
+                    }).ToList(),
+                    c.PrecioTotal
                 )).FirstOrDefaultAsync();
 
             if (pedido == null)
@@ -135,13 +135,13 @@ namespace AppForSEII2526.API.Controllers
             }
 
             var detallesPedidoDTO = new DetallesPedidoDTO(
-                compra.CompraId, 
                 usuario.nombre, 
                 compra.Metodo_Pago,
                 usuario.apellido1,
                 usuario.apellido2,
                 compra.FechaCompra,
-                pedidoParaCrear.ArticuloPedido.ToList()
+                pedidoParaCrear.ArticuloPedido.ToList(),
+                compra.PrecioTotal
                 );
 
             return CreatedAtAction(

@@ -20,7 +20,7 @@
 
         [Required]
         [Precision(10, 2)]
-        public decimal PrecioTotal { get; set; }
+        public float PrecioTotal { get; set; }
         public List<CompraBocadillo> BocadillosComprados { get; set; }
 
         public Compra()

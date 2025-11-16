@@ -4,7 +4,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Bocadillo
 {
-
+    
     public Bocadillo() { }
 
     public Bocadillo(int id, string nombre, int pvp, int stock, TipoPan tipoPan, Tamaño tamaño, IList<ResenyaBocadillo> resenyaBocadillos)
@@ -17,7 +17,7 @@ public class Bocadillo
         this.tamaño = tamaño;
         ResenyaBocadillos = resenyaBocadillos;
     }
-    public Bocadillo(string nombre, decimal pVP, int stock, Tamaño tamaño)
+    public Bocadillo(string nombre, float pVP, int stock, Tamaño tamaño)
     {
         this.nombre = nombre;
         PVP = pVP;
@@ -25,7 +25,7 @@ public class Bocadillo
         tamaño = tamaño;
         ResenyaBocadillos = new List<ResenyaBocadillo>();
         ComprasDelBocadillo = new List<CompraBocadillo>();
-        tipoPan = null!;
+        tipoPan = ;
     }
 
     [Key]
@@ -35,7 +35,7 @@ public class Bocadillo
     public string nombre { get; set; }
 
     [Precision(10,2)]
-    public decimal PVP { get; set; }
+    public float PVP { get; set; }
 
     public int stock { get; set; }
 
@@ -46,15 +46,22 @@ public class Bocadillo
 
     public IList<CompraBocadillo> ComprasDelBocadillo { get; set; }
 
-    public Bocadillo(int id, string nombre, decimal pVP, int stock, TipoPan tipoPan, Tamaño tamaño/*, IList<CompraBocadillo> comprasDelBocadillo*/)
+    public Bocadillo(string nombre, float pVP, int stock, TipoPan tipoPan, Tamaño tamaño)
     {
-        Id = id;
         this.nombre = nombre;
         PVP = pVP;
         this.stock = stock;
         this.tipoPan = tipoPan;
         this.tamaño = tamaño;
-        //ComprasDelBocadillo = comprasDelBocadillo;
+    }
+    public Bocadillo(string nombre, float pVP, int stock, TipoPan tipoPan, Tamaño tamaño, IList<CompraBocadillo> comprasDelBocadillo*/)
+    {
+        this.nombre = nombre;
+        PVP = pVP;
+        this.stock = stock;
+        this.tipoPan = tipoPan;
+        this.tamaño = tamaño;
+        ComprasDelBocadillo = comprasDelBocadillo;
     }
 
     public override bool Equals(object? obj)

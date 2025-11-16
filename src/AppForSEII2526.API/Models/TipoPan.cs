@@ -14,9 +14,8 @@
         public IList<Bocadillo> Bocadillos { get; set; }
 
         public TipoPan() { }
-        public TipoPan(string nombre, int id)
+        public TipoPan(string nombre)
         {
-            PanId = id;
             Nombre = nombre;
         }
 

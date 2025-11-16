@@ -222,7 +222,7 @@ namespace AppForSEII2526.API.Migrations
                     FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
                     nBocadillos = table.Column<int>(type: "int", nullable: false),
                     Metodo_Pago = table.Column<int>(type: "int", nullable: false),
-                    PrecioTotal = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false)
+                    PrecioTotal = table.Column<float>(type: "float(10,2)", precision: 10, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -291,7 +291,7 @@ namespace AppForSEII2526.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     nombre = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    PVP = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    PVP = table.Column<float>(type: "float(10,2)", precision: 10, scale: 2, nullable: false),
                     stock = table.Column<int>(type: "int", nullable: false),
                     tipoPanPanId = table.Column<int>(type: "int", nullable: false),
                     tamaño = table.Column<int>(type: "int", nullable: false)
@@ -309,7 +309,7 @@ namespace AppForSEII2526.API.Migrations
                     CompraId = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     NombreBocadillo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Precio = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false)
+                    Precio = table.Column<float>(type: "float(10,2)", precision: 10, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
