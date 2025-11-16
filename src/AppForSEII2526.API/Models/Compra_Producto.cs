@@ -9,10 +9,10 @@ namespace AppForSEII2526.API.Models
         public int Id { get; set; }
 
         [Required]
-        public int ProductoId { get; set; }
+        public int IdProducto { get; set; }
 
         [Required]
-        public int CompraId { get; set; }
+        public int IdCompra { get; set; }
 
         [Required]
         public int Cantidad { get; set; }
@@ -20,10 +20,10 @@ namespace AppForSEII2526.API.Models
         [Required]
         public decimal PrecioUnitario { get; set; }
 
-        [ForeignKey(nameof(ProductoId))]
+        [ForeignKey(nameof(IdProducto))]
         public Producto Producto { get; set; }
 
-        [ForeignKey(nameof(CompraId))]
+        [ForeignKey(nameof(IdCompra))]
         public Compra Compra { get; set; }
     }
 }

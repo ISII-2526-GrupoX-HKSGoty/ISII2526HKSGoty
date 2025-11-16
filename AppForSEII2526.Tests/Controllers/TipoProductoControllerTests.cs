@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.Repositories;
 using AppForSEII2526.Models;
-using AppForSEII2526.API.Data;
 using AppForSEII2526.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace AppForSEII2526.Tests
 {
@@ -19,29 +17,23 @@ namespace AppForSEII2526.Tests
         [Fact]
         public async Task GetAll_ReturnsOkWithList()
         {
-            // Crear contexto en memoria
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
+            // Arrange
+            var mockRepo = new Mock<TipoProductoRepository>();
+            mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<TipoProducto>
+            {
+                new TipoProducto { TipoProductoId = 1, Nombre = "Bebidas" },
+                new TipoProducto { TipoProductoId = 2, Nombre = "Ropa" }
+            });
 
-            using var context = new ApplicationDbContext(options);
+            var controller = new TipoProductoController(mockRepo.Object);
 
-            context.TipoProductos.Add(new TipoProducto { TipoProductoId = 1, Nombre = "Camisetas" });
-            context.SaveChanges();
+            // Act
+            var result = await controller.GetAll();
 
-            // Usar instancia real del repositorio con ese contexto
-            var repository = new TipoProductoRepository(context);
-            var controller = new TipoProductoController(repository);
-
-            // ACT
-            var actionResult = await controller.GetAll();
-
-            // ASSERT
-            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);  //.Result contiene el OkObjectResult
-            var tipoProductos = Assert.IsAssignableFrom<IEnumerable<TipoProductoDTO>>(okResult.Value); //Validamos que Value es del tipo esperado
-            Assert.NotEmpty(tipoProductos); 
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var items = Assert.IsAssignableFrom<IEnumerable<TipoProductoDTO>>(okResult.Value);
+            Assert.Equal(2, items.Count());
         }
-
-
     }
 }

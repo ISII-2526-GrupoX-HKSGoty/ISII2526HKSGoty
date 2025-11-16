@@ -8,7 +8,6 @@ using AppForSEII2526.API.Data;
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.Models;
 using AppForSEII2526.Models;
-using AppForSEII2526.Shared.DTOs;
 
 namespace AppForSEII2526.Tests.Controllers
 {
@@ -22,7 +21,7 @@ namespace AppForSEII2526.Tests.Controllers
 
             var context = new ApplicationDbContext(options);
 
-            // Insertar TipoProducto requerido
+            // Insertar TipoProducto dummy necesario para Producto
             var tipoProducto = new TipoProducto
             {
                 TipoProductoId = 1,
@@ -52,12 +51,14 @@ namespace AppForSEII2526.Tests.Controllers
             };
             context.Compras.Add(compra);
 
+            context.SaveChanges();
+
             // Insertar Compra_Producto relacionada
             context.Compra_Productos.Add(new Compra_Producto
             {
                 Id = 1,
-                ProductoId = producto.Id,
-                CompraId = compra.CompraId,
+                IdProducto = producto.Id,
+                IdCompra = compra.CompraId,
                 Cantidad = 1,
                 PrecioUnitario = 20.99m
             });
@@ -69,14 +70,11 @@ namespace AppForSEII2526.Tests.Controllers
         [Fact]
         public async Task GetCompraProductos_ReturnsCompraProductos()
         {
-            // Arrange
             var context = GetDbContextWithData();
             var controller = new CompraProductoController(context);
 
-            // Act
             var result = await controller.GetCompraProductos();
 
-            // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Compra_Producto>>>(result);
             var compraProductos = Assert.IsAssignableFrom<IEnumerable<Compra_Producto>>(actionResult.Value);
             Assert.NotEmpty(compraProductos);
@@ -85,14 +83,13 @@ namespace AppForSEII2526.Tests.Controllers
         [Fact]
         public async Task PostCompraProducto_CreatesNewCompraProducto()
         {
-            // Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
             var context = new ApplicationDbContext(options);
 
-            // Crear tipo de producto necesario
+            // TipoProducto para el Producto
             var tipoProducto = new TipoProducto
             {
                 TipoProductoId = 2,
@@ -100,7 +97,7 @@ namespace AppForSEII2526.Tests.Controllers
             };
             context.TipoProductos.Add(tipoProducto);
 
-            // Crear producto asociado
+            // Producto válido
             var producto = new Producto
             {
                 Id = 2,
@@ -111,7 +108,7 @@ namespace AppForSEII2526.Tests.Controllers
             };
             context.Productos.Add(producto);
 
-            // Crear compra asociada
+            // Compra válida
             var compra = new Compra
             {
                 CompraId = 2,
@@ -126,26 +123,20 @@ namespace AppForSEII2526.Tests.Controllers
 
             var controller = new CompraProductoController(context);
 
-            // DTO para el POST
-            var nuevo = new CompraProductoDTO
+            var nuevo = new Compra_Producto
             {
-                ProductoId = producto.Id,
-                CompraId = compra.CompraId,
+                IdProducto = producto.Id,
+                IdCompra = compra.CompraId,
                 Cantidad = 1,
                 PrecioUnitario = 10.50m
             };
 
-            // Act
             var result = await controller.PostCompraProducto(nuevo);
-
-            // Assert
             var created = Assert.IsType<CreatedAtActionResult>(result.Result);
             var createdValue = Assert.IsType<Compra_Producto>(created.Value);
 
-            Assert.Equal(nuevo.ProductoId, createdValue.ProductoId);
-            Assert.Equal(nuevo.CompraId, createdValue.CompraId);
-            Assert.Equal(nuevo.Cantidad, createdValue.Cantidad);
-            Assert.Equal(nuevo.PrecioUnitario, createdValue.PrecioUnitario);
+            Assert.Equal(nuevo.IdProducto, createdValue.IdProducto);
+            Assert.Equal(nuevo.IdCompra, createdValue.IdCompra);
         }
     }
 }

@@ -20,35 +20,13 @@ namespace AppForSEII2526.Tests.Controllers
 
             var context = new ApplicationDbContext(options);
 
-            // Insertar Producto requerido
-            var producto = new Producto
-            {
-                Id = 1,
-                Nombre = "Camiseta",
-                Precio = 15.99m,
-                Stock = 100,
-                TipoProductoId = 1
-            };
-            context.Productos.Add(producto);
-
-            // Insertar Compra requerida
-            var compra = new Compra
-            {
-                CompraId = 1,
-                FechaCompra = DateTime.Now,
-                Metodo_Pago = Metodo_Pago.Tarjeta,
-                PrecioTotal = 31.98m,
-                nBocadillos = 2
-            };
-            context.Compras.Add(compra);
-
-            // Insertar Producto_Compra relacionado
+            // Inserta datos previos para el test GET
             context.Producto_Compras.Add(new Producto_Compra
             {
                 Id = 1,
-                ProductoId = producto.Id,
-                CompraId = compra.CompraId,
-                Cantidad = 2
+                ProductoId = 1,
+                CompraId = 1,
+                Cantidad = 2,
             });
 
             context.SaveChanges();
@@ -67,8 +45,7 @@ namespace AppForSEII2526.Tests.Controllers
 
             // Assert
             var okResult = Assert.IsType<ActionResult<IEnumerable<Producto_Compra>>>(result);
-            var value = Assert.IsAssignableFrom<IEnumerable<Producto_Compra>>(okResult.Value);
-            Assert.NotEmpty(value);
+            Assert.NotEmpty(okResult.Value);
         }
     }
 }
