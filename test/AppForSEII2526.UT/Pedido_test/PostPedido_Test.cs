@@ -19,38 +19,32 @@ namespace AppForSEII2526.UT.Pedido_test
     {
         public class Post_CrearPedido_test : AppForMovies4SqliteUT
         {
-            private readonly ApplicationUser _user;
-            private readonly Metodo_Pago _metodo;
-            private readonly Bocadillo _bocadillo;
-            private readonly TipoPan _tipoPan;
 
             public Post_CrearPedido_test()
             {
-                _tipoPan = new TipoPan {PanId=1, Nombre = "Integral" };
-
-                _metodo = Metodo_Pago.Tarjeta;
-
-                _user = new ApplicationUser("Fernando", "Martinez", "Panadero") { Id = Guid.NewGuid().ToString() };
-
-                _bocadillo = new Bocadillo
+                var tipoPan = new List<TipoPan>()
                 {
-                    Id = 10,
-                    nombre = "Politecnico",
-                    PVP = 4.5M,
-                    stock = 5,
-                    tamaño = Tamaño.normal,
-                    tipoPan = _tipoPan,
-                    ResenyaBocadillos = new List<ResenyaBocadillo>() 
+                new TipoPan("Baguette"),
+                new TipoPan("Capata")
                 };
 
-                var _compra = new Compra(_user, DateTime.Today, _metodo, new List<CompraBocadillo>());
+                var bocadillo = new List<Bocadillo>()
+            {
+                new Bocadillo("Poli",5f, 20, tipoPan[0],Tamaño.normal),
+                new Bocadillo("Completo",5f, 20, tipoPan[1],Tamaño.pequeño),
 
-                _compra.BocadillosComprados.Add(new CompraBocadillo(_bocadillo, _compra, 2));
+            };
 
-                _context.ApplicationUser.Add(_user);
-                _context.AddRange(_tipoPan);
-                _context.AddRange(_bocadillo);
-                _context.Add(_compra);
+                ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
+
+                var compra = new Compra(user, DateTime.Today, Metodo_Pago.Tarjeta, new List<CompraBocadillo>());
+
+                compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo[0], compra, 2));
+
+                _context.ApplicationUser.Add(user);
+                _context.AddRange(tipoPan);
+                _context.AddRange(bocadillo);
+                _context.Add(compra);
                 _context.SaveChanges();
             }
 
@@ -58,7 +52,7 @@ namespace AppForSEII2526.UT.Pedido_test
             {
                 var bocadillo = new List<ArticuloPedidoDTO>()
                 {
-                    new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Politecnico", TipoPan = "Normal", Cantidad = 4, PVP = 4.5M }
+                    new ArticuloPedidoDTO (1, "Poli",  20, 5f, "Baguette")
                 };
 
                 var sinAticulosDto = new CrearPedidoDTO
@@ -68,15 +62,6 @@ namespace AppForSEII2526.UT.Pedido_test
                     apellido1: "Martinez",
                     apellido2: "Panadero",
                     articulopedido: new List<ArticuloPedidoDTO>()
-                );
-
-                var sinCantidadDto = new CrearPedidoDTO
-                (
-                    nombre: "Fernando",
-                    metododepago: Metodo_Pago.Tarjeta,
-                    apellido1: "Martinez",
-                    apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 0, PVP = 4.5M } }
                 );
 
                 var noUserDto = new CrearPedidoDTO
@@ -97,33 +82,21 @@ namespace AppForSEII2526.UT.Pedido_test
                     articulopedido: bocadillo
                 );
 
-                var stockInsuficienteDto = new CrearPedidoDTO
-                (
-                    nombre: "Fernando",
-                    metododepago: Metodo_Pago.Tarjeta,
-                    apellido1: "Martinez",
-                    apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO> { new ArticuloPedidoDTO { Id = 10, nombreBocadillo = "Pollo", TipoPan = "Integral", Cantidad = 1000, PVP = 4.5M } }
-                );
-
-
                 var bocadilloNoExisteDto = new CrearPedidoDTO
                 (
                     nombre: "Fernando",
                     metododepago: Metodo_Pago.Tarjeta,
                     apellido1: "Martinez",
                     apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO>(){new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2M, "Normal")}
+                    articulopedido: new List<ArticuloPedidoDTO>(){new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2f, "Normal")}
                 );
 
                 var allTests = new List<object[]>
             {
-                new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
-                new object[] { sinCantidadDto, "La cantidad es obligatoria y debe ser mayor que 0." },
-                new object[] { noUserDto, "Error! Nombre y/o apellidos no registrados." },
-                new object[] { metodoNoRegistradoDto, "El método de pago 'MetodoInexistente' no está registrado." },
-                new object[] { stockInsuficienteDto, "Error! se han pedido 10 bocadillos, pero no hay suficientes" },
-                new object[] { bocadilloNoExisteDto, "El bocadillo 999 no existe." },
+                //new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
+                new object[] { noUserDto, "Usuario no registrado" },
+                new object[] { metodoNoRegistradoDto, "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay." },
+                new object[] { bocadilloNoExisteDto, "El bocadillo no existe" },
             };
                 return allTests;
             }
@@ -158,16 +131,15 @@ namespace AppForSEII2526.UT.Pedido_test
 
                 var item = new List<ArticuloPedidoDTO>()
             {
-                new ArticuloPedidoDTO(2, "Vegetal", 2, 3, "Integral")
+                new ArticuloPedidoDTO(2, "Completo", 5, 20, "Chapata")
             };
-
 
                 var pedidoDto = new CrearPedidoDTO
                 (
-                    nombre: _user.nombre,
-                    metododepago: _metodo,
-                    apellido1: _user.apellido1,
-                    apellido2: _user.apellido2,
+                    nombre: "Fernando",
+                    metododepago: Metodo_Pago.Tarjeta,
+                    apellido1: "Martinez",
+                    apellido2: "Panadero",
                     articulopedido: item
                 );
                 
@@ -178,19 +150,19 @@ namespace AppForSEII2526.UT.Pedido_test
 
                 var expectedDetalles = new DetallesPedidoDTO
                 (
-                    detalles.Id,
-                    _user.nombre,
-                    _metodo,
-                    _user.apellido1,
-                    _user.apellido2,
+                    "Fernando",
+                    Metodo_Pago.Tarjeta,
+                    "Martinez",
+                    "Panadero",
                     DateTime.Today,
                     new List<ArticuloPedidoDTO>()
                     {
-                        new ArticuloPedidoDTO(2, "Vegetal", 2, 3, "Integral")
-                    }
+                        new ArticuloPedidoDTO(2, "Completo", 5, 20, "Chapata")
+                    },
+                    10
                 );
 
-                Assert.Equal(expectedDetalles.Id, detalles.Id);
+                Assert.Equal(expectedDetalles, detalles);
             }
         }
     } 

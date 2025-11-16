@@ -1,109 +1,81 @@
 ﻿using AppForMovies.UT;
 using AppForSEII2526.API.Controllers;
-using AppForSEII2526.API.DTOs;
-using System.Net;
+using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
+using AppForSEII2526.API.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace AppForSEII2526.UT.Pedido_test
+namespace AppForSEII2526.UT.PedidoContrller_test
 {
-    public class GetPedido_Test : AppForMovies4SqliteUT
+    public class GetPedido_test : AppForMovies4SqliteUT
     {
-        public GetPedido_Test()
+        public GetPedido_test()
         {
-            var tipoPan = new List<TipoPan>() {
-            new TipoPan("Baguette", 0),
-            new TipoPan("Integral", 1),
-            new TipoPan("Molde", 2),
-            new TipoPan("Chapata", 3),
-            new TipoPan("Cereal", 4),
-            new TipoPan("Sin gluten", 5)
+            var tipoPan = new List<TipoPan>()
+            {
+                new TipoPan("Semillas"),
+                new TipoPan("Integral")
             };
 
-            var bocadillos = new List<Bocadillo>()
+            var bocadillo = new List<Bocadillo>()
             {
-                new Bocadillo(1, "Vegetal", 5, 20, tipoPan[1], Tamaño.normal),
-                new Bocadillo(2, "Atún", 5, 15, tipoPan[0], Tamaño.pequeño),
-                new Bocadillo(3, "Jamón y queso", 7, 10, tipoPan[3], Tamaño.normal),
-                new Bocadillo(4, "Politecnico", 4, 5, tipoPan[2], Tamaño.pequeño),
-                new Bocadillo(5, "Completo", 9, 8, tipoPan[4], Tamaño.normal),
-                new Bocadillo(6, "Trifasico", 3, 12, tipoPan[5], Tamaño.pequeño), 
-                new Bocadillo(7, "Bufalo", 2, 7, tipoPan[0], Tamaño.normal),
-                new Bocadillo(8, "Sumarino", 6, 9, tipoPan[1], Tamaño.pequeño)
+                new Bocadillo(1, "Poli", 5, 20, tipoPan[0], Tamaño.normal),
+                new Bocadillo(2, "Vegetal", 5, 20, tipoPan[1], Tamaño.pequeño)
             };
-            
+
             ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
 
+            var compra = new Compra(user, DateTime.Today, Metodo_Pago.Paypal, new List<CompraBocadillo>());
+            compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo[0], compra, 2));
+
+            compra.PrecioTotal = compra.BocadillosComprados.Sum(cb => cb.Precio * cb.Cantidad);
+
             _context.Add(user);
-            _context.AddRange(bocadillos);
+            _context.AddRange(bocadillo);
             _context.AddRange(tipoPan);
+            _context.Add(compra);
             _context.SaveChanges();
-
         }
-        public static IEnumerable<object[]> TestCasosPara_GetPedido_Test_Ok()
+
+        [Fact]
+        [Trait("Database", "WithoutFixture")]
+        [Trait("LevelTesting", "Unit Testing")]
+        public async Task GetPedidos_NotFound_Test()
         {
-            var tipoPan = new List<TipoPan>() {
-            new TipoPan("Baguette", 0),
-            new TipoPan("Integral", 1),
-            new TipoPan("Molde", 2),
-            new TipoPan("Chapata", 3),
-            new TipoPan("Cereal", 4),
-            new TipoPan("Sin gluten", 5)
-            };
-            var bocadilloDTOs = new List<BocadilloDTO>()
-            {
-                new BocadilloDTO(1, "Vegetal", "Molde", Tamaño.normal, 5),          //0
-                new BocadilloDTO(2, "Atún", "Baguette", Tamaño.pequeño, 5),         //1
-                new BocadilloDTO(3, "Jamón y queso", "Molde", Tamaño.normal, 5),    //2
-                new BocadilloDTO (4, "Politecnico", "Baguette", Tamaño.normal, 5),  //3
-                new BocadilloDTO (5, "Completo", "Baguette", Tamaño.normal, 5),     //4
-                new BocadilloDTO (6, "Trifasico", "Baguette", Tamaño.normal, 5),    //5
-                new BocadilloDTO (7, "Bufalo", "Chapata", Tamaño.normal, 5),        //6
-                new BocadilloDTO (8, "Sumarino", "Chapata", Tamaño.pequeño, 5)      //7
+            var mock = new Mock<ILogger<PedidoController>>();
+            ILogger<PedidoController> logger = mock.Object;
 
-            };
+            var controller = new PedidoController(_context, logger);
 
+            var result = await controller.GetPedido(0);
 
-            var tc1 = bocadilloDTOs.OrderBy(b => b.Nombre).ToList(); // ordenados por nombre
-
-            var tc2 = new List<BocadilloDTO> { bocadilloDTOs[1], bocadilloDTOs[3], bocadilloDTOs[7], } // tamaño pequeño
-            .OrderBy(b => b.Nombre).ToList();
-
-            var tc3 = new List<BocadilloDTO> { bocadilloDTOs[6], bocadilloDTOs[7] } // tipo de pan "Chapata"
-            .OrderBy(b => b.Nombre).ToList();
-
-            var tc4 = new List<BocadilloDTO> { bocadilloDTOs[3], bocadilloDTOs[4], bocadilloDTOs[5]} // tamaño normal + tipo de pan "Baguette"
-            .OrderBy(b => b.Nombre).ToList();
-
-
-            var allTests = new List<object[]>
-            {
-                new object[] { null,                         null,      tc1 },
-                new object[] { Tamaño.pequeño.ToString(),    null,      tc2 }, // filtro por tamaño pequeño
-                new object[] { null,                         "Chapata", tc3 },
-                new object[] { Tamaño.normal.ToString(),     "Baguette",tc4 }, // filtro por tamaño normal + Integral
-            };
-            return allTests;
+            Assert.IsType<NotFoundResult>(result);
         }
+
         [Fact]
         [Trait("LevelTesting", "Unit Testing")]
         [Trait("Database", "WithoutFixture")]
-        public async Task GetBocadilloPedir_SinResultados_DevuelveSiNoFunciona()
-        {   
-            var m = new Mock<ILogger<BocadillosController>>();
-            ILogger<BocadillosController> logger = m.Object;
-            var controller = new BocadillosController(_context, logger);
+        public async Task GetPedidos_Found_test()
+        {
+            var mock = new Mock<ILogger<PedidoController>>();
+            ILogger<PedidoController> logger = mock.Object;
 
-            var filtroTamNoValido = "Grande";
-            var filtroPanNoValido = "PanInexist";
+            var controller = new PedidoController(_context, logger);
 
-            var result = await controller.GetBocadillosParaPedir(filtroTamNoValido, filtroPanNoValido);
+            var expectedPedido = new DetallesPedidoDTO("Fernando", Metodo_Pago.Paypal, "Martinez", "Panadero", DateTime.Today, new List<ArticuloPedidoDTO>(), 10);
 
-            var noFunciona = Assert.IsType<NotFoundObjectResult>(result);
-            var mensaje = Assert.IsType<string>(noFunciona.Value);
-            Assert.Equal("No hay bocadillos con estos requisitos", mensaje);
-            Assert.Equal((int)HttpStatusCode.NotFound, noFunciona.StatusCode);
+            expectedPedido.ArticuloPedido.Add(new ArticuloPedidoDTO(1, "Poli", 2, 5, "Semillas"));
 
+            var result = await controller.GetPedido(1);
 
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var pedidoDTOActual = Assert.IsType<DetallesPedidoDTO>(okResult.Value);
+            var eq = expectedPedido.Equals(pedidoDTOActual);
+            Assert.Equal(expectedPedido, pedidoDTOActual);
         }
     }
 }

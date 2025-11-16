@@ -165,9 +165,9 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("Metodo_Pago")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("PrecioTotal")
+                    b.Property<float>("PrecioTotal")
                         .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("float(10,2)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -198,9 +198,9 @@ namespace AppForSEII2526.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Precio")
+                    b.Property<float>("Precio")
                         .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("float(10,2)");
 
                     b.HasKey("BocadilloId", "CompraId");
 
@@ -340,9 +340,9 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("PVP")
+                    b.Property<float>("PVP")
                         .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("float(10,2)");
 
                     b.Property<string>("nombre")
                         .IsRequired()

@@ -18,42 +18,32 @@ namespace AppForSEII2526.API.Controllers
             _logger = logger;
         }
 
-
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(List<BocadilloDTO>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetBocadillosParaPedir(string? filTamaño, string? filTipoPan)
+        public async Task<IActionResult> GetBocadillosParaPedir(Tamaño? filTamaño, string? filTipoPan)
         {
-            Tamaño? tamanoFiltrado = null;
+            IList<BocadilloDTO> bocadillos = await _context.Bocadillos
+                .Include(b => b.tipoPan)
+                .Where(b =>
 
-            if (!string.IsNullOrWhiteSpace(filTamaño) &&
-                Enum.TryParse<Tamaño>(filTamaño, ignoreCase: true, out var parsed))
-            {
-                tamanoFiltrado = parsed;
-            }
+                (filTipoPan == null || b.tipoPan.Nombre.Contains(filTipoPan))
 
-            var query = _context.Bocadillos
-            .AsNoTracking()
-            .Include(b => b.tipoPan)
-            .Include(b => b.ComprasDelBocadillo).ThenInclude(cb => cb.Compra)
-            .AsQueryable();
 
-            if (tamanoFiltrado.HasValue)
-                query = query.Where(b => b.tamaño == tamanoFiltrado.Value);  //filtro por string
+                && (filTamaño == null || b.tamaño == filTamaño))
 
-            if (!string.IsNullOrWhiteSpace(filTipoPan))
-                query = query.Where(b => b.tipoPan.Nombre == filTipoPan);
 
-            var bocadillos = await query
-                .OrderBy(b => b.nombre)
-                    .Select(b => new BocadilloDTO(b.Id, b.nombre, b.tipoPan.Nombre, b.tamaño, b.PVP))
-                    .ToListAsync();
+                .Select(b => new BocadilloDTO
+                {
+                    Id = b.Id,
+                    Nombre = b.nombre,
+                    Tamaño = b.tamaño,
+                    TipoPanNombre = b.tipoPan.Nombre,
+                    PVP = b.PVP,
+                })
 
-            if (!bocadillos.Any())
-                return NotFound("No hay bocadillos que cumplan los requisitos");
-
+            .ToListAsync();
             return Ok(bocadillos);
-
 
         }
     }

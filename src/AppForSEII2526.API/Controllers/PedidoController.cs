@@ -1,4 +1,5 @@
-﻿using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
+﻿using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Validations;
@@ -22,12 +23,11 @@ namespace AppForSEII2526.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(DetallesPedidoDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-
         public async Task<IActionResult> GetPedido(int id)
         {
             if (_context.Compras == null)
             {
-                _logger.LogError("Error: No existen las compras");
+                _logger.LogError("No existen las compras");
                 return NotFound();
             }
 
@@ -37,8 +37,7 @@ namespace AppForSEII2526.API.Controllers
                 .ThenInclude(cb => cb.Bocadillo)
                 .ThenInclude(b => b.tipoPan)
                 .Select(c=> new DetallesPedidoDTO(
-                    c.CompraId,
-                    c.User.nombre, 
+                    c.User.nombre,
                     c.Metodo_Pago,
                     c.User.apellido1,
                     c.User.apellido2,
@@ -49,7 +48,8 @@ namespace AppForSEII2526.API.Controllers
                         nombreBocadillo = cb.NombreBocadillo,
                         Cantidad = cb.Cantidad,
                         PVP = cb.Precio
-                    }).ToList()
+                    }).ToList(),
+                    c.PrecioTotal
                 )).FirstOrDefaultAsync();
 
             if (pedido == null)
@@ -69,50 +69,39 @@ namespace AppForSEII2526.API.Controllers
         {
             var usuario = _context.ApplicationUser.FirstOrDefault(au => au.nombre == pedidoParaCrear.nombre && au.apellido1 == pedidoParaCrear.apellido1);
             if (usuario == null)
-                ModelState.AddModelError("RentalApplicationUser", "Error! Usuario no registrado");
+                ModelState.AddModelError("RentalApplicationUser", "Usuario no registrado");
 
             var metodoPagoEnum = pedidoParaCrear.Metodo_Pago;
-            // Validar que el método de pago sea uno de los valores del enum
+
             if (!Enum.IsDefined(typeof(Metodo_Pago), pedidoParaCrear.Metodo_Pago))
             {
-                ModelState.AddModelError("MetodoPago", "Error! Método de pago no válido. Usa: Tarjeta, Paypal o Gpay.");
+                ModelState.AddModelError("MetodoPago", "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay.");
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
             var pedidoNombre = pedidoParaCrear.ArticuloPedido.Select(ri => ri.Id).ToList();
 
             var bocadillos = _context.Bocadillos
-
                 .Where(b => pedidoNombre.Contains(b.Id))
-                .Select(b => new
-                {
-                    b.nombre,
-                    b.PVP,
-                    b.stock,
-                    b.tamaño,
-                    b.Id
-                }).ToList();
+                .Select(b => new BocadilloDTO(b.nombre, b.tipoPan.Nombre, b.tamaño, b.PVP)).ToList();
 
-
-
-            Compra compra = new Compra(usuario, DateTime.Now, metodoPagoEnum, new List<CompraBocadillo>());
+            Compra compra = new Compra(usuario, DateTime.Today, metodoPagoEnum, new List<CompraBocadillo>());
             compra.PrecioTotal = 0;
 
 
             foreach (var item in pedidoParaCrear.ArticuloPedido)
             {
-                var bocadillo = bocadillos.FirstOrDefault(p => p.nombre == item.nombreBocadillo);
+                var bocadillo = bocadillos.FirstOrDefault(p => p.Nombre == item.nombreBocadillo);
                 if (bocadillo == null)
                 {
-                    ModelState.AddModelError("Bocadillo", $"Error! El bocadillo {item.nombreBocadillo} no está disponible");
+                    ModelState.AddModelError("Bocadillo", $"El bocadillo no existe");
                     return ValidationProblem(ModelState);
                 }
                 else
                 {
-                    compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, item.Cantidad, compra, compra.CompraId, bocadillo.nombre, bocadillo.PVP));
+                    compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, item.Cantidad, compra, compra.CompraId, bocadillo.Nombre, bocadillo.PVP));
                     item.PVP = bocadillo.PVP;
                 }
-
             }
 
             compra.PrecioTotal = compra.BocadillosComprados.Sum(cb => cb.Precio * cb.Cantidad);
@@ -135,13 +124,13 @@ namespace AppForSEII2526.API.Controllers
             }
 
             var detallesPedidoDTO = new DetallesPedidoDTO(
-                compra.CompraId, 
-                usuario.nombre, 
+                usuario.nombre,
                 compra.Metodo_Pago,
                 usuario.apellido1,
                 usuario.apellido2,
                 compra.FechaCompra,
-                pedidoParaCrear.ArticuloPedido.ToList()
+                pedidoParaCrear.ArticuloPedido.ToList(),
+                compra.PrecioTotal
                 );
 
             return CreatedAtAction(
