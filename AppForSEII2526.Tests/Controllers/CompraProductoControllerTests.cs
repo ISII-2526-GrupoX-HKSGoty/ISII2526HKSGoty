@@ -47,7 +47,7 @@ namespace AppForSEII2526.Tests.Controllers
                 CompraId = 1,
                 FechaCompra = DateTime.Now,
                 Metodo_Pago = Metodo_Pago.Tarjeta,
-                PrecioTotal = 20.99m,
+                PrecioTotal = 21,
                 nBocadillos = 1
             };
             context.Compras.Add(compra);
@@ -117,7 +117,7 @@ namespace AppForSEII2526.Tests.Controllers
                 CompraId = 2,
                 FechaCompra = DateTime.Now,
                 Metodo_Pago = Metodo_Pago.Tarjeta,
-                PrecioTotal = 10.50m,
+                PrecioTotal = 10,
                 nBocadillos = 1
             };
             context.Compras.Add(compra);

@@ -9,6 +9,7 @@
 
         [Key]
         public int PanId { get; set; }
+        
 
         public IList<Bocadillo> Bocadillos { get; set; }
 

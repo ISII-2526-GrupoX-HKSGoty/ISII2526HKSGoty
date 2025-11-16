@@ -2,6 +2,8 @@
 {
     public class Compra
     {
+        [StringLength(20, ErrorMessage = "Maxímo 50, minimo 10", MinimumLength = 5)]
+        public string Apellido_1Cliente { get; set; }
 
         public ApplicationUser User { get; set; }
 
@@ -20,14 +22,20 @@
 
         [Required]
         [Precision(10, 2)]
-        public decimal PrecioTotal { get; set; }
+        public float PrecioTotal { get; set; }
         public List<CompraBocadillo> BocadillosComprados { get; set; }
-
-        
 
         public Compra()
         {
             BocadillosComprados = new List<CompraBocadillo>();
+        }
+
+        public Compra(ApplicationUser user, DateTime fechaCompra, Metodo_Pago metodo_Pago, List<CompraBocadillo> bocadillosComprados)
+        {
+            User = user;
+            FechaCompra = fechaCompra;
+            Metodo_Pago = metodo_Pago;
+            BocadillosComprados = bocadillosComprados;
         }
 
         public override bool Equals(object? obj)

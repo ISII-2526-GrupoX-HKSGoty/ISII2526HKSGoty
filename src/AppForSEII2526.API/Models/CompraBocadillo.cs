@@ -13,11 +13,43 @@ namespace AppForSEII2526.API.Models
         public int CompraId { get; set; }
         public string NombreBocadillo { get; set; }
         [Precision(10, 2)]
-        public decimal Precio { get; set; }        
+        public float Precio { get; set; }  
+        public List<TipoPan> TipoPan { get; set; } = new List<TipoPan>();
+
 
         public CompraBocadillo()
         {
             
+        }
+
+
+        public CompraBocadillo(int bocadilloId, int cantidad, Compra compra)
+        {
+            BocadilloId = bocadilloId;
+            Cantidad = cantidad;
+            Compra = compra;
+            CompraId = compra.CompraId;
+        }
+
+        public CompraBocadillo(int bocadilloId, int cantidad, Compra compra, int compraId, string nombreBocadillo, float precio)
+        {   
+            BocadilloId = bocadilloId;
+            Cantidad = cantidad;
+            Compra = compra;
+            CompraId = compraId;
+            NombreBocadillo = nombreBocadillo;
+            Precio = precio;
+        }
+
+        public CompraBocadillo(Bocadillo bocadillo, Compra compra, int cantidad)
+        {
+            Bocadillo = bocadillo;
+            BocadilloId = bocadillo.Id;
+            Compra = compra;
+            Cantidad = cantidad;
+            CompraId = compra.CompraId;
+            NombreBocadillo = bocadillo.nombre;
+            Precio = bocadillo.PVP;
         }
 
         public override bool Equals(object? obj)
