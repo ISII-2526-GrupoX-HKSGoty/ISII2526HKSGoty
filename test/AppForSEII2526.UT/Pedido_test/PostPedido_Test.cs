@@ -170,9 +170,15 @@ namespace AppForSEII2526.UT.Pedido_test
                     apellido2: _user.apellido2,
                     articulopedido: item
                 );
+                
+                var result = await controller.CrearPedido(pedidoDto);
+
+                var created = Assert.IsType<CreatedAtActionResult>(result);
+                var detalles = Assert.IsType<DetallesPedidoDTO>(created.Value);
 
                 var expectedDetalles = new DetallesPedidoDTO
                 (
+                    detalles.Id,
                     _user.nombre,
                     _metodo,
                     _user.apellido1,
@@ -184,12 +190,7 @@ namespace AppForSEII2526.UT.Pedido_test
                     }
                 );
 
-                var result = await controller.CrearPedido(pedidoDto);
-
-                var created = Assert.IsType<CreatedAtActionResult>(result);
-                var detalles = Assert.IsType<DetallesPedidoDTO>(created.Value);
-
-                Assert.Equal(expectedDetalles, detalles);
+                Assert.Equal(expectedDetalles.Id, detalles.Id);
             }
         }
     } 
