@@ -1,5 +1,7 @@
 ﻿
 
+using System.Threading.Tasks.Dataflow;
+
 namespace AppForSEII2526.API.Models
 {
     public class BonoBocadillo
@@ -14,6 +16,15 @@ namespace AppForSEII2526.API.Models
             PVP = pVP;
             BonosComprados = bonosComprados;
             TipoBocadillo = tipoBocadillo;
+        }
+
+        public BonoBocadillo(int cantidadDisponible, int nBocadillos, string nombre, double pVP, TipoBocadillo tipoBocadillo)
+        {
+            this.cantidadDisponible = cantidadDisponible;
+            this.nBocadillos = nBocadillos;
+            this.nombre = nombre;
+            this.PVP = pVP;
+            this.TipoBocadillo = tipoBocadillo;
         }
 
         [Key]
@@ -38,21 +49,5 @@ namespace AppForSEII2526.API.Models
 
         public TipoBocadillo TipoBocadillo { get; set; }
 
-        public override bool Equals(object? obj)
-        {
-            return obj is BonoBocadillo bocadillo &&
-                   BonoId == bocadillo.BonoId &&
-                   cantidadDisponible == bocadillo.cantidadDisponible &&
-                   nBocadillos == bocadillo.nBocadillos &&
-                   nombre == bocadillo.nombre &&
-                   PVP == bocadillo.PVP &&
-                   EqualityComparer<IList<BonosComprados>>.Default.Equals(BonosComprados, bocadillo.BonosComprados) &&
-                   EqualityComparer<TipoBocadillo>.Default.Equals(TipoBocadillo, bocadillo.TipoBocadillo);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(BonoId, cantidadDisponible, nBocadillos, nombre, PVP, BonosComprados, TipoBocadillo);
-        }
     }
 }
