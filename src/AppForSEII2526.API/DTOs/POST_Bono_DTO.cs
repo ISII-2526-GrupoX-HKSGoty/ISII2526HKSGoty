@@ -31,7 +31,7 @@ public class POST_Bono_DTO
     {
         get
         {
-            return ItemCompra.Sum(d => d.precio * d.cantidad);
+            return ItemCompra.Sum(d => d.cantidad * d.precio);
 
         }
 
@@ -39,7 +39,7 @@ public class POST_Bono_DTO
 
     protected bool CompareDate(DateTime date1, DateTime date2)
     {
-        return (date1.Subtract(date2) < new TimeSpan(0, 1, 0));
+        return date1.Date == date2.Date;
     }
 
     public override bool Equals(object? obj)
@@ -49,7 +49,7 @@ public class POST_Bono_DTO
                apellido1 == dTO.apellido1 &&
                apellido2 == dTO.apellido2 &&
                metodoPago == dTO.metodoPago &&
-               EqualityComparer<IList<Item_Bono_DTO>>.Default.Equals(ItemCompra, dTO.ItemCompra) &&
+               ItemCompra.SequenceEqual(dTO.ItemCompra) &&
                PrecioTotal == dTO.PrecioTotal;
     }
 

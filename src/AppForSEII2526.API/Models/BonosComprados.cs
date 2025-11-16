@@ -15,12 +15,13 @@ namespace AppForSEII2526.API.Models
             Precio = precio;
         }
 
-        public BonosComprados(BonoBocadillo bonoBocadillo, CompraBono compraBono)
+        public BonosComprados(BonoBocadillo bonoBocadillo, CompraBono compraBono, int cantidad)
         {
             BonoBocadillo = bonoBocadillo;
             BonoId = bonoBocadillo.BonoId;
             CompraBono = compraBono;
             CompraBonoId = compraBono.CompraBonoId;
+            Cantidad = cantidad;
         }
 
         public BonoBocadillo BonoBocadillo { get; set; }
@@ -35,6 +36,7 @@ namespace AppForSEII2526.API.Models
 
         [Range(0, int.MaxValue, ErrorMessage = "no acepta valores menores a 0")]
         public double Precio { get; set; }
+
 
     }
 }

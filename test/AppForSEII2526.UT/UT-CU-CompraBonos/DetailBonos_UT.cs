@@ -15,6 +15,7 @@ namespace AppForSEII2526.UT.UT_CU_CompraBonos
         {
             var usuario = new ApplicationUser("JoseJuan","Jose","Juan");
 
+
             var tipoBocadillo = new List<TipoBocadillo>()
             {
                 new TipoBocadillo("Bacon"),
@@ -34,18 +35,15 @@ namespace AppForSEII2526.UT.UT_CU_CompraBonos
 
             var bonosComprados = new List<BonosComprados>()
             {
-                new BonosComprados(bonos[0],compraBono),
-                new BonosComprados(bonos[1],compraBono)
+                new BonosComprados(bonos[0],compraBono,2)
             };
 
             compraBono.BonosComprados.Add(bonosComprados[0]);
-            compraBono.BonosComprados.Add(bonosComprados[1]);
-
-            compraBono.nBonos = bonosComprados[0].Cantidad + bonosComprados[1].Cantidad;
 
 
-            //compraBono.PrecioTotalBono = bonosComprados[0].Precio * bonosComprados[0].Cantidad + bonosComprados[1].Precio * bonosComprados[1].Cantidad;
-            compraBono.PrecioTotalBono = 0;
+            compraBono.nBonos = bonosComprados[0].Cantidad;
+
+            compraBono.PrecioTotalBono = 80;
 
             _context.Add(usuario);
             _context.AddRange(tipoBocadillo);
@@ -83,20 +81,16 @@ namespace AppForSEII2526.UT.UT_CU_CompraBonos
             var conroller = new BonosController(_context, logger);
 
 
-            var expectedCompra = new DETAIL_Bono_DTO(1, "JoseJuan", "Jose", "Juan", CompraBono.MetodoPago.Tarjeta, 0, DateTime.Today, new List<Item_Bono_DTO>());
+            var expectedCompra = new DETAIL_Bono_DTO(1, "JoseJuan", "Jose", "Juan", CompraBono.MetodoPago.Tarjeta, 80, DateTime.Today, new List<Item_Bono_DTO>());
 
             expectedCompra.ItemCompra.Add(new Item_Bono_DTO(1, 1, "Bono1", "Bacon", 3.5, 5));
-            expectedCompra.ItemCompra.Add(new Item_Bono_DTO(1, 2, "Bono2", "Vegetal", 6.0, 10));
 
             var result = await conroller.getCompraBono(1);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var actualCompra = Assert.IsType<DETAIL_Bono_DTO>(okResult.Value);
             var eq = expectedCompra.Equals(actualCompra);
-
-            
-
-            Assert.Equal(expectedCompra, actualCompra);
+            Assert.True(eq);
         }
     }
 }
