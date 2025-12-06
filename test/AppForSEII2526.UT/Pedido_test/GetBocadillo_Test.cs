@@ -22,14 +22,14 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var bocadillos = new List<Bocadillo>()
             {
-                new Bocadillo("Vegetal",        5, 20, tipoPan[1], Tamaño.normal),
-                new Bocadillo("Atún",           5, 20, tipoPan[0], Tamaño.pequeño),
-                new Bocadillo("Jamón y queso",  5, 20, tipoPan[3], Tamaño.normal),
-                new Bocadillo("Politecnico",    5, 20, tipoPan[2], Tamaño.pequeño),
-                new Bocadillo("Completo",       5, 20, tipoPan[4], Tamaño.normal),
-                new Bocadillo("Trifasico",      5, 20, tipoPan[5], Tamaño.pequeño), 
-                new Bocadillo("Bufalo",         5, 20, tipoPan[0], Tamaño.normal),
-                new Bocadillo("Sumarino",       5, 20, tipoPan[1], Tamaño.pequeño)
+                new Bocadillo("Vegetal",        5, 20, Tamaño.normal, tipoPan[1]),
+                new Bocadillo("Atún",           5, 20, Tamaño.pequeño, tipoPan[0]),
+                new Bocadillo("Jamón y queso",  5, 20, Tamaño.normal, tipoPan[3]),
+                new Bocadillo("Politecnico",    5, 20, Tamaño.pequeño, tipoPan[2]),
+                new Bocadillo("Completo",       5, 20, Tamaño.normal, tipoPan[4]),
+                new Bocadillo("Trifasico",      5, 20, Tamaño.pequeño, tipoPan[5]), 
+                new Bocadillo("Bufalo",         5, 20, Tamaño.normal, tipoPan[0]),
+                new Bocadillo("Sumarino",       5, 20, Tamaño.pequeño, tipoPan[1])
 
             };
             

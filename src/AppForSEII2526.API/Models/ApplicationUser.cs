@@ -6,7 +6,7 @@ namespace AppForSEII2526.API.Models;
 public class ApplicationUser : IdentityUser {
 
     public ApplicationUser() { }
-    public ApplicationUser(string nombre, string apellido1, string apellido2)
+    public ApplicationUser(string nombre, string apellido1, string? apellido2)
     {
         this.nombre = nombre;
         this.apellido1 = apellido1;

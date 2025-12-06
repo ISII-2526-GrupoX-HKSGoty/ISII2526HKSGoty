@@ -23,8 +23,8 @@ namespace AppForSEII2526.UT.PedidoContrller_test
 
             var bocadillo = new List<Bocadillo>()
             {
-                new Bocadillo(1, "Poli", 5, 20, tipoPan[0], Tamaño.normal),
-                new Bocadillo(2, "Vegetal", 5, 20, tipoPan[1], Tamaño.pequeño)
+                new Bocadillo(1, "Poli", 5, 20, Tamaño.normal, tipoPan[0]),
+                new Bocadillo(2, "Vegetal", 5, 20, Tamaño.pequeño, tipoPan[1])
             };
 
             ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");

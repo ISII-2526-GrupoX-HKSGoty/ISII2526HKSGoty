@@ -47,8 +47,9 @@ namespace AppForSEII2526.API.Controllers
                         Id = cb.BocadilloId,
                         nombreBocadillo = cb.NombreBocadillo,
                         Cantidad = cb.Cantidad,
-                        PVP = cb.Precio
-                    }).ToList(),
+                        PVP = cb.Precio,
+                        TipoPan = cb.Bocadillo.tipoPan.Nombre
+                        }).ToList(),
                     c.PrecioTotal
                 )).FirstOrDefaultAsync();
 
@@ -75,7 +76,7 @@ namespace AppForSEII2526.API.Controllers
 
             if (!Enum.IsDefined(typeof(Metodo_Pago), pedidoParaCrear.Metodo_Pago))
             {
-                ModelState.AddModelError("MetodoPago", "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay.");
+                ModelState.AddModelError("Metodo_Pago", "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay.");
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
@@ -83,24 +84,36 @@ namespace AppForSEII2526.API.Controllers
 
             var bocadillos = _context.Bocadillos
                 .Where(b => pedidoNombre.Contains(b.Id))
-                .Select(b => new BocadilloDTO(b.nombre, b.tipoPan.Nombre, b.tamaño, b.PVP)).ToList();
+                .Select(b => new { b.nombre, b.PVP, b.stock, b.tamaño, b.Id, b.tipoPan}).ToList();
 
             Compra compra = new Compra(usuario, DateTime.Today, metodoPagoEnum, new List<CompraBocadillo>());
             compra.PrecioTotal = 0;
 
 
-            foreach (var item in pedidoParaCrear.ArticuloPedido)
+            foreach (var articulo in pedidoParaCrear.ArticuloPedido)
             {
-                var bocadillo = bocadillos.FirstOrDefault(p => p.Nombre == item.nombreBocadillo);
+                if (articulo.TipoPan == "semilla")
+                {
+                    ModelState.AddModelError("Bocadillo", "Error!, no nos quedan panes de este tipo para realizar tu pedido");
+                    return ValidationProblem(ModelState);
+                }
+
+                var bocadillo = bocadillos.FirstOrDefault(p => p.nombre == articulo.nombreBocadillo);
                 if (bocadillo == null)
                 {
-                    ModelState.AddModelError("Bocadillo", $"El bocadillo no existe");
+                    ModelState.AddModelError("Bocadillo", "Error! El bocadillo no existe");
                     return ValidationProblem(ModelState);
                 }
                 else
                 {
-                    compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, item.Cantidad, compra, compra.CompraId, bocadillo.Nombre, bocadillo.PVP));
-                    item.PVP = bocadillo.PVP;
+                    compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, articulo.Cantidad, compra, compra.CompraId, bocadillo.nombre, bocadillo.PVP));
+                    articulo.PVP = bocadillo.PVP;
+                }
+
+                if (articulo.Cantidad > bocadillo.stock)
+                {
+                    ModelState.AddModelError("Cantidad", "Error! La cantidad para el bocadillo es mayor que la cantidad disponible");
+                    return ValidationProblem(ModelState);
                 }
             }
 
