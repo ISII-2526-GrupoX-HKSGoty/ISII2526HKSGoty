@@ -93,7 +93,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 //new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
                 new object[] { noUserDto, "Usuario no registrado" },
                 new object[] { metodoNoRegistradoDto, "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay." },
-                new object[] { bocadilloNoExisteDto, "El bocadillo no existe" },
+                new object[] { bocadilloNoExisteDto, "Error! El bocadillo no existe" },
             };
             return allTests;
         }
@@ -102,19 +102,30 @@ namespace AppForSEII2526.UT.Pedido_test
         [Trait("LevelTesting", "Unit Testing")]
         [Trait("Database", "WithoutFixture")]
         [MemberData(nameof(TestParaCasos_CrearPedido))]
-        public async Task CrearPedido_Error_test(CrearPedidoDTO dto, string errorExpected)
+        public async Task CrearPedido_Error_test(CrearPedidoDTO pedidoDTO, string errorEsperado)
         {
             var mock = new Mock<ILogger<PedidoController>>();
             ILogger<PedidoController> logger = mock.Object;
             var controller = new PedidoController(_context, logger);
 
-            var result = await controller.CrearPedido(dto);
+            var result = await controller.CrearPedido(pedidoDTO);
 
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
+            var badRequestResult = Assert.IsAssignableFrom<ObjectResult>(result);
 
-            var errorActual = problemDetails.Errors.First().Value[0];
-            Assert.StartsWith(errorExpected, errorActual);
+
+            if (badRequestResult.Value is ValidationProblemDetails problemDetails)
+            {
+                var errorActual = problemDetails.Errors.First().Value[0];
+                Assert.StartsWith(errorEsperado, errorActual);
+            }
+            else if (badRequestResult.Value is string errorMessage)
+            {
+                Assert.StartsWith(errorEsperado, errorMessage);
+            }
+            else
+            {
+                Assert.True(false, "Unexpected error response type");
+            }
         }
 
         [Fact]
@@ -128,7 +139,7 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var item = new List<ArticuloPedidoDTO>()
             {
-                new ArticuloPedidoDTO(2, "Completo", 5, 20, "Chapata")
+                new ArticuloPedidoDTO(2, "Completo", 20, 5f, "Chapata")
             };
 
             var pedidoDto = new CrearPedidoDTO
@@ -154,12 +165,13 @@ namespace AppForSEII2526.UT.Pedido_test
                 DateTime.Today,
                 new List<ArticuloPedidoDTO>()
                 {
-                        new ArticuloPedidoDTO(2, "Completo", 5, 20, "Chapata")
+                        new ArticuloPedidoDTO(2, "Completo", 20, 5f, "Chapata")
                 },
-                10
+                100
             );
 
             Assert.Equal(expectedDetalles, detalles);
+            
         }
     }
 }

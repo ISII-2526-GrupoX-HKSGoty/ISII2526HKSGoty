@@ -94,7 +94,7 @@ namespace AppForSEII2526.API.Controllers
             {
                 if (articulo.TipoPan == "semilla")
                 {
-                    ModelState.AddModelError("Bocadillo", "Error!, no nos quedan panes de este tipo para realizar tu pedido");
+                    ModelState.AddModelError("Bocadillo", "Error! No nos quedan panes de este tipo para realizar tu pedido");
                     return ValidationProblem(ModelState);
                 }
 
