@@ -14,14 +14,7 @@
         {
 
         }
-        public BocadilloDTO(string nombre, string tipoPanNombre, Tamaño tamaño, float PVP)
-        {
-            Nombre = nombre;
-            Tamaño = tamaño;
-            TipoPanNombre = tipoPanNombre;
-            this.PVP = PVP;
-        }
-
+        
         public BocadilloDTO(int id,string nombre, string tipoPanNombre, Tamaño tamaño, float PVP)
         {
             Id = id;
