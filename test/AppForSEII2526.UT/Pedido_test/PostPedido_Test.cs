@@ -167,7 +167,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 {
                         new ArticuloPedidoDTO(2, "Completo", 20, 5f, "Chapata")
                 },
-                100
+                100f
             );
 
             Assert.Equal(expectedDetalles, detalles);
