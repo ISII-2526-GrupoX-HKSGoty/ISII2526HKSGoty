@@ -15,155 +15,163 @@ using static AppForSEII2526.API.Models.CompraBono;
 
 namespace AppForSEII2526.UT.Pedido_test
 {
-    public class PostPedido_Test
+    public class PostPedido_Test : AppForMovies4SqliteUT
     {
-        public class Post_CrearPedido_test : AppForMovies4SqliteUT
+        public PostPedido_Test()
         {
-
-            public Post_CrearPedido_test()
-            {
-                var tipoPan = new List<TipoPan>()
+            var tipoPan = new List<TipoPan>()
                 {
                 new TipoPan("Baguette"),
                 new TipoPan("Capata")
                 };
 
-                var bocadillo = new List<Bocadillo>()
+            var bocadillo = new List<Bocadillo>()
             {
-                new Bocadillo("Poli",5f, 20, tipoPan[0],Tamaño.normal),
-                new Bocadillo("Completo",5f, 20, tipoPan[1],Tamaño.pequeño),
-
+                new Bocadillo("Poli", 5f, 20, Tamaño.normal, tipoPan[0]),
+                new Bocadillo("Completo", 5f, 20, Tamaño.pequeño, tipoPan[1]),
             };
 
-                ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
+            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
 
-                var compra = new Compra(user, DateTime.Today, Metodo_Pago.Tarjeta, new List<CompraBocadillo>());
+            var compra = new Compra(user, DateTime.Today, Metodo_Pago.Tarjeta, new List<CompraBocadillo>());
 
-                compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo[0], compra, 2));
+            compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo[0], compra, 2));
 
-                _context.ApplicationUser.Add(user);
-                _context.AddRange(tipoPan);
-                _context.AddRange(bocadillo);
-                _context.Add(compra);
-                _context.SaveChanges();
-            }
+            _context.ApplicationUser.Add(user);
+            //_context.Add(user);
+            _context.AddRange(tipoPan);
+            _context.AddRange(bocadillo);
+            _context.Add(compra);
+            _context.SaveChanges();
+        }
 
-            public static IEnumerable<object[]> TestParaCasos_CrearPedido()
-            {
-                var bocadillo = new List<ArticuloPedidoDTO>()
+        public static IEnumerable<object[]> TestParaCasos_CrearPedido()
+        {
+            var bocadillo = new List<ArticuloPedidoDTO>()
                 {
                     new ArticuloPedidoDTO (1, "Poli",  20, 5f, "Baguette")
                 };
 
-                var sinAticulosDto = new CrearPedidoDTO
-                (
-                    nombre: "Fernando",
-                    metododepago: Metodo_Pago.Tarjeta,
-                    apellido1: "Martinez",
-                    apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO>()
-                );
+            var sinAticulosDto = new CrearPedidoDTO
+            (
+                nombre: "Fernando",
+                metododepago: Metodo_Pago.Tarjeta,
+                apellido1: "Martinez",
+                apellido2: "Panadero",
+                articulopedido: new List<ArticuloPedidoDTO>()
+            );
 
-                var noUserDto = new CrearPedidoDTO
-                (
-                    nombre: "NoExiste",
-                    metododepago: Metodo_Pago.Tarjeta,
-                    apellido1: "X",
-                    apellido2: null,
-                    articulopedido: bocadillo
-                );
+            var noUserDto = new CrearPedidoDTO
+            (
+                nombre: "NoExiste",
+                metododepago: Metodo_Pago.Tarjeta,
+                apellido1: "X",
+                apellido2: null,
+                articulopedido: bocadillo
+            );
 
-                var metodoNoRegistradoDto = new CrearPedidoDTO
-                (
-                    nombre: "Fernando",
-                    metododepago: (Metodo_Pago)999,
-                    apellido1: "Martinez",
-                    apellido2: "Panadero",
-                    articulopedido: bocadillo
-                );
+            var metodoNoRegistradoDto = new CrearPedidoDTO
+            (
+                nombre: "Fernando",
+                metododepago: (Metodo_Pago)999,
+                apellido1: "Martinez",
+                apellido2: "Panadero",
+                articulopedido: bocadillo
+            );
 
-                var bocadilloNoExisteDto = new CrearPedidoDTO
-                (
-                    nombre: "Fernando",
-                    metododepago: Metodo_Pago.Tarjeta,
-                    apellido1: "Martinez",
-                    apellido2: "Panadero",
-                    articulopedido: new List<ArticuloPedidoDTO>(){new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2f, "Normal")}
-                );
+            var bocadilloNoExisteDto = new CrearPedidoDTO
+            (
+                nombre: "Fernando",
+                metododepago: Metodo_Pago.Tarjeta,
+                apellido1: "Martinez",
+                apellido2: "Panadero",
+                articulopedido: new List<ArticuloPedidoDTO>() { new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2f, "Normal") }
+            );
 
-                var allTests = new List<object[]>
+            var allTests = new List<object[]>
             {
                 //new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
                 new object[] { noUserDto, "Usuario no registrado" },
                 new object[] { metodoNoRegistradoDto, "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay." },
-                new object[] { bocadilloNoExisteDto, "El bocadillo no existe" },
+                new object[] { bocadilloNoExisteDto, "Error! El bocadillo no existe" },
             };
-                return allTests;
-            }
+            return allTests;
+        }
 
-            [Theory]
-            [Trait("LevelTesting", "Unit Testing")]
-            [Trait("Database", "WithoutFixture")]
-            [MemberData(nameof(TestParaCasos_CrearPedido))]
-            public async Task CrearPedido_Error_test(CrearPedidoDTO dto, string errorExpected)
+        [Theory]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
+        [MemberData(nameof(TestParaCasos_CrearPedido))]
+        public async Task CrearPedido_Error_test(CrearPedidoDTO pedidoDTO, string errorEsperado)
+        {
+            var mock = new Mock<ILogger<PedidoController>>();
+            ILogger<PedidoController> logger = mock.Object;
+            var controller = new PedidoController(_context, logger);
+
+            var result = await controller.CrearPedido(pedidoDTO);
+
+            var badRequestResult = Assert.IsAssignableFrom<ObjectResult>(result);
+
+
+            if (badRequestResult.Value is ValidationProblemDetails problemDetails)
             {
-                var mock = new Mock<ILogger<PedidoController>>();
-                ILogger<PedidoController> logger = mock.Object;
-                var controller = new PedidoController(_context, logger);
-
-                var result = await controller.CrearPedido(dto);
-
-                var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-                var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
-
                 var errorActual = problemDetails.Errors.First().Value[0];
-                Assert.StartsWith(errorExpected, errorActual);
+                Assert.StartsWith(errorEsperado, errorActual);
             }
-
-            [Fact]
-            [Trait("LevelTesting", "Unit Testing")]
-            [Trait("Database", "WithoutFixture")]
-            public async Task CrearPedido_Success_test()
+            else if (badRequestResult.Value is string errorMessage)
             {
-                var mock = new Mock<ILogger<PedidoController>>();
-                ILogger<PedidoController> logger = mock.Object;
-                var controller = new PedidoController(_context, logger);
-
-                var item = new List<ArticuloPedidoDTO>()
+                Assert.StartsWith(errorEsperado, errorMessage);
+            }
+            else
             {
-                new ArticuloPedidoDTO(2, "Completo", 5, 20, "Chapata")
-            };
-
-                var pedidoDto = new CrearPedidoDTO
-                (
-                    nombre: "Fernando",
-                    metododepago: Metodo_Pago.Tarjeta,
-                    apellido1: "Martinez",
-                    apellido2: "Panadero",
-                    articulopedido: item
-                );
-                
-                var result = await controller.CrearPedido(pedidoDto);
-
-                var created = Assert.IsType<CreatedAtActionResult>(result);
-                var detalles = Assert.IsType<DetallesPedidoDTO>(created.Value);
-
-                var expectedDetalles = new DetallesPedidoDTO
-                (
-                    "Fernando",
-                    Metodo_Pago.Tarjeta,
-                    "Martinez",
-                    "Panadero",
-                    DateTime.Today,
-                    new List<ArticuloPedidoDTO>()
-                    {
-                        new ArticuloPedidoDTO(2, "Completo", 5, 20, "Chapata")
-                    },
-                    10
-                );
-
-                Assert.Equal(expectedDetalles, detalles);
+                Assert.True(false, "Unexpected error response type");
             }
         }
-    } 
+
+        [Fact]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
+        public async Task CrearPedido_Success_test()
+        {
+            var mock = new Mock<ILogger<PedidoController>>();
+            ILogger<PedidoController> logger = mock.Object;
+            var controller = new PedidoController(_context, logger);
+
+            var item = new List<ArticuloPedidoDTO>()
+            {
+                new ArticuloPedidoDTO(2, "Completo", 20, 5f, "Chapata")
+            };
+
+            var pedidoDto = new CrearPedidoDTO
+            (
+                nombre: "Fernando",
+                metododepago: Metodo_Pago.Tarjeta,
+                apellido1: "Martinez",
+                apellido2: "Panadero",
+                articulopedido: item
+            );
+
+            var result = await controller.CrearPedido(pedidoDto);
+
+            var created = Assert.IsType<CreatedAtActionResult>(result);
+            var detalles = Assert.IsType<DetallesPedidoDTO>(created.Value);
+
+            var expectedDetalles = new DetallesPedidoDTO
+            (
+                "Fernando",
+                Metodo_Pago.Tarjeta,
+                "Martinez",
+                "Panadero",
+                DateTime.Today,
+                new List<ArticuloPedidoDTO>()
+                {
+                        new ArticuloPedidoDTO(2, "Completo", 20, 5f, "Chapata")
+                },
+                100f
+            );
+
+            Assert.Equal(expectedDetalles, detalles);
+            
+        }
+    }
 }

@@ -29,7 +29,6 @@ namespace AppForSEII2526.API.Controllers
 
                 (filTipoPan == null || b.tipoPan.Nombre.Contains(filTipoPan))
 
-
                 && (filTamaño == null || b.tamaño == filTamaño))
 
 

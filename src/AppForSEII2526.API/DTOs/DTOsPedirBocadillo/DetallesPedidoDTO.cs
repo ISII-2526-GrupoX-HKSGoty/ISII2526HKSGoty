@@ -2,6 +2,7 @@
 
 
 
+
 namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
     public class DetallesPedidoDTO:CrearPedidoDTO
@@ -10,7 +11,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         {
         }
 
-        public DetallesPedidoDTO( string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, IList<ArticuloPedidoDTO> articuloPedido, float precioTotal) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
+        public DetallesPedidoDTO(string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, List<ArticuloPedidoDTO> articuloPedido, float precioTotal) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
         {
             FechaPedido = fechaPedido;
             PrecioTotal = precioTotal;
@@ -27,7 +28,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
                    Metodo_Pago == dTO.Metodo_Pago &&
                    apellido1 == dTO.apellido1 &&
                    apellido2 == dTO.apellido2 &&
-                   EqualityComparer<IList<ArticuloPedidoDTO>>.Default.Equals(ArticuloPedido, dTO.ArticuloPedido) &&
+                   ArticuloPedido.SequenceEqual(dTO.ArticuloPedido) &&
                    FechaPedido == dTO.FechaPedido &&
                    PrecioTotal == dTO.PrecioTotal;
         }

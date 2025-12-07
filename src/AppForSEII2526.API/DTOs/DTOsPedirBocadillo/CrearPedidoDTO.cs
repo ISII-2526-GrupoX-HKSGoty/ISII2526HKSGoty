@@ -13,7 +13,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         public IList<ArticuloPedidoDTO> ArticuloPedido { get; set; }
 
 
-        public CrearPedidoDTO(string nombre, Metodo_Pago metododepago, string apellido1, string apellido2, IList<ArticuloPedidoDTO> articulopedido)
+        public CrearPedidoDTO(string nombre, Metodo_Pago metododepago, string apellido1, string? apellido2, IList<ArticuloPedidoDTO> articulopedido)
         {
             this.nombre = nombre;
             Metodo_Pago = metododepago;
@@ -33,7 +33,7 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
                    Metodo_Pago == dTO.Metodo_Pago &&
                    apellido1 == dTO.apellido1 &&
                    apellido2 == dTO.apellido2 &&
-                   EqualityComparer<IList<ArticuloPedidoDTO>>.Default.Equals(ArticuloPedido, dTO.ArticuloPedido);
+                   ArticuloPedido.SequenceEqual(dTO.ArticuloPedido);
         }
 
         public override int GetHashCode()
