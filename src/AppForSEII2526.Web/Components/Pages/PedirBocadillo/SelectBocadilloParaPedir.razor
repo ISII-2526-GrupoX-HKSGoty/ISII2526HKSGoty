@@ -3,6 +3,9 @@
 @using AppForSEII2526.Web.API
 @inject AppForSEII2526APIClient apiclient
 @inject ILogger<SelectBocadilloParaPedir> logger
+@inject CompraBocadilloStateContainercs compraState
+@inject NavigationManager navigation
+
 
 <h3>Select Bocadillo Para Pedir</h3>
 <div class="container-fluid">
@@ -52,46 +55,23 @@
     </div>
 </div>
 @code {
-    //private ICollection<BocadilloDTO> bocadillos;
+    private ICollection<BocadilloDTO> bocadillos;
     private bool hideErrors { get { return errors.Length == 0; } }
+
     private string errors = "";
-    private string nombreBocacillo { get; set; }
+    private Tamaño tamaño { get; set; }
     private string tipoPan { get; set; }
-    private DateTime _from;
-    private DateTime From
-    {
-        get { return _from; }
-        set
-        {
-            if (_from != value)
-            {
-                //the rentingcart is cleared to ensure that only movies available for the selected period are selected
-                _from = value;
 
-            }
-        }
-    }
+    private string TipoPanSelected;
+    private ICollection<string>? tipoPanNames = new List<string>();
 
-    private DateTime _to;
-    private DateTime To
-    {
-        get { return _to; }
-        set
-        {
-            if (_to != value)
-            {
-                //the rentingcart is cleared to ensure that only movies available for the selected period are selected
-                _to = value;
+    private bool hideRentingCart { get { return compra.ItemPedido.Count == 0; } }
 
-            }
-        }
-    }
-
-    public async void SearchMovies()
+    public async void BuscarBocadillos()
     {
         try
         {
-            bocadillos = await apiclient.GetMoviesForRentingAsync(nombreBocacillo, tipoPan, _from, _to);
+            bocadillos = await apiclient.GetBocadillosParaPedirAsync(tamaño, tipoPan);
 
         }
         catch (ApiException ex)
@@ -101,23 +81,37 @@
         }
         StateHasChanged();
     }
+
+    private CrearPedidoDTO compra => compraState.Compra;
+
+    private bool hiddenRentingCart = true;
+
+    private void AddBocadillo(BocadilloDTO bocadillo)
+    {
+        compraState.AddBocadilloToComprar(bocadillo);
+    }
+
+    private void RemoveRentalItem(ArticuloPedidoDTO articulo)
+    {
+        compraState.RemoveCompralItemToRent(articulo);
+        if (compra.ItemPedido.Count == 0) hiddenRentingCart = true;
+    }
+
+
     protected override Task OnInitializedAsync()
     {
-        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
-        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
-        _from = (_from == new DateTime(1, 1, 1)) ?
-            DateTime.SpecifyKind(DateTime.Today.AddDays(1), DateTimeKind.Utc)
-            : _from;
+        try
+        {
+            tipoPanNames = await apiclient.GetTipoPanesAsync(null);
+        }
+        catch (ApiException ex)
+        {
+            if (tipoPanNames == null) tipoPanNames = new List<string>() { "All", };
+            logger.LogError("Error! There was an error while connecting to the GetGenresAsync service");
+        }
 
+        BuscarBocadillos();
 
-        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
-        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
-        _to = (_to == new DateTime(1, 1, 1)) ?
-            DateTime.SpecifyKind(DateTime.Today.AddDays(2), DateTimeKind.Utc)
-            : _to;
-
-        SearchMovies();
-
-        return base.OnInitializedAsync();
+        //return base.OnInitializedAsync();
     }
 }
