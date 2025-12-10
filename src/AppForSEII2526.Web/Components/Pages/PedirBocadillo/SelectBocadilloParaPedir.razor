@@ -1,8 +1,7 @@
-﻿<!--<h3>SelectBocadilloParaPedir</h3>
-@page "/PedirBocadillo/SelectBocadilloParaPedir"
+﻿@page "/PedirBocadillo/SelectBocadilloParaPedir"
 
 @using AppForSEII2526.Web.API
-@inject AppForBocadilloAPICliente apiclient
+@inject AppForSEII2526APIClient apiclient
 @inject ILogger<SelectBocadilloParaPedir> logger
 
 <h3>Select Bocadillo Para Pedir</h3>
@@ -13,11 +12,34 @@
     <div class="row" hidden="@hideErrors">
         <div class="col-8">
             <div class="row">
-                <p>Aquí se muestran los filtros</p>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Tamaño</span>
+                        <input type="text" id="inputTitle" @bind=tamaño class="form-control" placeholder="Tamaño" aria-label="Tamaño" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Tipo Pan</span>
+                        <input type="text" id="inputPan" @bind=TipoPan class="form-control" placeholder="Tipo Pan" aria-label="Tipo Pan" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">From</span>
+                        <InputDate @bind-Value="@From" id="fromDate" />
+                    </div>
+                </div>
+                <div class="col">
+                    <span class="input-group-text">To</span>
+                    <InputDate id="toDate" @bind-Value="@To" />
+
+                </div>
                 <div class="col">
                     <button type="button" class="btn btn-primary" @onclick=@SearchBocadillo id="searchBocadillo">Search Bocadillo</button>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col">
                     <button type="button" class="btn btn-primary" @onclick=@SearchMovies id="searchMovies">Search movies</button>
@@ -35,12 +57,41 @@
     private string errors = "";
     private string nombreBocacillo { get; set; }
     private string tipoPan { get; set; }
+    private DateTime _from;
+    private DateTime From
+    {
+        get { return _from; }
+        set
+        {
+            if (_from != value)
+            {
+                //the rentingcart is cleared to ensure that only movies available for the selected period are selected
+                _from = value;
+
+            }
+        }
+    }
+
+    private DateTime _to;
+    private DateTime To
+    {
+        get { return _to; }
+        set
+        {
+            if (_to != value)
+            {
+                //the rentingcart is cleared to ensure that only movies available for the selected period are selected
+                _to = value;
+
+            }
+        }
+    }
 
     public async void SearchMovies()
     {
         try
         {
-            bocadillos = await apiclient.GetMoviesForRentingAsync(nombreBocacillo, tipoPan, null, null);
+            bocadillos = await apiclient.GetMoviesForRentingAsync(nombreBocacillo, tipoPan, _from, _to);
 
         }
         catch (ApiException ex)
@@ -50,5 +101,23 @@
         }
         StateHasChanged();
     }
+    protected override Task OnInitializedAsync()
+    {
+        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
+        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
+        _from = (_from == new DateTime(1, 1, 1)) ?
+            DateTime.SpecifyKind(DateTime.Today.AddDays(1), DateTimeKind.Utc)
+            : _from;
+
+
+        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
+        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
+        _to = (_to == new DateTime(1, 1, 1)) ?
+            DateTime.SpecifyKind(DateTime.Today.AddDays(2), DateTimeKind.Utc)
+            : _to;
+
+        SearchMovies();
+
+        return base.OnInitializedAsync();
+    }
 }
--->
