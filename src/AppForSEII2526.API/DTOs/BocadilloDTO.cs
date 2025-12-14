@@ -1,4 +1,6 @@
-﻿namespace AppForSEII2526.API.DTOs
+﻿using static Bocadillo;
+
+namespace AppForSEII2526.API.DTOs
 {
     public class BocadilloDTO//GET
     {
@@ -7,22 +9,15 @@
         public string TipoPanNombre { get; set; }
 
         [Precision(10, 2)]
-        public float PVP { get; set; }
+        public decimal PVP { get; set; }
         public int Id { get; set; }
 
         public BocadilloDTO()
         {
 
         }
-        public BocadilloDTO(string nombre, string tipoPanNombre, Tamaño tamaño, float PVP)
-        {
-            Nombre = nombre;
-            Tamaño = tamaño;
-            TipoPanNombre = tipoPanNombre;
-            this.PVP = PVP;
-        }
-
-        public BocadilloDTO(int id,string nombre, string tipoPanNombre, Tamaño tamaño, float PVP)
+        
+        public BocadilloDTO(int id,string nombre, string tipoPanNombre, Tamaño tamaño, decimal PVP)
         {
             Id = id;
             Nombre = nombre;

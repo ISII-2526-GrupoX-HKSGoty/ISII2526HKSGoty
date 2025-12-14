@@ -6,11 +6,12 @@ namespace AppForSEII2526.API.Models;
 public class ApplicationUser : IdentityUser {
 
     public ApplicationUser() { }
-    public ApplicationUser(string nombre, string apellido1, string apellido2)
+    public ApplicationUser(string nombre, string apellido1, string? apellido2, string correo)
     {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
+        Correo = correo;
     }
     [Required]
     public string nombre { get; set; }
@@ -18,4 +19,5 @@ public class ApplicationUser : IdentityUser {
     public string apellido1 { get; set; }
 
     public string? apellido2 { get; set; }
+    public string Correo { get; set; }
 }

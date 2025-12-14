@@ -1,6 +1,7 @@
 ﻿using AppForSEII2526.API.DTOs;
 using AppForSEII2526.API.Models;
 using System;
+using static Bocadillo;
 
 namespace AppForSEII2526.API.Controllers
 {
@@ -28,7 +29,6 @@ namespace AppForSEII2526.API.Controllers
                 .Where(b =>
 
                 (filTipoPan == null || b.tipoPan.Nombre.Contains(filTipoPan))
-
 
                 && (filTamaño == null || b.tamaño == filTamaño))
 

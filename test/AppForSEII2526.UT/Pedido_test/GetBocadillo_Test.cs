@@ -3,6 +3,7 @@ using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs;
 using AppForSEII2526.API.Models;
 using System.Net;
+using static Bocadillo;
 
 
 namespace AppForSEII2526.UT.Pedido_test
@@ -22,18 +23,18 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var bocadillos = new List<Bocadillo>()
             {
-                new Bocadillo("Vegetal",        5, 20, tipoPan[1], Tamaño.normal),
-                new Bocadillo("Atún",           5, 20, tipoPan[0], Tamaño.pequeño),
-                new Bocadillo("Jamón y queso",  5, 20, tipoPan[3], Tamaño.normal),
-                new Bocadillo("Politecnico",    5, 20, tipoPan[2], Tamaño.pequeño),
-                new Bocadillo("Completo",       5, 20, tipoPan[4], Tamaño.normal),
-                new Bocadillo("Trifasico",      5, 20, tipoPan[5], Tamaño.pequeño), 
-                new Bocadillo("Bufalo",         5, 20, tipoPan[0], Tamaño.normal),
-                new Bocadillo("Sumarino",       5, 20, tipoPan[1], Tamaño.pequeño)
+                new Bocadillo("Vegetal",        5, 20, Tamaño.Normal, tipoPan[1]),
+                new Bocadillo("Atún",           5, 20, Tamaño.Pequeño, tipoPan[0]),
+                new Bocadillo("Jamón y queso",  5, 20, Tamaño.Normal, tipoPan[3]),
+                new Bocadillo("Politecnico",    5, 20, Tamaño.Pequeño, tipoPan[2]),
+                new Bocadillo("Completo",       5, 20, Tamaño.Normal, tipoPan[4]),
+                new Bocadillo("Trifasico",      5, 20, Tamaño.Pequeño, tipoPan[5]), 
+                new Bocadillo("Bufalo",         5, 20, Tamaño.Normal, tipoPan[0]),
+                new Bocadillo("Sumarino",       5, 20, Tamaño.Pequeño, tipoPan[1])
 
             };
             
-            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
+            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero", "Fernando.Martinez22@alu.uclm.es");
 
             _context.Add(user);
             _context.AddRange(bocadillos);
@@ -45,14 +46,14 @@ namespace AppForSEII2526.UT.Pedido_test
         {
             var bocadilloDTOs = new List<BocadilloDTO>()
             { 
-                new BocadilloDTO (1, "Vegetal",         "Integral", Tamaño.normal, 5),         //0
-                new BocadilloDTO (2, "Atún",            "Baguette", Tamaño.pequeño, 5),        //1
-                new BocadilloDTO (3, "Jamón y queso",   "Chapata", Tamaño.normal, 5),          //2
-                new BocadilloDTO (4, "Politecnico",     "Molde", Tamaño.pequeño, 5),           //3
-                new BocadilloDTO (5, "Completo",        "Cereal", Tamaño.normal, 5),           //4
-                new BocadilloDTO (6, "Trifasico",       "Sin gluten", Tamaño.pequeño, 5),      //5
-                new BocadilloDTO (7, "Bufalo",          "Baguette", Tamaño.normal, 5),         //6
-                new BocadilloDTO (8, "Sumarino",        "Integral", Tamaño.pequeño, 5)         //7
+                new BocadilloDTO (1, "Vegetal",         "Integral", Tamaño.Normal, 5),         //0
+                new BocadilloDTO (2, "Atún",            "Baguette", Tamaño.Pequeño, 5),        //1
+                new BocadilloDTO (3, "Jamón y queso",   "Chapata", Tamaño.Normal, 5),          //2
+                new BocadilloDTO (4, "Politecnico",     "Molde", Tamaño.Pequeño, 5),           //3
+                new BocadilloDTO (5, "Completo",        "Cereal", Tamaño.Normal, 5),           //4
+                new BocadilloDTO (6, "Trifasico",       "Sin gluten", Tamaño.Pequeño, 5),      //5
+                new BocadilloDTO (7, "Bufalo",          "Baguette", Tamaño.Normal, 5),         //6
+                new BocadilloDTO (8, "Sumarino",        "Integral", Tamaño.Pequeño, 5)         //7
             };
 
             var tc1 = bocadilloDTOs; // ordenados por nombre
@@ -67,9 +68,9 @@ namespace AppForSEII2526.UT.Pedido_test
             var allTests = new List<object[]>
             {
                 new object[] { null,            null,      tc1 },
-                new object[] { Tamaño.pequeño,  null,      tc2 },
+                new object[] { Tamaño.Pequeño,  null,      tc2 },
                 new object[] { null,            "Chapata", tc3 },
-                new object[] { Tamaño.normal,   "Baguette",tc4 },
+                new object[] { Tamaño.Normal,   "Baguette",tc4 },
             };
             return allTests;
         }
@@ -97,7 +98,7 @@ namespace AppForSEII2526.UT.Pedido_test
             ILogger<BocadillosController> logger = mock.Object;
             var controller = new BocadillosController(_context, logger);
 
-            var resultado = await controller.GetBocadillosParaPedir(Tamaño.normal, "NoExiste");
+            var resultado = await controller.GetBocadillosParaPedir(Tamaño.Normal, "NoExiste");
         }
     }
 }
