@@ -11,14 +11,14 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         {
         }
 
-        public DetallesPedidoDTO(string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, List<ArticuloPedidoDTO> articuloPedido, float precioTotal) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
+        public DetallesPedidoDTO(string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, List<ArticuloPedidoDTO> articuloPedido, decimal precioTotal) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
         {
             FechaPedido = fechaPedido;
             PrecioTotal = precioTotal;
         }
 
         public DateTime FechaPedido { get; set; }
-        public float PrecioTotal { get; set; }
+        public decimal PrecioTotal { get; set; }
 
         public override bool Equals(object? obj)
         {

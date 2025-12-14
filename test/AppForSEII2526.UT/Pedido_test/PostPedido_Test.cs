@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using static AppForSEII2526.API.Models.CompraBono;
+using static Bocadillo;
 
 namespace AppForSEII2526.UT.Pedido_test
 {
@@ -27,11 +28,11 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var bocadillo = new List<Bocadillo>()
             {
-                new Bocadillo("Poli", 5f, 20, Tamaño.normal, tipoPan[0]),
-                new Bocadillo("Completo", 5f, 20, Tamaño.pequeño, tipoPan[1]),
+                new Bocadillo("Poli", 5, 20, Tamaño.Normal, tipoPan[0]),
+                new Bocadillo("Completo", 5, 20, Tamaño.Pequeño, tipoPan[1]),
             };
 
-            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
+            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero", "Fernando.Martinez22@alu.uclm.es");
 
             var compra = new Compra(user, DateTime.Today, Metodo_Pago.Tarjeta, new List<CompraBocadillo>());
 
@@ -49,7 +50,7 @@ namespace AppForSEII2526.UT.Pedido_test
         {
             var bocadillo = new List<ArticuloPedidoDTO>()
                 {
-                    new ArticuloPedidoDTO (1, "Poli",  20, 5f, "Baguette")
+                    new ArticuloPedidoDTO (1, "Poli",  20, 5, "Baguette")
                 };
 
             var sinAticulosDto = new CrearPedidoDTO
@@ -85,7 +86,7 @@ namespace AppForSEII2526.UT.Pedido_test
                 metododepago: Metodo_Pago.Tarjeta,
                 apellido1: "Martinez",
                 apellido2: "Panadero",
-                articulopedido: new List<ArticuloPedidoDTO>() { new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2f, "Normal") }
+                articulopedido: new List<ArticuloPedidoDTO>() { new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2, "Normal") }
             );
 
             var allTests = new List<object[]>
@@ -139,7 +140,7 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var item = new List<ArticuloPedidoDTO>()
             {
-                new ArticuloPedidoDTO(2, "Completo", 20, 5f, "Chapata")
+                new ArticuloPedidoDTO(2, "Completo", 20, 5, "Chapata")
             };
 
             var pedidoDto = new CrearPedidoDTO
@@ -165,9 +166,9 @@ namespace AppForSEII2526.UT.Pedido_test
                 DateTime.Today,
                 new List<ArticuloPedidoDTO>()
                 {
-                        new ArticuloPedidoDTO(2, "Completo", 20, 5f, "Chapata")
+                        new ArticuloPedidoDTO(2, "Completo", 20, 5, "Chapata")
                 },
-                100f
+                100
             );
 
             Assert.Equal(expectedDetalles, detalles);

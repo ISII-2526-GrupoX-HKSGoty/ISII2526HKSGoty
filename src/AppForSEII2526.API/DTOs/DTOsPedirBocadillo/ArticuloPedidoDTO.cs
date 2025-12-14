@@ -7,14 +7,14 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         public string nombreBocadillo { get; set; }
 
         public int Cantidad { get; set; }
-        public float PVP { get; set; }
+        public decimal PVP { get; set; }
         public string TipoPan { get; set; }
 
         public ArticuloPedidoDTO()
         {
         }
 
-        public ArticuloPedidoDTO(int id, string nombreBocadillo, int cantidad, float pVP, string tipoPan)
+        public ArticuloPedidoDTO(int id, string nombreBocadillo, int cantidad, decimal pVP, string tipoPan)
         {
             Id = id;
             this.nombreBocadillo = nombreBocadillo;

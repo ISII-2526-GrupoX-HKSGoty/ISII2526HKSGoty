@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Bocadillo;
 
 namespace AppForSEII2526.UT.PedidoContrller_test
 {
@@ -23,11 +24,11 @@ namespace AppForSEII2526.UT.PedidoContrller_test
 
             var bocadillo = new List<Bocadillo>()
             {
-                new Bocadillo(1, "Poli", 5, 20, Tamaño.normal, tipoPan[0]),
-                new Bocadillo(2, "Vegetal", 5, 20, Tamaño.pequeño, tipoPan[1])
+                new Bocadillo(1, "Poli", 5, 20, Tamaño.Normal, tipoPan[0]),
+                new Bocadillo(2, "Vegetal", 5, 20, Tamaño.Pequeño, tipoPan[1])
             };
 
-            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero");
+            ApplicationUser user = new ApplicationUser("Fernando", "Martinez", "Panadero", "Fernando.Martinez22@alu.uclm.es");
 
             var compra = new Compra(user, DateTime.Today, Metodo_Pago.Paypal, new List<CompraBocadillo>());
             compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo[0], compra, 2));

@@ -1,9 +1,0 @@
-﻿namespace AppForSEII2526.API.Models
-{
-    public enum Metodo_Pago
-    {
-        Tarjeta,
-        Paypal,
-        GooglePay
-    }
-}

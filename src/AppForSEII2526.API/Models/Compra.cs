@@ -30,7 +30,7 @@
         public Metodo_Pago Metodo_Pago { get; set; }
 
         [Required]
-        public float PrecioTotal { get; set; }
+        public decimal PrecioTotal { get; set; }
 
         public List<CompraBocadillo> BocadillosComprados { get; set; }
 
@@ -52,5 +52,11 @@
         {
             return HashCode.Combine(User, CompraId, FechaCompra, nBocadillos, Metodo_Pago, PrecioTotal, BocadillosComprados);
         }
+    }
+    public enum Metodo_Pago
+    {
+        Tarjeta,
+        Paypal,
+        GooglePay
     }
 }
