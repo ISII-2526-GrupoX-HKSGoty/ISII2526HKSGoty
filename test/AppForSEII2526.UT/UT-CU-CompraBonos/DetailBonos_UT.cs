@@ -13,7 +13,7 @@ namespace AppForSEII2526.UT.UT_CU_CompraBonos
     {
         public DetailBonos_UT()
         {
-            var usuario = new ApplicationUser("JoseJuan","Jose","Juan");
+            var usuario = new ApplicationUser("Fernando", "Martinez", "Panadero", "Fernando.Martinez22@alu.uclm.es");
 
 
             var tipoBocadillo = new List<TipoBocadillo>()

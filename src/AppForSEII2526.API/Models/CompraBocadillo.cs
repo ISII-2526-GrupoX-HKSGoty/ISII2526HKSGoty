@@ -13,7 +13,7 @@ namespace AppForSEII2526.API.Models
         public int CompraId { get; set; }
         public string NombreBocadillo { get; set; }
         [Precision(10, 2)]
-        public float Precio { get; set; }  
+        public decimal Precio { get; set; }  
         public List<TipoPan> TipoPan { get; set; } = new List<TipoPan>();
 
 
@@ -31,7 +31,7 @@ namespace AppForSEII2526.API.Models
             CompraId = compra.CompraId;
         }
 
-        public CompraBocadillo(int bocadilloId, int cantidad, Compra compra, int compraId, string nombreBocadillo, float precio)
+        public CompraBocadillo(int bocadilloId, int cantidad, Compra compra, int compraId, string nombreBocadillo, decimal precio)
         {   
             BocadilloId = bocadilloId;
             Cantidad = cantidad;

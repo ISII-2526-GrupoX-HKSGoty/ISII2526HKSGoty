@@ -7,7 +7,7 @@ public class Bocadillo
     
     public Bocadillo() { }
 
-    public Bocadillo(int id, string nombre, float pvp, int stock, Tamaño tamaño, TipoPan tipoPan)
+    public Bocadillo(int id, string nombre, decimal pvp, int stock, Tamaño tamaño, TipoPan tipoPan)
     {
         Id = id;
         this.nombre = nombre;
@@ -19,7 +19,7 @@ public class Bocadillo
         ComprasDelBocadillo = new List<CompraBocadillo>();
     }
 
-    public Bocadillo(string nombre, float pvp, int stock, Tamaño tamaño, TipoPan tipoPan)
+    public Bocadillo(string nombre, decimal pvp, int stock, Tamaño tamaño, TipoPan tipoPan)
     {
         this.nombre = nombre;
         PVP = pvp;
@@ -30,7 +30,7 @@ public class Bocadillo
         ComprasDelBocadillo = new List<CompraBocadillo>();
     }
 
-    public Bocadillo(string nombre, float pvp, int stock, Tamaño tamaño)
+    public Bocadillo(string nombre, decimal pvp, int stock, Tamaño tamaño)
     {
         this.nombre = nombre;
         PVP = pvp;
@@ -38,6 +38,7 @@ public class Bocadillo
         this.tamaño = tamaño;
         ResenyaBocadillos = new List<ResenyaBocadillo>();
         ComprasDelBocadillo = new List<CompraBocadillo>();
+        tipoPan = null!;
     }
 
     [Key]
@@ -46,7 +47,7 @@ public class Bocadillo
     [StringLength(30, ErrorMessage = "El nombre no debe superar los 30 caracteres")]
     public string nombre { get; set; }
     [Precision(10,2)]
-    public float PVP { get; set; }
+    public decimal PVP { get; set; }
     public int stock { get; set; }
     public TipoPan tipoPan { get; set; }
     public Tamaño tamaño { get; set; }
@@ -54,7 +55,7 @@ public class Bocadillo
 
     public List<CompraBocadillo> ComprasDelBocadillo { get; set; }
 
-    public Bocadillo(int id, string nombre, float pvp, int stock, TipoPan tipoPan, Tamaño tamaño, IList<ResenyaBocadillo> resenyaBocadillos)
+    public Bocadillo(int id, string nombre, decimal pvp, int stock, TipoPan tipoPan, Tamaño tamaño, IList<ResenyaBocadillo> resenyaBocadillos)
     {
         Id = id;
         this.nombre = nombre;
@@ -75,14 +76,15 @@ public override bool Equals(object? obj)
                PVP == bocadillo.PVP &&
                stock == bocadillo.stock &&
                EqualityComparer<TipoPan>.Default.Equals(tipoPan, bocadillo.tipoPan) &&
-               tamaño == bocadillo.tamaño &&
-               EqualityComparer<IList<ResenyaBocadillo>>.Default.Equals(ResenyaBocadillos, bocadillo.ResenyaBocadillos) &&
-               EqualityComparer<List<CompraBocadillo>>.Default.Equals(ComprasDelBocadillo, bocadillo.ComprasDelBocadillo);
+               tamaño == bocadillo.tamaño;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, nombre, PVP, stock, tipoPan, tamaño, ResenyaBocadillos, ComprasDelBocadillo);
+        return HashCode.Combine(Id, nombre, PVP, stock, tipoPan, tamaño);
     }
-    
+    public enum Tamaño
+    {
+        Pequeño, Normal
+    }
 }

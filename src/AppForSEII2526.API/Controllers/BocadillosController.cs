@@ -1,6 +1,7 @@
 ﻿using AppForSEII2526.API.DTOs;
 using AppForSEII2526.API.Models;
 using System;
+using static Bocadillo;
 
 namespace AppForSEII2526.API.Controllers
 {
