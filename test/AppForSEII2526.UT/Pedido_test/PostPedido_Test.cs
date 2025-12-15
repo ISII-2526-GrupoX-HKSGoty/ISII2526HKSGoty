@@ -50,7 +50,7 @@ namespace AppForSEII2526.UT.Pedido_test
         {
             var bocadillo = new List<ArticuloPedidoDTO>()
                 {
-                    new ArticuloPedidoDTO (1, "Poli",  20, 5, "Baguette")
+                    new ArticuloPedidoDTO (1, "Poli",  2, 5, "Baguette")
                 };
 
             var sinAticulosDto = new CrearPedidoDTO
@@ -89,12 +89,23 @@ namespace AppForSEII2526.UT.Pedido_test
                 articulopedido: new List<ArticuloPedidoDTO>() { new ArticuloPedidoDTO(999, "FalsoBocadillo", 1, 2, "Normal") }
             );
 
+            var demasiadoBocadillos = new CrearPedidoDTO
+            (
+                nombre: "Fernando",
+                metododepago: Metodo_Pago.Tarjeta,
+                apellido1: "Martinez",
+                apellido2: "Panadero",
+                articulopedido: new List<ArticuloPedidoDTO>() { new ArticuloPedidoDTO(1, "Poli", 8, 5, "Baguette") }
+            );
+
             var allTests = new List<object[]>
             {
                 //new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
                 new object[] { noUserDto, "Usuario no registrado" },
                 new object[] { metodoNoRegistradoDto, "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay." },
                 new object[] { bocadilloNoExisteDto, "Error! El bocadillo no existe" },
+                new object[] { demasiadoBocadillos, "Error!, no nos quedan panes para realizar tu pedido" }
+
             };
             return allTests;
         }
@@ -140,7 +151,7 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var item = new List<ArticuloPedidoDTO>()
             {
-                new ArticuloPedidoDTO(2, "Completo", 20, 5, "Chapata")
+                new ArticuloPedidoDTO(2, "Completo", 2, 5, "Chapata")
             };
 
             var pedidoDto = new CrearPedidoDTO
@@ -166,9 +177,9 @@ namespace AppForSEII2526.UT.Pedido_test
                 DateTime.Today,
                 new List<ArticuloPedidoDTO>()
                 {
-                        new ArticuloPedidoDTO(2, "Completo", 20, 5, "Chapata")
+                        new ArticuloPedidoDTO(2, "Completo", 2, 5, "Chapata")
                 },
-                100
+                10
             );
 
             Assert.Equal(expectedDetalles, detalles);
