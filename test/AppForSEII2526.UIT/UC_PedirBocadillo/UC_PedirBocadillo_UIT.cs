@@ -12,6 +12,7 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
     public class UC_PedirBocadillo_UIT : UC_UIT
     {
         private SelectBocadillosParaPedir_PO selectBocadillosParaPedir_PO;
+        private CrearPedido_PO crearPedido_PO;
         private const int bocadilloID = 1;
         private const string nombreBocadillo1 = "BaconQueso";
         private const string tipoPan1 = "Normal";
@@ -27,22 +28,21 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
         public UC_PedirBocadillo_UIT(ITestOutputHelper output) : base(output)
         {
             selectBocadillosParaPedir_PO = new SelectBocadillosParaPedir_PO(_driver, _output);
-
-
+            crearPedido_PO = new CrearPedido_PO(_driver, _output);
         }
 
 
         private void InitialStepsForCompraBocadillos()
         {
             _driver.Navigate().GoToUrl("https://localhost:7081/");
-            selectBocadillosParaPedir_PO.WaitForBeingVisible(By.Id("CreateCompra"));
+            selectBocadillosParaPedir_PO.WaitForBeingVisible(By.Id("CrearCompra"));
 
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             wait.Until(driver =>
             {
                 try
                 {
-                    var element = driver.FindElement(By.Id("CreateCompra"));
+                    var element = driver.FindElement(By.Id("CrearCompra"));
                     return element != null && element.Displayed && element.Enabled;
                 }
                 catch (StaleElementReferenceException)
@@ -56,7 +56,7 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
             {
                 try
                 {
-                    var createCompraButton = _driver.FindElement(By.Id("CreateCompra"));
+                    var createCompraButton = _driver.FindElement(By.Id("CrearCompra"));
                     createCompraButton.Click();
                     break;
                 }
@@ -74,7 +74,7 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
         [InlineData(nombreBocadillo1, tipoPan1, precio1, tamanyo1, "Normal", "")]
         [InlineData(nombreBocadillo2, tipoPan2, precio2, tamanyo2, "", "Integral")]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC2_AF1_UC2_4_5_6_filtering(string nombreBocadillo, string tipoPan, string precio, string tamanyo,
+        public void TC1_AF2_TC1_3_4filtering(string nombreBocadillo, string tipoPan, string precio, string tamanyo,
             string filterTamanyo, string filterTipoPan)
         {
             //Arrange
@@ -92,7 +92,7 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC2_AF1_UC2_11_CompraNotAvailable()
+        public void TC1_AF2_TC1_3_4CompraNotAvailable()
         {
             //Arrange
             InitialStepsForCompraBocadillos();
@@ -102,6 +102,44 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
 
             //Assert
             Assert.True(selectBocadillosParaPedir_PO.CompraNotAvailable());
+        }
+
+
+        //post
+        [Theory]
+        [InlineData("", "Martinez", "Panadero", "Tarjeta")] //Falta Nombre
+        [InlineData("Fernando", "", "Panadero", "Tarjeta")] //Falta Primer Apellido
+        [InlineData("Francisco", "No sabe", "Matematicas", "Tarjeta")] //Usuario Inexistente
+        [Trait("LevelTesting", "Funcional Testing")]
+
+        public void TC1_FA3_2_3_4_5_6_7(string nombre, string apellido1, string apellido2, string metodopago) //Esc_6
+        {
+            InitialStepsForCompraBocadillos();
+            selectBocadillosParaPedir_PO.SearchBocadillos("", "");
+            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Completo");
+            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Poli");
+            selectBocadillosParaPedir_PO.seleccionarBotonCompra();
+            crearPedido_PO.rellenarDatosParaCompra(nombre, apellido1, apellido2, metodopago);
+            crearPedido_PO.seleccionarBotonCompra();
+            Assert.True(crearPedido_PO.checkErrorMessage("Errores: Error al procesar tu solicitud, inténtalo de nuevo más tarde!"));
+        }
+
+
+
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void TC1_FA3_2_3_4_5_6_7_8() //Cantidad 0
+        {
+            InitialStepsForCompraBocadillos();
+            selectBocadillosParaPedir_PO.SearchBocadillos("", "");
+            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Completo");
+            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Poli");
+            selectBocadillosParaPedir_PO.seleccionarBotonCompra();
+            crearPedido_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "PayPal");
+            crearPedido_PO.modificarCantidadBocadillos("1", "0");
+            crearPedido_PO.seleccionarBotonCompra();
+            Assert.True(crearPedido_PO.checkErrorMessage("Errores: Error al procesar tu solicitud, inténtalo de nuevo más tarde!"));
         }
     }
 }

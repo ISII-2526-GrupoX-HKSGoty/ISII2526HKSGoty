@@ -42,8 +42,6 @@ namespace AppForMovies.UIT.Shared {
                     SetUp_Chrome4UIT();
                     break;
             }
-            //Added to make _Driver wait when an element is not found.
-            //It will wait for a maximum of 50 seconds.
 
             //maximize the window browser
             _driver.Manage().Window.Maximize();
@@ -58,8 +56,6 @@ namespace AppForMovies.UIT.Shared {
         protected void Perform_login(string email, string password) {
             _driver.Navigate()
                     .GoToUrl(_URI + "Account/Login");
-            // _driver.FindElement(By.Id("Input_Email"))
-            //     .SendKeys("elena.navarro@uclm.es");
             _driver.FindElement(By.Name("Input.Email"))
                 .SendKeys(email);
 
@@ -96,13 +92,6 @@ namespace AppForMovies.UIT.Shared {
         }
 
         protected void SetUp_EdgeFor4UIT() {
-            //var edgeDriverService = Microsoft.Edge.SeleniumTools.EdgeDriverService.CreateChromiumService();
-            //var edgeOptions = new Microsoft.Edge.SeleniumTools.EdgeOptions();
-            //edgeOptions.PageLoadStrategy = PageLoadStrategy.Normal;
-            //edgeOptions.UseChromium = true;
-            //if (_pipeline) edgeOptions.AddArguments("--headless");
-
-            //_driver = new Microsoft.Edge.SeleniumTools.EdgeDriver(edgeDriverService, edgeOptions);
 
             var optionsEdge = new EdgeOptions {
                 PageLoadStrategy = PageLoadStrategy.Normal,
@@ -113,7 +102,6 @@ namespace AppForMovies.UIT.Shared {
             if (_pipeline) optionsEdge.AddArgument("--headless");
 
             _driver = new EdgeDriver(optionsEdge);
-
         }
 
 

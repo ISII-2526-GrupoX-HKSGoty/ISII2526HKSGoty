@@ -150,7 +150,7 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var item = new List<ArticuloPedidoDTO>()
             {
-                new ArticuloPedidoDTO(2, "Completo", 20, 5, "Chapata")
+                new ArticuloPedidoDTO(2, "Completo", 2, 5, "Chapata")
             };
 
             var pedidoDto = new CrearPedidoDTO
@@ -169,7 +169,6 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var expectedDetalles = new DetallesPedidoDTO
             (
-                1,
                 "Fernando",
                 Metodo_Pago.Tarjeta,
                 "Martinez",
@@ -177,9 +176,9 @@ namespace AppForSEII2526.UT.Pedido_test
                 DateTime.Today,
                 new List<ArticuloPedidoDTO>()
                 {
-                        new ArticuloPedidoDTO(2, "Completo", 20, 5, "Chapata")
+                        new ArticuloPedidoDTO(2, "Completo", 2, 5, "Chapata")
                 },
-                100
+                10
             );
 
             Assert.Equal(expectedDetalles, detalles);
