@@ -7,11 +7,11 @@
     <UserSecretsId>aspnet-AppForSEII2526.Web-660902f3-55b0-42b4-a4c6-7893d47fb56a</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <OpenApiReference Include="OpenAPIs\swagger.json" Namespace="AppForSEII2526.Web.API" ClassName="AppForSEII2526APIClient">
       <SourceUri>https://localhost:7067/swagger/v1/swagger.json</SourceUri>
     </OpenApiReference>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.17" />
@@ -32,5 +32,19 @@
     <PackageReference Include="NSwag.AspNetCore" Version="14.6.3" />
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
   </ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Services\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="OpenAPIs\swagger.json" ClassName="AppForSEII2526.APICliente" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<OpenApiReference Include="OpenAPIs\swagger1.json" CodeGenerator="NSwagCSharp" Namespace="AppForSEII2526.Web.API" ClassName="AppForSEII2526APIClient">
+			<SourceUri>https://localhost:7067/swagger/v1/swagger.json</SourceUri>
+		</OpenApiReference>
+	</ItemGroup>
 
 </Project>
