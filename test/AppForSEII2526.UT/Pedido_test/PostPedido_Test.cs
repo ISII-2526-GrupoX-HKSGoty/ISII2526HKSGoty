@@ -71,6 +71,15 @@ namespace AppForSEII2526.UT.Pedido_test
                 articulopedido: bocadillo
             );
 
+            var cantidadNoDisponible = new CrearPedidoDTO
+            (
+                nombre: "Fernando",
+                metododepago: Metodo_Pago.Tarjeta,
+                apellido1: "Martinez",
+                apellido2: "Panadero",
+                articulopedido: new List<ArticuloPedidoDTO>() { new ArticuloPedidoDTO(1, "Poli", 1000, 5, "Baguette") }
+            );
+
             var metodoNoRegistradoDto = new CrearPedidoDTO
             (
                 nombre: "Fernando",
@@ -92,6 +101,7 @@ namespace AppForSEII2526.UT.Pedido_test
             var allTests = new List<object[]>
             {
                 //new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
+                new object[] { cantidadNoDisponible, "Error! La cantidad para el bocadillo es mayor que la cantidad disponible" },
                 new object[] { noUserDto, "Usuario no registrado" },
                 new object[] { metodoNoRegistradoDto, "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay." },
                 new object[] { bocadilloNoExisteDto, "Error! El bocadillo no existe" },
