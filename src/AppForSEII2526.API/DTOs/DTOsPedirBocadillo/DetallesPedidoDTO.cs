@@ -1,9 +1,4 @@
 ﻿
-
-
-
-
-
 namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
 {
     public class DetallesPedidoDTO:CrearPedidoDTO
@@ -12,14 +7,12 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
         {
         }
 
-        public DetallesPedidoDTO(int Id,string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, List<ArticuloPedidoDTO> articuloPedido, decimal precioTotal) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
+        public DetallesPedidoDTO(string nombre, Metodo_Pago metodoPago, string apellido1, string? apellido2, DateTime fechaPedido, List<ArticuloPedidoDTO> articuloPedido, decimal precioTotal) : base(nombre, metodoPago, apellido1, apellido2, articuloPedido)
         {
-            this.Id = Id;
             FechaPedido = fechaPedido;
             PrecioTotal = precioTotal;
         }
 
-        public int Id { get; set; }
         public DateTime FechaPedido { get; set; }
         public decimal PrecioTotal { get; set; }
 
@@ -32,7 +25,6 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
                    apellido1 == dTO.apellido1 &&
                    apellido2 == dTO.apellido2 &&
                    EqualityComparer<IList<ArticuloPedidoDTO>>.Default.Equals(ArticuloPedido, dTO.ArticuloPedido) &&
-                   Id == dTO.Id &&
                    FechaPedido == dTO.FechaPedido &&
                    PrecioTotal == dTO.PrecioTotal;
         }
@@ -46,7 +38,6 @@ namespace AppForSEII2526.API.DTOs.DTOs_PedirBocadillo
             hash.Add(apellido1);
             hash.Add(apellido2);
             hash.Add(ArticuloPedido);
-            hash.Add(Id);
             hash.Add(FechaPedido);
             hash.Add(PrecioTotal);
             return hash.ToHashCode();
