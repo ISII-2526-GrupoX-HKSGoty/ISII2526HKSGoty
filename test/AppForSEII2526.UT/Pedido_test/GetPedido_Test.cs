@@ -67,7 +67,7 @@ namespace AppForSEII2526.UT.PedidoContrller_test
 
             var controller = new PedidoController(_context, logger);
 
-            var expectedPedido = new DetallesPedidoDTO("Fernando", Metodo_Pago.Paypal, "Martinez", "Panadero", DateTime.Today, new List<ArticuloPedidoDTO>(), 10);
+            var expectedPedido = new DetallesPedidoDTO(1, "Fernando", Metodo_Pago.Paypal, "Martinez", "Panadero", DateTime.Today, new List<ArticuloPedidoDTO>(), 10);
 
             expectedPedido.ArticuloPedido.Add(new ArticuloPedidoDTO(1, "Poli", 2, 5, "Semillas"));
 
