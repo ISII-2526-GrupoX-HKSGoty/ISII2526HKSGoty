@@ -18,7 +18,13 @@
                 <div class="col">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Tamaño</span>
-                        <input type="text" id="inputTamaño" @bind=tamaño class="form-control" placeholder="Tamaño" aria-label="Tamaño" aria-describedby="basic-addon1">
+                        <select class="form-select" aria-label="Default select" @bind="TamañoSelected" id="selectTamaño">
+                            <option value="All" selected>All</option>
+                            @foreach (string tamañoNombre in tamañoNombres)
+                            {
+                                <option value="@tamañoNombre" id="tamañoSelected_@tamañoNombre">@tamañoNombre</option>
+                            }
+                        </select>
                     </div>
                 </div>
                 <div class="col">
@@ -27,7 +33,7 @@
                         
                         <select class="form-select" aria-label="Default select" @bind="TipoPanSelected" id="selectTipoPan">
                             <option value="All" selected>All</option>
-                            @foreach (string tipoPanName in tipoPanNames)
+                            @foreach (string tipoPanName in tipoPanNombres)
                             {
                                 <option value="@tipoPanName" id="tipoPanSelected_@tipoPanName">@tipoPanName</option>
                             }
@@ -82,7 +88,7 @@
             @foreach (ArticuloPedidoDTO item in compra.ArticuloPedido)
             {
                 <div class="row">
-                    <button type="button" class="btn btn-light" id="removeBocadillo_@item.NombreBocadillo" @onclick="@(() => RemoveRentalItem(item))">x @item.NombreBocadillo - @item.Pvp€</button>
+                    <button type="button" class="btn btn-light" id="removeBocadillo_@item.NombreBocadillo" @onclick="@(() => RemoveCompraArticulo(item))">x @item.NombreBocadillo - @item.Pvp€</button>
                 </div>
             }
             <div class="row">
@@ -97,11 +103,13 @@
     private bool hideErrors { get { return errors.Length == 0; } }
 
     private string errors = "";
-    private Tamaño tamaño { get; set; }
+    private Tamaño? tamaño { get; set; }
     private string tipoPan { get; set; }
 
     private string TipoPanSelected;
-    private ICollection<string>? tipoPanNames = new List<string>();
+    private string TamañoSelected;
+    private ICollection<string>? tipoPanNombres = new List<string>();
+    private ICollection<string>? tamañoNombres = new List<string>();
 
     private bool hideRentingCart { get { return compra.ArticuloPedido.Count == 0; } }
 
@@ -109,6 +117,9 @@
     {
         try
         {
+            tamaño = TamañoSelected == "All" || string.IsNullOrEmpty(TamañoSelected)
+        ? null
+        : Enum.Parse<Tamaño>(TamañoSelected);
             bocadillos = await apiclient.GetBocadillosParaPedirAsync(tamaño, tipoPan);
 
         }
@@ -129,7 +140,7 @@
         compraState.AddBocadilloParaComprar(bocadillo);
     }
 
-    private void RemoveRentalItem(ArticuloPedidoDTO articulo)
+    private void RemoveCompraArticulo(ArticuloPedidoDTO articulo)
     {
         compraState.RemoveCompraArticuloParaComprar(articulo);
         if (compra.ArticuloPedido.Count == 0) hiddenRentingCart = true;
@@ -140,12 +151,14 @@
     {
         try
         {
-            tipoPanNames = await apiclient.GetTipoPanesAsync(null);
+            tamañoNombres = Enum.GetNames(typeof(Tamaño)).Cast<string>().ToList();
+            //tipoPanNombres = await apiclient.GetTiposPanAsync();
         }
         catch (ApiException ex)
         {
-            if (tipoPanNames == null) tipoPanNames = new List<string>() { "All", };
-            logger.LogError("Error! There was an error while connecting to the GetGenresAsync service");
+            if (tamañoNombres == null) tamañoNombres = Enum.GetNames(typeof(Tamaño)).Cast<string>().ToList();
+            if (tipoPanNombres == null) tipoPanNombres = new List<string>() { "All", };
+            logger.LogError("Error! There was an error while connecting to el servicio de tipos de pan");
         }
 
         BuscarBocadillos();

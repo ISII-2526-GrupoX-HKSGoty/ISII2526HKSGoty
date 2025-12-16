@@ -169,6 +169,7 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var expectedDetalles = new DetallesPedidoDTO
             (
+                1,
                 "Fernando",
                 Metodo_Pago.Tarjeta,
                 "Martinez",

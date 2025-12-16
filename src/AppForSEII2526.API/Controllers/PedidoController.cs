@@ -37,6 +37,7 @@ namespace AppForSEII2526.API.Controllers
                 .ThenInclude(cb => cb.Bocadillo)
                 .ThenInclude(b => b.tipoPan)
                 .Select(c=> new DetallesPedidoDTO(
+                    c.CompraId,
                     c.User.nombre,
                     c.Metodo_Pago,
                     c.User.apellido1,
@@ -64,7 +65,7 @@ namespace AppForSEII2526.API.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        [ProducesResponseType(typeof(ArticuloPedidoDTO), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(DetallesPedidoDTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> CrearPedido(CrearPedidoDTO pedidoParaCrear)
         {
@@ -137,6 +138,7 @@ namespace AppForSEII2526.API.Controllers
             }
 
             var detallesPedidoDTO = new DetallesPedidoDTO(
+                compra.CompraId,
                 usuario.nombre,
                 compra.Metodo_Pago,
                 usuario.apellido1,
