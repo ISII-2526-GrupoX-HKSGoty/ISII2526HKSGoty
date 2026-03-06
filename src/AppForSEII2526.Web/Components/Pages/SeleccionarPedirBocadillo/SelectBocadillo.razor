@@ -136,11 +136,11 @@
     }
 
 
-    protected override Task OnInitializedAsync()
+    /*protected override Task OnInitializedAsync()
     {
         try
         {
-            tipoPanNames = await apiclient.GetTipoPanesAsync(null);
+            //tipoPanNames = await apiclient.GetTipoPanesAsync(null);
         }
         catch (ApiException ex)
         {
@@ -151,7 +151,7 @@
         BuscarBocadillos();
 
         //return base.OnInitializedAsync();
-    }
+    }*/
     private void CompraBocadillo()
     {
         navigation.NavigateTo("/SeleccionarPedirBocadillo/CrearPedido");
