@@ -24,6 +24,13 @@ namespace AppForSEII2526.API.Models
             Cantidad = cantidad;
         }
 
+        public BonosComprados(int bonoId, CompraBono compraBono, int Cantidad)
+        {
+            BonoId = bonoId;
+            CompraBono = compraBono;
+            this.Cantidad = Cantidad;
+        }
+
         public BonoBocadillo BonoBocadillo { get; set; }
         public int BonoId { get; set; }
 
