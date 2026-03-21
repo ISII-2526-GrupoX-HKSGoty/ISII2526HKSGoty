@@ -84,7 +84,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
                 else
                 {
-                    compraBono.BonosComprados.Add(new BonosComprados(bono.BonoId, compraBono, item.cantidad));
+                    compraBono.BonosComprados.Add(new BonosComprados(bono.BonoId, compraBono, item.cantidad, item.cantidad * bono.PVP));
                     compraBono.PrecioTotalBono += item.cantidad * bono.PVP;
                     compraBono.nBonos += item.cantidad;
                     bono.cantidadDisponible -= item.cantidad;

@@ -1,8 +1,9 @@
-﻿namespace AppForSEII2526.API.DTOs.DTOsCompraBono
+﻿
+namespace AppForSEII2526.API.DTOs.DTOsCompraBono
 {
     public class Get_BonosDTO
     {
-        public Get_BonosDTO(string nombre, double PVP, int nBocadillos, TipoBocadillo tipo)
+        public Get_BonosDTO(string nombre, double PVP, int nBocadillos, string tipo)
         {
 
             this.Nombre = nombre;
@@ -20,6 +21,20 @@
         [Range(0, int.MaxValue, ErrorMessage = "no acepta valores menores a 0")]
         public int nBocadillos { get; set; }
 
-        public TipoBocadillo tipoBocadillo { get; set; }
+        public string tipoBocadillo { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Get_BonosDTO dTO &&
+                   Nombre == dTO.Nombre &&
+                   PVP == dTO.PVP &&
+                   nBocadillos == dTO.nBocadillos &&
+                   tipoBocadillo == dTO.tipoBocadillo;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Nombre, PVP, nBocadillos, tipoBocadillo);
+        }
     }
 }

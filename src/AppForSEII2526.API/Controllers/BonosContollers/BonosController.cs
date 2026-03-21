@@ -25,8 +25,14 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
         {
             var bonos = await _context.BonoBocadillos
                 .Where(m=>((m.nombre.Contains(nombre)) || (nombre == null)) && ((m.TipoBocadillo.nombreTipo.Contains(tipo)) || (tipo == null)))
-                .Select(m=>new Get_BonosDTO(m.nombre, m.PVP, m.nBocadillos, m.TipoBocadillo))
+                .Select(m=>new Get_BonosDTO(m.nombre, m.PVP, m.nBocadillos, m.TipoBocadillo.nombreTipo))
                 .ToListAsync();
+
+            if (bonos == null || bonos.Count == 0)
+            {
+                _logger.LogError("Error: Bono no encontrado");
+                return NotFound("No se han encontrado bonos con los filtros proporcionados.");
+            }
             return Ok(bonos);
 
         }
