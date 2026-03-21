@@ -60,7 +60,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
                 return BadRequest(ModelState);
             }
 
-            var user = _context.ApplicationUser.FirstOrDefault(au => au.UserName == compra.nombreCliente);
+            var user = _context.ApplicationUser.FirstOrDefault(au => au.nombre == compra.nombreCliente);
             if (user == null)
             {
                 ModelState.AddModelError("Usuario", "Usuario no encontrado");
@@ -109,7 +109,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
             }
 
-            var compraDetail = new Detail_CompraBonoDTO(compraBono.CompraBonoId,compraBono.ReleaseDate,compraBono.User.nombre,compraBono.User.apellido1, compraBono.User.apellido2, compraBono.metodoPago, compraBono.PrecioTotalBono, (IList<ItemBonoDTO>)compraBono.BonosComprados);
+            var compraDetail = new Detail_CompraBonoDTO(compraBono.CompraBonoId,compraBono.ReleaseDate,compraBono.User.nombre,compraBono.User.apellido1, compraBono.User.apellido2, compraBono.metodoPago, compraBono.PrecioTotalBono, compra.Items);
 
             return CreatedAtAction("getCompra", new {id = compraBono.CompraBonoId}, compraDetail);
 
