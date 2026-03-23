@@ -57,14 +57,14 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
             if(compra.Items.Count == 0)
             {
                 ModelState.AddModelError("ItemsCompra", "Minimo un item");
-                return BadRequest(ModelState);
+                
             }
 
             var user = _context.ApplicationUser.FirstOrDefault(au => au.nombre == compra.nombreCliente);
             if (user == null)
             {
                 ModelState.AddModelError("Usuario", "Usuario no encontrado");
-                return BadRequest(ModelState);
+               
             }
 
             if(ModelState.ErrorCount > 0) return BadRequest(new ValidationProblemDetails(ModelState));

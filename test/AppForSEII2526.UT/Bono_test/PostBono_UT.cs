@@ -50,6 +50,57 @@ namespace AppForSEII2526.UT.Bono_test
 
         }
 
+        public static IEnumerable<object[]> Test_CreateCompraBono_Error()
+        {
+            var CompraDTO_1 = new CompraBonoDTO("Jose","Juan","Juan",CompraBono.MetodoPago.Tarjeta,new List<ItemBonoDTO>());
+
+            var CompraDTO_2 = new CompraBonoDTO("Juan", "Jose", "Jose", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            {
+                new ItemBonoDTO(20,15,"Bono1",2,"Bacon"),
+                new ItemBonoDTO(20,15,"Bono2",1,"Vegetal")
+            });
+
+            var CompraDTO_3 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            {
+                new ItemBonoDTO(20,15,"Bono1",100,"Bacon")
+            });
+
+            var CompraDTO_4 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            {
+                new ItemBonoDTO(20,15,"Bono27",2,"Bacon")
+            });
+
+            var allTests = new List<object[]>
+            {
+                new object[] { CompraDTO_1, "Minimo un item" },
+                new object[] { CompraDTO_2, "Usuario no encontrado" },
+                new object[] { CompraDTO_3, "Error bono Bono1 no encontrado o sin stock" },
+                new object[] { CompraDTO_4, "Error bono Bono27 no encontrado o sin stock" }
+            };
+
+            return allTests;
+        }
+
+        [Theory]
+        [MemberData(nameof(Test_CreateCompraBono_Error))]
+        [Trait("DataBase", "WithoutFixture")]
+        [Trait("LevelTesting", "Unit Testing")]
+        public async Task CreateCompraBono_Error(CompraBonoDTO compraDTO,string errorExpected)
+        {
+            var mock = new Mock<ILogger<CompraBonosController>>();
+            ILogger<CompraBonosController> logger = mock.Object;
+
+            var controller = new CompraBonosController(_context, logger);
+
+            var result = await controller.createCompraBonos(compraDTO);
+
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
+
+            var actual = problemDetails.Errors.First().Value[0];
+            Assert.Equal(errorExpected, actual);
+        }
+
         [Fact]
         [Trait("DataBase", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
