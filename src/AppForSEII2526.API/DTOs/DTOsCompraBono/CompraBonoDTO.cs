@@ -26,5 +26,19 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
         [Required]
         public MetodoPago metdoPago { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is CompraBonoDTO dTO &&
+                   Items.SequenceEqual(dTO.Items) &&
+                   nombreCliente == dTO.nombreCliente &&
+                   apellido1Cliente == dTO.apellido1Cliente &&
+                   apellido2Cliente == dTO.apellido2Cliente &&
+                   metdoPago == dTO.metdoPago;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Items, nombreCliente, apellido1Cliente, apellido2Cliente, metdoPago);
+        }
     }
 }

@@ -82,7 +82,7 @@ namespace AppForSEII2526.UT.Bono_test
 
             var controller = new CompraBonosController(_context, logger);
 
-            var expected = new Detail_CompraBonoDTO(1, DateTime.Today, "Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, 30, new List<ItemBonoDTO>()
+            var expected = new Detail_CompraBonoDTO(1, DateTime.Today, 30, "Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
             {
                 new ItemBonoDTO(15, 10, "Bono1", 2, "Bacon"),
                 new ItemBonoDTO(15, 10, "Bono2", 1, "Vegetal")

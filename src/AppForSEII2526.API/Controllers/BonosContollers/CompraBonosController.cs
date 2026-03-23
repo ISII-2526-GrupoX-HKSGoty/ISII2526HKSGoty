@@ -34,7 +34,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
                 .Where(c => c.CompraBonoId == id)
                     .Include(ic => ic.BonosComprados)
                         .ThenInclude(bc => bc.BonoBocadillo)
-                .Select(c => new Detail_CompraBonoDTO(c.CompraBonoId, c.ReleaseDate, c.User.nombre, c.User.apellido1, c.User.apellido2, c.metodoPago, c.PrecioTotalBono, 
+                .Select(c => new Detail_CompraBonoDTO(c.CompraBonoId, c.ReleaseDate, c.PrecioTotalBono,c.User.nombre, c.User.apellido1, c.User.apellido2, c.metodoPago, 
                 c.BonosComprados.Select(ic => new ItemBonoDTO(ic.Precio, ic.BonoBocadillo.nBocadillos, ic.BonoBocadillo.nombre,ic.Cantidad, ic.BonoBocadillo.TipoBocadillo.nombreTipo)).ToList<ItemBonoDTO>()))
                 .FirstOrDefaultAsync();
 
@@ -84,7 +84,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
                 else
                 {
-                    compraBono.BonosComprados.Add(new BonosComprados(bono.BonoId, compraBono, item.cantidad, item.cantidad * bono.PVP));
+                    compraBono.BonosComprados.Add(new BonosComprados(bono.BonoId, compraBono, item.cantidad, bono.PVP));
                     compraBono.PrecioTotalBono += item.cantidad * bono.PVP;
                     compraBono.nBonos += item.cantidad;
                     bono.cantidadDisponible -= item.cantidad;
@@ -109,7 +109,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
             }
 
-            var compraDetail = new Detail_CompraBonoDTO(compraBono.CompraBonoId,compraBono.ReleaseDate,compraBono.User.nombre,compraBono.User.apellido1, compraBono.User.apellido2, compraBono.metodoPago, compraBono.PrecioTotalBono, compra.Items);
+            var compraDetail = new Detail_CompraBonoDTO(compraBono.CompraBonoId,compraBono.ReleaseDate, compraBono.PrecioTotalBono, compraBono.User.nombre,compraBono.User.apellido1, compraBono.User.apellido2, compraBono.metodoPago, compra.Items);
 
             return CreatedAtAction("getCompra", new {id = compraBono.CompraBonoId}, compraDetail);
 

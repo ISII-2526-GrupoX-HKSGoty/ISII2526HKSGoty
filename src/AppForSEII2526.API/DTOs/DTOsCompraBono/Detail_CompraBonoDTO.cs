@@ -5,8 +5,7 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
     public class Detail_CompraBonoDTO : CompraBonoDTO
     {
 
-        public Detail_CompraBonoDTO(int id, DateTime compraT,string nombre, string apellido1, string apellido2, MetodoPago metodoPago,
-        double precioTotal, IList<ItemBonoDTO> items):base(nombre,apellido1,apellido2,metodoPago,items)
+        public Detail_CompraBonoDTO(int id, DateTime compraT,double precioTotal,string nombre, string apellido1, string apellido2, MetodoPago metodoPago, IList<ItemBonoDTO> items):base(nombre,apellido1,apellido2,metodoPago,items)
         {
 
             this.ID = id;
@@ -21,14 +20,10 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
         public override bool Equals(object? obj)
         {
             return obj is Detail_CompraBonoDTO dTO &&
-                   EqualityComparer<IList<ItemBonoDTO>>.Default.Equals(Items, dTO.Items) &&
-                   nombreCliente == dTO.nombreCliente &&
-                   apellido1Cliente == dTO.apellido1Cliente &&
-                   apellido2Cliente == dTO.apellido2Cliente &&
-                   metdoPago == dTO.metdoPago &&
+                   base.Equals(obj) &&
                    ID == dTO.ID &&
                    precioTotal == dTO.precioTotal &&
-                   CompraT == dTO.CompraT;
+                   CompraT.Date == dTO.CompraT.Date;
         }
 
         public override int GetHashCode()
