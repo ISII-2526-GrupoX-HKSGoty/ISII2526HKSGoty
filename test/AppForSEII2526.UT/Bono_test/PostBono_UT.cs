@@ -54,28 +54,51 @@ namespace AppForSEII2526.UT.Bono_test
         {
             var CompraDTO_1 = new CompraBonoDTO("Jose","Juan","Juan",CompraBono.MetodoPago.Tarjeta,new List<ItemBonoDTO>());
 
-            var CompraDTO_2 = new CompraBonoDTO("Juan", "Jose", "Jose", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            var CompraDTO_2 = new CompraBonoDTO("Juan", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//nombre
             {
                 new ItemBonoDTO(20,15,"Bono1",2,"Bacon"),
-                new ItemBonoDTO(20,15,"Bono2",1,"Vegetal")
             });
 
-            var CompraDTO_3 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            var CompraDTO_3 = new CompraBonoDTO("Jose", "Jose", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//apellido
+            {
+                new ItemBonoDTO(20,15,"Bono1",2,"Bacon"),
+            });
+
+            var CompraDTO_4 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//bono
+            {
+                new ItemBonoDTO(20,15,"Bono27",2,"Bacon")
+            });
+
+            var CompraDTO_5 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//cantidad
             {
                 new ItemBonoDTO(20,15,"Bono1",100,"Bacon")
             });
 
-            var CompraDTO_4 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            var CompraDTO_6 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//PVP
             {
-                new ItemBonoDTO(20,15,"Bono27",2,"Bacon")
+                new ItemBonoDTO(100,15,"Bono1",2,"Bacon")
+            });
+
+            var CompraDTO_7 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//nbocadillos
+            {
+                new ItemBonoDTO(20,100,"Bono1",2,"Bacon")
+            });
+
+            var CompraDTO_8 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//tipobocadillo
+            {
+                new ItemBonoDTO(20,15,"Bono1",2,"Piedras")
             });
 
             var allTests = new List<object[]>
             {
                 new object[] { CompraDTO_1, "Minimo un item" },
-                new object[] { CompraDTO_2, "Usuario no encontrado" },
-                new object[] { CompraDTO_3, "Error bono Bono1 no encontrado o sin stock" },
-                new object[] { CompraDTO_4, "Error bono Bono27 no encontrado o sin stock" }
+                new object[] { CompraDTO_2, "Usuario no valido" },
+                new object[] { CompraDTO_3, "Usuario no valido" },
+                new object[] { CompraDTO_4, "Error bono Bono27 no encontrado o sin stock" },
+                new object[] { CompraDTO_5, "Error bono Bono1 no encontrado o sin stock" },
+                new object[] { CompraDTO_6, "Error bono Bono1 datos del bono no coinciden" },
+                new object[] { CompraDTO_7, "Error bono Bono1 datos del bono no coinciden" },
+                new object[] { CompraDTO_8, "Error bono Bono1 datos del bono no coinciden" },
             };
 
             return allTests;

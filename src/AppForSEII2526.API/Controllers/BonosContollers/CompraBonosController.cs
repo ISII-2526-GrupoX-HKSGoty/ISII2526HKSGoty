@@ -54,19 +54,25 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
         [ProducesResponseType(typeof(string),(int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> createCompraBonos(CompraBonoDTO compra)
         {
-            if(compra.Items.Count == 0)
+            if(compra.Items.Count <= 0)
             {
                 ModelState.AddModelError("ItemsCompra", "Minimo un item");
                 
             }
 
             var user = _context.ApplicationUser.FirstOrDefault(au => au.nombre == compra.nombreCliente);
-            if (user == null)
+            if ((user == null) ||  (user.apellido1 != compra.apellido1Cliente))
             {
-                ModelState.AddModelError("Usuario", "Usuario no encontrado");
+                ModelState.AddModelError("Usuario", "Usuario no valido");
                
             }
 
+            if (!(compra.metdoPago.Equals(CompraBono.MetodoPago.Paypal)) && !(compra.metdoPago.Equals(CompraBono.MetodoPago.Tarjeta)) && !(compra.metdoPago.Equals(CompraBono.MetodoPago.GooglePay)))
+            {
+                ModelState.AddModelError("MetodoPago", "Metodo de pago no valido");
+
+            }
+            
             if(ModelState.ErrorCount > 0) return BadRequest(new ValidationProblemDetails(ModelState));
 
             CompraBono compraBono = new CompraBono(user, DateTime.Now, compra.metdoPago, new List<BonosComprados>());
@@ -80,6 +86,13 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
                 if ((bono == null) || (bono.cantidadDisponible < item.cantidad))
                 {
                     ModelState.AddModelError("ItemsCompra", $"Error bono {item.nombreBono} no encontrado o sin stock");
+                    break;
+                }
+
+                if ((bono.PVP != item.PVP) || (bono.nBocadillos != item.nBocadillos) || (bono.TipoBocadillo.nombreTipo != item.tipoBocadillo))
+                {
+                    ModelState.AddModelError("ItemsCompra", $"Error bono {item.nombreBono} datos del bono no coinciden");
+                    break;
                 }
 
                 else
@@ -88,7 +101,6 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
                     compraBono.PrecioTotalBono += item.cantidad * bono.PVP;
                     compraBono.nBonos += item.cantidad;
                     bono.cantidadDisponible -= item.cantidad;
-
                 }
 
             }
