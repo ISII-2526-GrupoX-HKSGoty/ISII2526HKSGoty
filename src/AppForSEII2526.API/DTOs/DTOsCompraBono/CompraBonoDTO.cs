@@ -16,7 +16,7 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
         {
             Items = new List<ItemBonoDTO>();
         }
-        public IList<ItemBonoDTO> Items { get; set; }
+        public IList<ItemBonoDTO> Items { get; set; }//xd
         [Required]
         public string nombreCliente { get; set; }
         [Required]
