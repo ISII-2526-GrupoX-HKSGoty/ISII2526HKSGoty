@@ -24,7 +24,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> getCompra(int id)
         {
-            if(_context.CompraBono == null)
+            if (_context.CompraBono == null)
             {
                 _logger.LogError("Error: No existe la tabla");
                 return NotFound();
@@ -34,11 +34,11 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
                 .Where(c => c.CompraBonoId == id)
                     .Include(ic => ic.BonosComprados)
                         .ThenInclude(bc => bc.BonoBocadillo)
-                .Select(c => new Detail_CompraBonoDTO(c.CompraBonoId, c.ReleaseDate, c.PrecioTotalBono,c.User.nombre, c.User.apellido1, c.User.apellido2, c.metodoPago, 
-                c.BonosComprados.Select(ic => new ItemBonoDTO(ic.Precio, ic.BonoBocadillo.nBocadillos, ic.BonoBocadillo.nombre,ic.Cantidad, ic.BonoBocadillo.TipoBocadillo.nombreTipo)).ToList<ItemBonoDTO>()))
+                .Select(c => new Detail_CompraBonoDTO(c.CompraBonoId, c.ReleaseDate, c.PrecioTotalBono, c.User.nombre, c.User.apellido1, c.User.apellido2, c.metodoPago,
+                c.BonosComprados.Select(ic => new ItemBonoDTO(ic.Precio, ic.BonoBocadillo.nBocadillos, ic.BonoBocadillo.nombre, ic.Cantidad, ic.BonoBocadillo.TipoBocadillo.nombreTipo)).ToList<ItemBonoDTO>()))
                 .FirstOrDefaultAsync();
 
-            if(compra == null)
+            if (compra == null)
             {
                 _logger.LogError("Error: Compra no encontrada");
                 return NotFound();
@@ -51,23 +51,29 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
         [Route("[action]")]
         [ProducesResponseType(typeof(Detail_CompraBonoDTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string),(int)HttpStatusCode.Conflict)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> createCompraBonos(CompraBonoDTO compra)
         {
-            if(compra.Items.Count == 0)
+            if (compra.Items.Count <= 0)
             {
                 ModelState.AddModelError("ItemsCompra", "Minimo un item");
-                
+
             }
 
             var user = _context.ApplicationUser.FirstOrDefault(au => au.nombre == compra.nombreCliente);
-            if (user == null)
+            if ((user == null) || (user.apellido1 != compra.apellido1Cliente))
             {
-                ModelState.AddModelError("Usuario", "Usuario no encontrado");
-               
+                ModelState.AddModelError("Usuario", "Usuario no valido");
+
             }
 
-            if(ModelState.ErrorCount > 0) return BadRequest(new ValidationProblemDetails(ModelState));
+            if (!(compra.metdoPago.Equals(CompraBono.MetodoPago.Paypal)) && !(compra.metdoPago.Equals(CompraBono.MetodoPago.Tarjeta)) && !(compra.metdoPago.Equals(CompraBono.MetodoPago.GooglePay)))
+            {
+                ModelState.AddModelError("MetodoPago", "Metodo de pago no valido");
+
+            }
+
+            if (ModelState.ErrorCount > 0) return BadRequest(new ValidationProblemDetails(ModelState));
 
             CompraBono compraBono = new CompraBono(user, DateTime.Now, compra.metdoPago, new List<BonosComprados>());
             compraBono.PrecioTotalBono = 0;
@@ -75,11 +81,18 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
             foreach (var item in compra.Items)
             {
-               var bono = _context.BonoBocadillos.FirstOrDefault(b => b.nombre == item.nombreBono);
+                var bono = _context.BonoBocadillos.FirstOrDefault(b => b.nombre == item.nombreBono);
 
                 if ((bono == null) || (bono.cantidadDisponible < item.cantidad))
                 {
                     ModelState.AddModelError("ItemsCompra", $"Error bono {item.nombreBono} no encontrado o sin stock");
+                    break;
+                }
+
+                if ((bono.PVP != item.PVP) || (bono.nBocadillos != item.nBocadillos) || (bono.TipoBocadillo.nombreTipo != item.tipoBocadillo))
+                {
+                    ModelState.AddModelError("ItemsCompra", $"Error bono {item.nombreBono} datos del bono no coinciden");
+                    break;
                 }
 
                 else
@@ -88,12 +101,11 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
                     compraBono.PrecioTotalBono += item.cantidad * bono.PVP;
                     compraBono.nBonos += item.cantidad;
                     bono.cantidadDisponible -= item.cantidad;
-
                 }
 
             }
 
-            if(ModelState.ErrorCount > 0) return BadRequest(new ValidationProblemDetails(ModelState));
+            if (ModelState.ErrorCount > 0) return BadRequest(new ValidationProblemDetails(ModelState));
 
             _context.Add(compraBono);
 
@@ -109,9 +121,9 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
             }
 
-            var compraDetail = new Detail_CompraBonoDTO(compraBono.CompraBonoId,compraBono.ReleaseDate, compraBono.PrecioTotalBono, compraBono.User.nombre,compraBono.User.apellido1, compraBono.User.apellido2, compraBono.metodoPago, compra.Items);
+            var compraDetail = new Detail_CompraBonoDTO(compraBono.CompraBonoId, compraBono.ReleaseDate, compraBono.PrecioTotalBono, compraBono.User.nombre, compraBono.User.apellido1, compraBono.User.apellido2, compraBono.metodoPago, compra.Items);
 
-            return CreatedAtAction("getCompra", new {id = compraBono.CompraBonoId}, compraDetail);
+            return CreatedAtAction("getCompra", new { id = compraBono.CompraBonoId }, compraDetail);
 
         }
 

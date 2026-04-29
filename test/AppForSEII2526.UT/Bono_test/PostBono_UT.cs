@@ -52,30 +52,53 @@ namespace AppForSEII2526.UT.Bono_test
 
         public static IEnumerable<object[]> Test_CreateCompraBono_Error()
         {
-            var CompraDTO_1 = new CompraBonoDTO("Jose","Juan","Juan",CompraBono.MetodoPago.Tarjeta,new List<ItemBonoDTO>());
+            var CompraDTO_1 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>());
 
-            var CompraDTO_2 = new CompraBonoDTO("Juan", "Jose", "Jose", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            var CompraDTO_2 = new CompraBonoDTO("Juan", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//nombre
             {
                 new ItemBonoDTO(20,15,"Bono1",2,"Bacon"),
-                new ItemBonoDTO(20,15,"Bono2",1,"Vegetal")
             });
 
-            var CompraDTO_3 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            var CompraDTO_3 = new CompraBonoDTO("Jose", "Jose", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//apellido
+            {
+                new ItemBonoDTO(20,15,"Bono1",2,"Bacon"),
+            });
+
+            var CompraDTO_4 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//bono
+            {
+                new ItemBonoDTO(20,15,"Bono27",2,"Bacon")
+            });
+
+            var CompraDTO_5 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//cantidad
             {
                 new ItemBonoDTO(20,15,"Bono1",100,"Bacon")
             });
 
-            var CompraDTO_4 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
+            var CompraDTO_6 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//PVP
             {
-                new ItemBonoDTO(20,15,"Bono27",2,"Bacon")
+                new ItemBonoDTO(100,15,"Bono1",2,"Bacon")
+            });
+
+            var CompraDTO_7 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//nbocadillos
+            {
+                new ItemBonoDTO(20,100,"Bono1",2,"Bacon")
+            });
+
+            var CompraDTO_8 = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()//tipobocadillo
+            {
+                new ItemBonoDTO(20,15,"Bono1",2,"Piedras")
             });
 
             var allTests = new List<object[]>
             {
                 new object[] { CompraDTO_1, "Minimo un item" },
-                new object[] { CompraDTO_2, "Usuario no encontrado" },
-                new object[] { CompraDTO_3, "Error bono Bono1 no encontrado o sin stock" },
-                new object[] { CompraDTO_4, "Error bono Bono27 no encontrado o sin stock" }
+                new object[] { CompraDTO_2, "Usuario no valido" },
+                new object[] { CompraDTO_3, "Usuario no valido" },
+                new object[] { CompraDTO_4, "Error bono Bono27 no encontrado o sin stock" },
+                new object[] { CompraDTO_5, "Error bono Bono1 no encontrado o sin stock" },
+                new object[] { CompraDTO_6, "Error bono Bono1 datos del bono no coinciden" },
+                new object[] { CompraDTO_7, "Error bono Bono1 datos del bono no coinciden" },
+                new object[] { CompraDTO_8, "Error bono Bono1 datos del bono no coinciden" },
             };
 
             return allTests;
@@ -85,7 +108,7 @@ namespace AppForSEII2526.UT.Bono_test
         [MemberData(nameof(Test_CreateCompraBono_Error))]
         [Trait("DataBase", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
-        public async Task CreateCompraBono_Error(CompraBonoDTO compraDTO,string errorExpected)
+        public async Task CreateCompraBono_Error(CompraBonoDTO compraDTO, string errorExpected)
         {
             var mock = new Mock<ILogger<CompraBonosController>>();
             ILogger<CompraBonosController> logger = mock.Object;
@@ -109,7 +132,7 @@ namespace AppForSEII2526.UT.Bono_test
             var mock = new Mock<ILogger<CompraBonosController>>();
             ILogger<CompraBonosController> logger = mock.Object;
 
-            var controller  = new CompraBonosController(_context, logger);
+            var controller = new CompraBonosController(_context, logger);
 
             var CompraDTO = new CompraBonoDTO("Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
             {
@@ -117,7 +140,7 @@ namespace AppForSEII2526.UT.Bono_test
                 new ItemBonoDTO(20,15,"Bono2",1,"Vegetal")
             });
 
-            var expectedDetailDTO = new Detail_CompraBonoDTO(2, fecha, 60, "Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta,new List<ItemBonoDTO>()
+            var expectedDetailDTO = new Detail_CompraBonoDTO(2, fecha, 60, "Jose", "Juan", "Juan", CompraBono.MetodoPago.Tarjeta, new List<ItemBonoDTO>()
             {
                 new ItemBonoDTO(20,15,"Bono1",2,"Bacon"),
                 new ItemBonoDTO(20,15,"Bono2",1,"Vegetal")
