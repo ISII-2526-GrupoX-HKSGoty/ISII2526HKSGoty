@@ -45,6 +45,8 @@ string? URI2API = builder.Configuration.GetValue(typeof(string), "AppForSEII2526
 
 builder.Services.AddScoped<AppForSEII2526APIClient>(sp => new AppForSEII2526APIClient(URI2API, new HttpClient()));
 
+builder.Services.AddScoped<CompraBonoStateContainer>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
