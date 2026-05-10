@@ -69,7 +69,7 @@
         }
       }
     },
-    "/GetBonos": {
+    "/api/Bonos/GetBonos": {
       "get": {
         "tags": [
           "Bonos"
@@ -97,17 +97,26 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GET_Bono_DTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BonoBocadillo"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GET_Bono_DTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BonoBocadillo"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GET_Bono_DTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BonoBocadillo"
+                  }
                 }
               }
             }
@@ -115,12 +124,12 @@
         }
       }
     },
-    "/getCompraBono": {
+    "/api/CompraBonos/getCompra": {
       "get": {
         "tags": [
-          "Bonos"
+          "CompraBonos"
         ],
-        "operationId": "getCompraBono",
+        "operationId": "getCompra",
         "parameters": [
           {
             "name": "id",
@@ -137,17 +146,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/DETAIL_Bono_DTO"
+                  "$ref": "#/components/schemas/Detail_CompraBonoDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DETAIL_Bono_DTO"
+                  "$ref": "#/components/schemas/Detail_CompraBonoDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DETAIL_Bono_DTO"
+                  "$ref": "#/components/schemas/Detail_CompraBonoDTO"
                 }
               }
             }
@@ -175,27 +184,27 @@
         }
       }
     },
-    "/PostBonos": {
+    "/api/CompraBonos/createCompraBonos": {
       "post": {
         "tags": [
-          "Bonos"
+          "CompraBonos"
         ],
-        "operationId": "PostBonos",
+        "operationId": "createCompraBonos",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/POST_Bono_DTO"
+                "$ref": "#/components/schemas/CompraBonoDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/POST_Bono_DTO"
+                "$ref": "#/components/schemas/CompraBonoDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/POST_Bono_DTO"
+                "$ref": "#/components/schemas/CompraBonoDTO"
               }
             }
           }
@@ -206,17 +215,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/DETAIL_Bono_DTO"
+                  "$ref": "#/components/schemas/Detail_CompraBonoDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DETAIL_Bono_DTO"
+                  "$ref": "#/components/schemas/Detail_CompraBonoDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DETAIL_Bono_DTO"
+                  "$ref": "#/components/schemas/Detail_CompraBonoDTO"
                 }
               }
             }
@@ -257,92 +266,6 @@
               "text/json": {
                 "schema": {
                   "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/CompraProducto": {
-      "get": {
-        "tags": [
-          "CompraProducto"
-        ],
-        "operationId": "GetCompraProductos",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Compra_Producto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Compra_Producto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Compra_Producto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "CompraProducto"
-        ],
-        "operationId": "PostCompraProducto",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompraProductoDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompraProductoDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompraProductoDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Compra_Producto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Compra_Producto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Compra_Producto"
                 }
               }
             }
@@ -479,106 +402,18 @@
         }
       }
     },
-    "/api/Producto": {
+    "/GetTipoPanes": {
       "get": {
         "tags": [
-          "Producto"
+          "TipoPan"
         ],
-        "operationId": "GetAll",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductoDTO"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductoDTO"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductoDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Producto"
-        ],
-        "operationId": "Create",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductoDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductoDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductoDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductoDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductoDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductoDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Producto/{id}": {
-      "get": {
-        "tags": [
-          "Producto"
-        ],
-        "operationId": "GetById",
+        "operationId": "GetTipoPanes",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "tipoBocadilloString",
+            "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
@@ -588,39 +423,9 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductoDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductoDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductoDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/ProductoCompra": {
-      "get": {
-        "tags": [
-          "ProductoCompra"
-        ],
-        "operationId": "GetProductoCompras",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Producto_Compra"
+                    "type": "string"
                   }
                 }
               },
@@ -628,7 +433,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Producto_Compra"
+                    "type": "string"
                   }
                 }
               },
@@ -636,182 +441,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Producto_Compra"
+                    "type": "string"
                   }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "ProductoCompra"
-        ],
-        "operationId": "PostProductoCompra",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductoCompraDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductoCompraDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProductoCompraDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Producto_Compra"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Producto_Compra"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Producto_Compra"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/ProductoCompra/{id}": {
-      "get": {
-        "tags": [
-          "ProductoCompra"
-        ],
-        "operationId": "GetProductoCompra",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Producto_Compra"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Producto_Compra"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Producto_Compra"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/TipoProducto": {
-      "get": {
-        "tags": [
-          "TipoProducto"
-        ],
-        "operationId": "GetAll",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TipoProductoDTO"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TipoProductoDTO"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TipoProductoDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "TipoProducto"
-        ],
-        "operationId": "Post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TipoProductoDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TipoProductoDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/TipoProductoDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TipoProductoDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TipoProductoDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TipoProductoDTO"
                 }
               }
             }
@@ -897,6 +528,10 @@
           "apellido2": {
             "type": "string",
             "nullable": true
+          },
+          "correo": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -918,54 +553,10 @@
           },
           "pvp": {
             "type": "number",
-            "format": "float"
+            "format": "double"
           },
           "tipoPan": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Bocadillo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombre": {
-            "maxLength": 30,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "pvp": {
-            "type": "number",
-            "format": "float"
-          },
-          "stock": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tipoPan": {
-            "$ref": "#/components/schemas/TipoPan"
-          },
-          "tamaño": {
-            "$ref": "#/components/schemas/Tamaño"
-          },
-          "resenyaBocadillos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ResenyaBocadillo"
-            },
-            "nullable": true
-          },
-          "comprasDelBocadillo": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CompraBocadillo"
-            },
             "nullable": true
           }
         },
@@ -987,7 +578,7 @@
           },
           "pvp": {
             "type": "number",
-            "format": "float"
+            "format": "double"
           },
           "id": {
             "type": "integer",
@@ -996,146 +587,159 @@
         },
         "additionalProperties": false
       },
-      "Compra": {
+      "BonoBocadillo": {
         "required": [
-          "fechaCompra",
-          "metodo_Pago",
           "nBocadillos",
-          "precioTotal",
-          "user"
+          "nombre",
+          "pvp"
         ],
         "type": "object",
         "properties": {
-          "user": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
-          "compraId": {
+          "bonoId": {
             "type": "integer",
             "format": "int32"
           },
-          "fechaCompra": {
-            "type": "string",
-            "format": "date-time"
+          "cantidadDisponible": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
           },
           "nBocadillos": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "integer",
             "format": "int32"
           },
-          "metodo_Pago": {
-            "$ref": "#/components/schemas/Metodo_Pago"
+          "nombre": {
+            "maxLength": 20,
+            "minLength": 3,
+            "type": "string"
           },
-          "precioTotal": {
+          "pvp": {
+            "minimum": 0,
             "type": "number",
-            "format": "float"
+            "format": "double"
           },
-          "bocadillosComprados": {
+          "bonosComprados": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CompraBocadillo"
+              "$ref": "#/components/schemas/BonosComprados"
             },
             "nullable": true
+          },
+          "tipoBocadillo": {
+            "$ref": "#/components/schemas/TipoBocadillo"
           }
         },
         "additionalProperties": false
       },
-      "CompraBocadillo": {
+      "BonosComprados": {
         "required": [
           "cantidad"
         ],
         "type": "object",
         "properties": {
-          "bocadillo": {
-            "$ref": "#/components/schemas/Bocadillo"
+          "bonoBocadillo": {
+            "$ref": "#/components/schemas/BonoBocadillo"
           },
-          "bocadilloId": {
+          "bonoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "compraBono": {
+            "$ref": "#/components/schemas/CompraBono"
+          },
+          "compraBonoId": {
             "type": "integer",
             "format": "int32"
           },
           "cantidad": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
-          },
-          "compra": {
-            "$ref": "#/components/schemas/Compra"
-          },
-          "compraId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombreBocadillo": {
-            "type": "string",
-            "nullable": true
           },
           "precio": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "type": "number",
-            "format": "float"
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CompraBono": {
+        "required": [
+          "metodoPago"
+        ],
+        "type": "object",
+        "properties": {
+          "compraBonoId": {
+            "type": "integer",
+            "format": "int32"
           },
-          "tipoPan": {
+          "user": {
+            "$ref": "#/components/schemas/ApplicationUser"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "nBonos": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "precioTotalBono": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "metodoPago": {
+            "$ref": "#/components/schemas/MetodoPago"
+          },
+          "bonosComprados": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TipoPan"
+              "$ref": "#/components/schemas/BonosComprados"
             },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "CompraProductoDTO": {
-        "type": "object",
-        "properties": {
-          "productoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "compraId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cantidad": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "precioUnitario": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Compra_Producto": {
+      "CompraBonoDTO": {
         "required": [
-          "cantidad",
-          "compraId",
-          "precioUnitario",
-          "productoId"
+          "apellido1Cliente",
+          "apellido2Cliente",
+          "metdoPago",
+          "nombreCliente"
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemBonoDTO"
+            },
+            "nullable": true
           },
-          "productoId": {
-            "type": "integer",
-            "format": "int32"
+          "nombreCliente": {
+            "minLength": 1,
+            "type": "string"
           },
-          "compraId": {
-            "type": "integer",
-            "format": "int32"
+          "apellido1Cliente": {
+            "minLength": 1,
+            "type": "string"
           },
-          "cantidad": {
-            "type": "integer",
-            "format": "int32"
+          "apellido2Cliente": {
+            "minLength": 1,
+            "type": "string"
           },
-          "precioUnitario": {
-            "type": "number",
-            "format": "double"
-          },
-          "producto": {
-            "$ref": "#/components/schemas/Producto"
-          },
-          "compra": {
-            "$ref": "#/components/schemas/Compra"
+          "metdoPago": {
+            "$ref": "#/components/schemas/MetodoPago"
           }
         },
         "additionalProperties": false
@@ -1168,48 +772,48 @@
         },
         "additionalProperties": false
       },
-      "DETAIL_Bono_DTO": {
+      "Detail_CompraBonoDTO": {
         "required": [
-          "apellido1",
-          "apellido2",
-          "metodoPago",
-          "nombre"
+          "apellido1Cliente",
+          "apellido2Cliente",
+          "metdoPago",
+          "nombreCliente"
         ],
         "type": "object",
         "properties": {
-          "nombre": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "apellido1": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "apellido2": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "metodoPago": {
-            "$ref": "#/components/schemas/MetodoPago"
-          },
-          "itemCompra": {
+          "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Item_Bono_DTO"
+              "$ref": "#/components/schemas/ItemBonoDTO"
             },
             "nullable": true
+          },
+          "nombreCliente": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "apellido1Cliente": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "apellido2Cliente": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "metdoPago": {
+            "$ref": "#/components/schemas/MetodoPago"
           },
           "id": {
             "type": "integer",
             "format": "int32"
           },
-          "preciototalbono": {
+          "precioTotal": {
             "type": "number",
             "format": "double"
           },
-          "fecha": {
+          "compraT": {
             "type": "string",
-            "format": "date"
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -1239,65 +843,43 @@
             },
             "nullable": true
           },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "fechaPedido": {
             "type": "string",
             "format": "date-time"
           },
           "precioTotal": {
             "type": "number",
-            "format": "float"
+            "format": "double"
           }
         },
         "additionalProperties": false
       },
-      "GET_Bono_DTO": {
+      "ItemBonoDTO": {
         "type": "object",
         "properties": {
-          "nombre": {
-            "type": "string",
-            "nullable": true
-          },
           "pvp": {
             "type": "number",
             "format": "double"
           },
-          "numero": {
+          "nBocadillos": {
             "type": "integer",
             "format": "int32"
           },
-          "tipo": {
+          "nombreBono": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Item_Bono_DTO": {
-        "type": "object",
-        "properties": {
-          "compraId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "bonoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombre": {
-            "type": "string",
-            "nullable": true
-          },
-          "tipoBocadillo": {
-            "type": "string",
-            "nullable": true
-          },
-          "precio": {
-            "type": "number",
-            "format": "double"
           },
           "cantidad": {
             "type": "integer",
             "format": "int32"
+          },
+          "tipoBocadillo": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1317,40 +899,6 @@
           "GooglePay"
         ],
         "type": "string"
-      },
-      "POST_Bono_DTO": {
-        "required": [
-          "apellido1",
-          "apellido2",
-          "metodoPago",
-          "nombre"
-        ],
-        "type": "object",
-        "properties": {
-          "nombre": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "apellido1": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "apellido2": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "metodoPago": {
-            "$ref": "#/components/schemas/MetodoPago"
-          },
-          "itemCompra": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Item_Bono_DTO"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       },
       "ProblemDetails": {
         "type": "object",
@@ -1379,263 +927,33 @@
         },
         "additionalProperties": { }
       },
-      "Producto": {
-        "required": [
-          "nombre",
-          "precio",
-          "tipoProductoId"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombre": {
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "descripcion": {
-            "maxLength": 300,
-            "type": "string",
-            "nullable": true
-          },
-          "precio": {
-            "maximum": 10000,
-            "minimum": 0.01,
-            "type": "number",
-            "format": "double"
-          },
-          "tipoProductoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "stock": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tipoProducto": {
-            "$ref": "#/components/schemas/TipoProducto"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ProductoCompraDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "productoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "compraId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cantidad": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ProductoDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombre": {
-            "type": "string",
-            "nullable": true
-          },
-          "descripcion": {
-            "type": "string",
-            "nullable": true
-          },
-          "precio": {
-            "type": "number",
-            "format": "double"
-          },
-          "tipoProductoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "stock": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Producto_Compra": {
-        "required": [
-          "cantidad",
-          "compraId",
-          "productoId",
-          "pvp"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "productoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "compraId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cantidad": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pvp": {
-            "type": "number",
-            "format": "double"
-          },
-          "producto": {
-            "$ref": "#/components/schemas/Producto"
-          },
-          "compra": {
-            "$ref": "#/components/schemas/Compra"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Resenya": {
-        "required": [
-          "descripcion",
-          "titulo",
-          "valoracion_General"
-        ],
-        "type": "object",
-        "properties": {
-          "descripcion": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "fechaPublicacion": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombreUsuario": {
-            "type": "string",
-            "nullable": true
-          },
-          "titulo": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "resenyaBocadillo": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ResenyaBocadillo"
-            },
-            "nullable": true
-          },
-          "valoracion_General": {
-            "$ref": "#/components/schemas/Valoracion_General"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ResenyaBocadillo": {
-        "required": [
-          "puntuacion"
-        ],
-        "type": "object",
-        "properties": {
-          "bocadilloId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "puntuacion": {
-            "maximum": 10,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int32"
-          },
-          "resenyaId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "bocadillo": {
-            "$ref": "#/components/schemas/Bocadillo"
-          },
-          "resenya": {
-            "$ref": "#/components/schemas/Resenya"
-          }
-        },
-        "additionalProperties": false
-      },
       "Tamaño": {
         "enum": [
-          "pequeño",
-          "normal"
+          "Pequeño",
+          "Normal"
         ],
         "type": "string"
       },
-      "TipoPan": {
-        "type": "object",
-        "properties": {
-          "nombre": {
-            "type": "string",
-            "nullable": true
-          },
-          "panId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "bocadillos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Bocadillo"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TipoProducto": {
+      "TipoBocadillo": {
         "required": [
-          "nombre"
+          "nombreTipo"
         ],
         "type": "object",
         "properties": {
-          "tipoProductoId": {
+          "idTipo": {
             "type": "integer",
             "format": "int32"
           },
-          "nombre": {
-            "maxLength": 50,
-            "minLength": 0,
+          "nombreTipo": {
+            "maxLength": 20,
+            "minLength": 3,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TipoProductoDTO": {
-        "type": "object",
-        "properties": {
-          "tipoProductoId": {
-            "type": "integer",
-            "format": "int32"
           },
-          "nombre": {
-            "type": "string",
+          "bonoBocadillos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BonoBocadillo"
+            },
             "nullable": true
           }
         },
@@ -1677,16 +995,6 @@
           }
         },
         "additionalProperties": { }
-      },
-      "Valoracion_General": {
-        "enum": [
-          "Una",
-          "Dos",
-          "Tres",
-          "Cuatro",
-          "Cinco"
-        ],
-        "type": "string"
       }
     }
   }
