@@ -1,11 +1,9 @@
-﻿using AppForSEII2526.API.DTOs;
+﻿using AppForSEII2526.API.Data;
 using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Validations;
-using static AppForSEII2526.API.Models.CompraBono;
+using AppForSEII2526.API.DTOs;
+using System.Linq;
 
-namespace AppForSEII2526.API.Controllers
+namespace AppForSEII2526.API.Controllers.PedidosControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -36,7 +34,8 @@ namespace AppForSEII2526.API.Controllers
                 .Include(c => c.BocadillosComprados)
                 .ThenInclude(cb => cb.Bocadillo)
                 .ThenInclude(b => b.tipoPan)
-                .Select(c=> new DetallesPedidoDTO(
+                .Select(c => new DetallesPedidoDTO(
+                    c.CompraId,
                     c.User.nombre,
                     c.Metodo_Pago,
                     c.User.apellido1,
@@ -68,21 +67,28 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> CrearPedido(CrearPedidoDTO pedidoParaCrear)
         {
+            if (pedidoParaCrear.ArticuloPedido.Count == 0)
+                ModelState.AddModelError("CompraItems", "Error. Tienes que añadir al menos un bocadillo para realizar la compra");
+
             var usuario = _context.ApplicationUser.FirstOrDefault(au => au.nombre == pedidoParaCrear.nombre && au.apellido1 == pedidoParaCrear.apellido1);
             if (usuario == null)
-                ModelState.AddModelError("RentalApplicationUser", "Usuario no registrado");
+            {
+                return NotFound($"Error: El nombre y apellido introducidos no corresponden a un usuario registrado.");
+            }
 
             var metodoPagoEnum = pedidoParaCrear.Metodo_Pago;
-
             if (!Enum.IsDefined(typeof(Metodo_Pago), pedidoParaCrear.Metodo_Pago))
             {
                 ModelState.AddModelError("Metodo_Pago", "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay.");
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
+
             var pedidoNombre = pedidoParaCrear.ArticuloPedido.Select(ri => ri.Id).ToList();
 
             var bocadillos = _context.Bocadillos
+                .Include(b => b.ComprasDelBocadillo)
+                .ThenInclude(cb => cb.Compra)
                 .Where(b => pedidoNombre.Contains(b.Id))
                 .Select(b => new { b.nombre, b.PVP, b.stock, b.tamaño, b.Id, b.tipoPan}).ToList();
 
@@ -92,22 +98,17 @@ namespace AppForSEII2526.API.Controllers
 
             foreach (var articulo in pedidoParaCrear.ArticuloPedido)
             {
-                /*if (articulo.TipoPan == "semilla")
-                {
-                    ModelState.AddModelError("Bocadillo", "Error! No nos quedan panes de este tipo para realizar tu pedido");
-                    return ValidationProblem(ModelState);
-                }*/
-
                 var bocadillo = bocadillos.FirstOrDefault(p => p.nombre == articulo.nombreBocadillo);
                 if (bocadillo == null)
                 {
                     ModelState.AddModelError("Bocadillo", "Error! El bocadillo no existe");
                     return ValidationProblem(ModelState);
                 }
-                else
+                
+                if(articulo.Cantidad <= 0)
                 {
-                    compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, articulo.Cantidad, compra, compra.CompraId, bocadillo.nombre, bocadillo.PVP));
-                    articulo.PVP = bocadillo.PVP;
+                    ModelState.AddModelError("Cantidad", $"Error! La cantidad es negativa");
+                    return ValidationProblem(ModelState);
                 }
 
                 if (articulo.Cantidad > bocadillo.stock)
@@ -115,15 +116,11 @@ namespace AppForSEII2526.API.Controllers
                     ModelState.AddModelError("Cantidad", "Error! La cantidad para el bocadillo es mayor que la cantidad disponible");
                     return ValidationProblem(ModelState);
                 }
-                if (articulo.Cantidad >5)
-                {
-                    ModelState.AddModelError("Bocadillo", "Error!, no nos quedan panes para realizar tu pedido");
-                    return ValidationProblem(ModelState);
-                }
-
-
+                // Si todo va bien, añadimos al pedido
+                compra.BocadillosComprados.Add(new CompraBocadillo(bocadillo.Id, articulo.Cantidad, compra, compra.CompraId, bocadillo.nombre, bocadillo.PVP));
+                articulo.PVP = bocadillo.PVP;
             }
-
+            
             compra.PrecioTotal = compra.BocadillosComprados.Sum(cb => cb.Precio * cb.Cantidad);
             compra.nBocadillos = compra.BocadillosComprados.Sum(cb => cb.Cantidad);
 
@@ -144,6 +141,7 @@ namespace AppForSEII2526.API.Controllers
             }
 
             var detallesPedidoDTO = new DetallesPedidoDTO(
+                compra.CompraId,
                 usuario.nombre,
                 compra.Metodo_Pago,
                 usuario.apellido1,
@@ -152,11 +150,12 @@ namespace AppForSEII2526.API.Controllers
                 pedidoParaCrear.ArticuloPedido.ToList(),
                 compra.PrecioTotal
                 );
-
+            
             return CreatedAtAction(
-                "GetPedidos",
-                new { id = compra.CompraId },
-                detallesPedidoDTO
+                    nameof(GetPedido), // <-- Esto detectará automáticamente el nombre "GetPedido"
+                    //"GetPedido",
+                    new { id = compra.CompraId },
+                    detallesPedidoDTO
                 );
         }
     }
