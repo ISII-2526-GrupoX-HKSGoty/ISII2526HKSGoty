@@ -1,5 +1,11 @@
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
+using Microsoft.EntityFrameworkCore;         // Para UseSqlServer y UseSqlite
+using Microsoft.AspNetCore.Identity;        // Para IdentityRole y Identity APIs
+using Microsoft.OpenApi.Models;             // Para OpenApiInfo y la configuración de Swagger
+using System.Reflection;                    // Para MethodInfo
+using System.Text.Json.Serialization;       // Para el conversor de Enums a String
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +54,6 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
@@ -64,14 +69,9 @@ builder.Services.AddSwaggerGen(options => {
     options.CustomOperationIds(apiDescription => {
         return apiDescription.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
     });
-
 });
 
-
 var app = builder.Build();
-
-
-
 
 //Map Identity routes
 //app.MapIdentityApi<IdentityUser>();
@@ -88,7 +88,6 @@ using (var scope = app.Services.CreateScope()) {
             db.Database.EnsureCreated();
         else
             db.Database.Migrate();
-
 
         //it sees the database
         //SeedData.Initialize(db, scope.ServiceProvider, logger);
@@ -108,7 +107,7 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

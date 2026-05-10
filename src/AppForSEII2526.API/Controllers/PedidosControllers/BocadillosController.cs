@@ -1,15 +1,12 @@
 ﻿using AppForSEII2526.API.DTOs;
-using AppForSEII2526.API.Models;
-using System;
 using static Bocadillo;
 
-namespace AppForSEII2526.API.Controllers
+namespace AppForSEII2526.API.Controllers.PedidosControllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class BocadillosController : ControllerBase
     {
-
         private readonly ApplicationDbContext _context;
         private readonly ILogger<BocadillosController> _logger;
 
@@ -27,12 +24,8 @@ namespace AppForSEII2526.API.Controllers
             IList<BocadilloDTO> bocadillos = await _context.Bocadillos
                 .Include(b => b.tipoPan)
                 .Where(b =>
-
-                (filTipoPan == null || b.tipoPan.Nombre.Contains(filTipoPan))
-
-                && (filTamaño == null || b.tamaño == filTamaño))
-
-
+                    (filTipoPan == null || b.tipoPan.Nombre.Contains(filTipoPan))
+                    && (filTamaño == null || b.tamaño == filTamaño))
                 .Select(b => new BocadilloDTO
                 {
                     Id = b.Id,
@@ -41,8 +34,12 @@ namespace AppForSEII2526.API.Controllers
                     TipoPanNombre = b.tipoPan.Nombre,
                     PVP = b.PVP,
                 })
-
-            .ToListAsync();
+                .ToListAsync();
+            if (bocadillos.Count == 0)
+            {
+                _logger.LogInformation("No hay bocadillos con esos filtros");
+                return NotFound("No hay bocadillos con esos filtros");
+            }
             return Ok(bocadillos);
 
         }
