@@ -1,5 +1,5 @@
 ﻿using AppForMovies.UT;
-using AppForSEII2526.API.Controllers;
+using AppForSEII2526.API.Controllers.PedidosControllers;
 using AppForSEII2526.API.DTOs;
 using AppForSEII2526.API.Models;
 using System.Net;
