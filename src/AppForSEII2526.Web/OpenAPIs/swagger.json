@@ -99,7 +99,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BonoBocadillo"
+                    "$ref": "#/components/schemas/Get_BonosDTO"
                   }
                 }
               },
@@ -107,7 +107,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BonoBocadillo"
+                    "$ref": "#/components/schemas/Get_BonosDTO"
                   }
                 }
               },
@@ -115,7 +115,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BonoBocadillo"
+                    "$ref": "#/components/schemas/Get_BonosDTO"
                   }
                 }
               }
@@ -405,89 +405,6 @@
   },
   "components": {
     "schemas": {
-      "ApplicationUser": {
-        "required": [
-          "apellido1",
-          "nombre"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "normalizedUserName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "normalizedEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "emailConfirmed": {
-            "type": "boolean"
-          },
-          "passwordHash": {
-            "type": "string",
-            "nullable": true
-          },
-          "securityStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "concurrencyStamp": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumberConfirmed": {
-            "type": "boolean"
-          },
-          "twoFactorEnabled": {
-            "type": "boolean"
-          },
-          "lockoutEnd": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "lockoutEnabled": {
-            "type": "boolean"
-          },
-          "accessFailedCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombre": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "apellido1": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "apellido2": {
-            "type": "string",
-            "nullable": true
-          },
-          "correo": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ArticuloPedidoDTO": {
         "type": "object",
         "properties": {
@@ -539,129 +456,6 @@
         },
         "additionalProperties": false
       },
-      "BonoBocadillo": {
-        "required": [
-          "nBocadillos",
-          "nombre",
-          "pvp"
-        ],
-        "type": "object",
-        "properties": {
-          "bonoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cantidadDisponible": {
-            "maximum": 2147483647,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "nBocadillos": {
-            "maximum": 2147483647,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombre": {
-            "maxLength": 20,
-            "minLength": 3,
-            "type": "string"
-          },
-          "pvp": {
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "bonosComprados": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BonosComprados"
-            },
-            "nullable": true
-          },
-          "tipoBocadillo": {
-            "$ref": "#/components/schemas/TipoBocadillo"
-          }
-        },
-        "additionalProperties": false
-      },
-      "BonosComprados": {
-        "required": [
-          "cantidad"
-        ],
-        "type": "object",
-        "properties": {
-          "bonoBocadillo": {
-            "$ref": "#/components/schemas/BonoBocadillo"
-          },
-          "bonoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "compraBono": {
-            "$ref": "#/components/schemas/CompraBono"
-          },
-          "compraBonoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cantidad": {
-            "maximum": 2147483647,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int32"
-          },
-          "precio": {
-            "maximum": 2147483647,
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CompraBono": {
-        "required": [
-          "metodoPago"
-        ],
-        "type": "object",
-        "properties": {
-          "compraBonoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "user": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "nBonos": {
-            "maximum": 2147483647,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "precioTotalBono": {
-            "minimum": 0,
-            "type": "number",
-            "format": "double"
-          },
-          "metodoPago": {
-            "$ref": "#/components/schemas/MetodoPago"
-          },
-          "bonosComprados": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BonosComprados"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "CompraBonoDTO": {
         "required": [
           "apellido1Cliente",
@@ -692,6 +486,11 @@
           },
           "metdoPago": {
             "$ref": "#/components/schemas/MetodoPago"
+          },
+          "precioTotal": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -806,6 +605,33 @@
         },
         "additionalProperties": false
       },
+      "Get_BonosDTO": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "maxLength": 20,
+            "minLength": 3,
+            "type": "string",
+            "nullable": true
+          },
+          "pvp": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "nBocadillos": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipoBocadillo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ItemBonoDTO": {
         "type": "object",
         "properties": {
@@ -881,31 +707,6 @@
           "Normal"
         ],
         "type": "string"
-      },
-      "TipoBocadillo": {
-        "required": [
-          "nombreTipo"
-        ],
-        "type": "object",
-        "properties": {
-          "idTipo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombreTipo": {
-            "maxLength": 20,
-            "minLength": 3,
-            "type": "string"
-          },
-          "bonoBocadillos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BonoBocadillo"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       },
       "ValidationProblemDetails": {
         "type": "object",

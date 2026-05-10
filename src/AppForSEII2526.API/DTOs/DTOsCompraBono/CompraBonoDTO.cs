@@ -26,6 +26,14 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
         [Required]
         public MetodoPago metdoPago { get; set; }
 
+        public double precioTotal
+        {
+            get
+            {
+                return Items.Sum(ri => ri.PVP * ri.cantidad);
+            }
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is CompraBonoDTO dTO &&

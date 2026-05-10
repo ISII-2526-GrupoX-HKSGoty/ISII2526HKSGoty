@@ -1,0 +1,205 @@
+﻿@page "/bonos/listbonos"
+
+@using AppForSEII2526.Web.API
+@using AppForSEII2526.Web.Components.Shared
+@using Microsoft.AspNetCore.Authorization
+
+@inject ILogger<SelectBonos> logger
+@inject AppForSEII2526APIClient apiservice
+@inject CompraBonoStateContainer compraState
+@inject NavigationManager navigation
+
+@*@attribute [Authorize]*@
+
+
+<h3>Select Bono Para Comprar</h3>
+<div class="container-fluid">
+    
+    <div class="row">
+
+        <div class="d-flex justify-content-between">
+
+            <div><b>Bonos:</b> @compra.Items.Count</div>
+            <button class="btn btn-primary" id="BotonComprar" @onclick="@ComprarBonos" disabled="@BotonCompraDisabled">Compra bonos</button>
+
+        </div>
+
+        <div class="row">
+
+            <button class="btn btn-outline-primary" id="MostrarCompracart" @onclick="@ToggleCompracart">Carro</button>
+
+        </div>
+
+        <div class="row" hidden="@hiddenCompraCart">
+
+            @foreach (ItemBonoDTO item in compra.Items)
+            {
+                <ItemBono Item="@item" OnRemovedItem="@(() => RemoveItemBono(item))"></ItemBono>
+            }
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <p></p>
+        <h5>Filter Bonos</h5>
+
+        <div class="imput-group">
+
+            <div class="input-group-prepend">
+
+                <span class="input-group-text">Nombre</span>
+
+            </div>
+
+            <input type="text" class="form-control" @bind="nombreBono" id="nombreBono">
+
+            <div class="input-group-prepend">
+
+                <span class="input-group-text">Tipo</span>
+
+            </div>
+
+            <input type="text" class="form-control" @bind="tipoBono" id="tipoBono">
+
+            <div>
+                <button class="btn btn-outline-primary" id="BusacarBonos" @onclick="@searchBonos">Busacar bonos</button>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <div class="d-flex justify-content-between">
+
+        <div class="container-fluid">
+
+            @if (Bonos.Count == 0)
+            {
+                <p>No hay bonos</p>
+            }
+            else
+            {
+                <div class="mh-100 table-responsive">
+
+                    <table class="table table-condensed table-hover" id="TablaBonos">
+
+                        <thead>
+
+                            <tr>
+                                <th>NombreBono</th>
+                                <th>TipoBocadillo</th>
+                                <th>Precio</th>
+                                <th>Bocadillos</th>
+                                <th>Comprar</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (Get_BonosDTO bono in Bonos)
+                            {
+                                <tr id="DatosBono_@bono.Nombre">
+
+                                    <td>@bono.Nombre</td>
+                                    <td>@bono.TipoBocadillo</td>
+                                    <td>@bono.Pvp</td>
+                                    <td>@bono.NBocadillos</td>
+                                    <td>
+
+                                        <input type="number" min="0" id="cantidadComprar_@bono.Nombre" @bind = "cantidad[bono.Nombre]"/>
+                                        <button class="btn btn-outline-secondary" id="bonoaComprar_@bono.Nombre" onclick="@(()=>AddBono(bono, cantidad[bono.Nombre]))">Add</button>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+
+
+    </div>
+</div>
+
+
+@code{
+
+    private Dictionary<string, int> cantidad = new();
+
+    private string error;
+    private string nombreBono;
+    private string tipoBono;
+
+    private bool BotonCompraDisabled { get { return compra.Items.Count == 0; } }
+    private bool hiddenCompraCart = true;
+
+    private CompraBonoDTO compra => compraState.Compra;
+    private ICollection<Get_BonosDTO> Bonos { get; set; } = new List<Get_BonosDTO>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        searchBonos();
+    }
+
+    protected async void searchBonos(){
+
+        try{
+
+            Bonos = await apiservice.GetBonosAsync(nombreBono, tipoBono);
+        }
+
+        catch(ApiException ex)
+        {
+
+            Bonos = new List<Get_BonosDTO>();
+            logger.LogError("Error al conectar con GetBonos");
+        }
+        foreach (var bonos in Bonos)
+        {
+            if(!cantidad.ContainsKey(bonos.Nombre))
+            {
+                cantidad[bonos.Nombre] = 0;
+            }
+        }
+        StateHasChanged();
+    }
+
+    private void ComprarBonos()
+    {
+        navigation.NavigateTo("/counter");
+    }
+
+    private void ToggleCompracart()
+    {
+        hiddenCompraCart = !hiddenCompraCart;
+    }
+
+    private void AddBono(Get_BonosDTO bono, int cantidad)
+    {
+        if (cantidad >= 1)
+        {
+            compraState.AddBonoCompra(bono, cantidad);
+            StateHasChanged();
+        }
+       
+    }
+
+    private void RemoveItemBono(ItemBonoDTO item)
+    {
+        compraState.RemoveItemBono(item);
+        if (compra.Items.Count == 0) hiddenCompraCart = true;
+        
+    }
+}
+
