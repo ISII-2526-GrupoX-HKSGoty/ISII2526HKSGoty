@@ -26,36 +26,36 @@ namespace AppForSEII2526.Web
 
 
 
-        public void AddBocadilloParaComprar(ItemBonoDTO bono)
+        public void AddBonoCompra(Get_BonosDTO bono, int cantidad)
         {
             //before adding a movie we checked whether it has been already added
-            if (!Compra.Items.Any(ri => ri.NombreBono == bono.NombreBono))
+            if (!Compra.Items.Any(ri => ri.NombreBono == bono.Nombre))
                 //we add it if it is not in the list
                 Compra.Items.Add(new ItemBonoDTO()
                 {
                     Pvp = bono.Pvp,
                     NBocadillos = bono.NBocadillos,
-                    NombreBono = bono.NombreBono,
-                    Cantidad = bono.Cantidad,
+                    NombreBono = bono.Nombre,
+                    Cantidad = cantidad,
                     TipoBocadillo = bono.TipoBocadillo
 
                 });
         }
 
         //to delete movies from the list of selected movies
-        public void RemoveCompraArticuloParaComprar(ItemBonoDTO item)
+        public void RemoveItemBono(ItemBonoDTO item)
         {
             Compra.Items.Remove(item);
         }
 
         //we eliminate all the movies from the list
-        public void LimpiarCarroCompra()
+        public void LimpiarCompraBonos()
         {
             Compra.Items.Clear();
         }
 
         //we have already finished the process of renting, thus, we create a new Rental 
-        public void CompraProcessed()
+        public void CompraBonosProcesada()
         {
             //we have finished the rental process so we create a new object without data
             Compra = new CompraBonoDTO()

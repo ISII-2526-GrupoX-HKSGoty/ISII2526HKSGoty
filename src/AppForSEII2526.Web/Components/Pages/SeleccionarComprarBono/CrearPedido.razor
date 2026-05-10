@@ -1,0 +1,135 @@
+﻿@page "/bonos/createCompraBonos"
+@using AppForSEII2526.Web.API
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using System.Text.Json
+@using AppForSEII2526.Web.Components.Shared
+
+@inject AppForSEII2526.Web.API.AppForSEII2526APIClient apiservice
+@inject CompraBonoStateContainer compraState
+@inject NavigationManager Navigation
+
+@*@attribute [Authorize]*@
+
+<h3>Compra</h3>
+<EditForm Model="compra" OnValidSubmit="OpenDialog">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="form-floating mb-3">
+
+                <input type="text" class="form-control" @bind="compra.NombreCliente" id="NombreCliente">
+                <label for="Nomre">Nombre</label>
+
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="form-floating mb-3">
+
+                <input type="text" class="form-control" @bind="compra.Apellido1Cliente" id="Apellido1Cliente">
+                <label for="Apellido">Apellido1</label>
+
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="form-floating mb-3">
+
+                <input type="text" class="form-control" @bind="compra.Apellido2Cliente" id="Apellido2Cliente">
+                <label for="Apellido">Apellido2</label>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating">
+
+                    <InputSelect class="form-select" @bind-Value="@compra.MetdoPago" id="MetodoPago">
+
+                        <option value="@MetodoPago.Tarjeta" default> Tarjeta</option>
+                        <option value="@MetodoPago.Paypal"> Paypal</option>
+                        <option value="@MetodoPago.GooglePay"> GooglePay</option>
+
+                    </InputSelect>
+
+                    <label for="MetodoPago">Metodo de pago</label>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+
+                    <button class="btn btn-primary" type="submit" id="submit">
+                        Comprar bonos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+<p></p>
+
+<h4>Deatalles compra</h4>
+<p>
+    <b>Precio total:</b>@compra.PrecioTotal
+    <button class="btn btn-outline-primary" type"submit" @onclick="ModificarCompra" id="ModificarCompra">
+
+        Modificar bonos
+
+    </button>
+</p>
+
+    <div class="mh-100 table table-responsive">
+        <table class="table table-condensed table-hover" id="TablaCompraBonos">
+            <thead>
+                <tr>
+
+                    <th>NombreBono</th>
+                    <th>TipoBocadillo</th>
+                    <th>Precio</th>
+                    <th>Bocadillos</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var bono in compra.Items)
+            {
+
+                <tr id="DatosBono_@bono.NombreBono">
+
+                    <td>@bono.NombreBono</td>
+                    <td>@bono.TipoBocadillo</td>
+                    <td>@bono.Pvp</td>
+                    <td>@bono.NBocadillos</td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+
+@code{
+
+    private CompraBonoDTO compra => compraState.Compra;
+
+    private bool DialogIsOpen;
+
+
+    private void OpenDialog()
+    {
+        DialogIsOpen = true;
+    }
+
+    private void ModificarCompra()
+    {
+        Navigation.NavigateTo("/bonos/listbonos");
+    }
+
+}
