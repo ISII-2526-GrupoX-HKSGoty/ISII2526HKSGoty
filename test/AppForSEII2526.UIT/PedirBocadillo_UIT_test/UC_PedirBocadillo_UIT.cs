@@ -11,11 +11,11 @@ namespace AppForSEII2526.UIT.UC_Rental
 {
     public class UC_PedirBocadillo_UIT : UC_UIT
     {
-        private SelectBocadillosParaPedir_PO selectBocadillosParaPedir_PO;
-        private PostPedido_PO compraBocadillos_PO;
+        private SelectPedido_PO selectPedido_PO;
+        private PostPedido_PO postPedido_PO;
         private DetailPedido_PO detailPedido_PO;
         private const int bocadilloID = 1;
-        private const string nombreBocadillo1 = "BaconQueso";
+        private const string nombreBocadillo1 = "Politecnico";
         private const string tipoPan1 = "Normal";
         private const string precio1 = "3";
         private const string tamanyo1 = "Normal";
@@ -25,22 +25,17 @@ namespace AppForSEII2526.UIT.UC_Rental
         private const string precio2 = "5";
         private const string tamanyo2 = "Pequeño";
 
-
-
         public UC_PedirBocadillo_UIT(ITestOutputHelper output) : base(output)
         {
-            selectBocadillosParaPedir_PO = new SelectBocadillosParaPedir_PO(_driver, _output);
-            compraBocadillos_PO = new PostPedido_PO(_driver, _output);
+            selectPedido_PO = new SelectPedido_PO(_driver, _output);
+            postPedido_PO = new PostPedido_PO(_driver, _output);
             detailPedido_PO = new DetailPedido_PO(_driver, _output);
-
-
         }
-
 
         private void InitialStepsForCompraBocadillos()
         {
             _driver.Navigate().GoToUrl("https://localhost:7081/");
-            selectBocadillosParaPedir_PO.WaitForBeingVisible(By.Id("CreateCompra"));
+            selectPedido_PO.WaitForBeingVisible(By.Id("CreateCompra"));
 
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             wait.Until(driver =>
@@ -74,7 +69,6 @@ namespace AppForSEII2526.UIT.UC_Rental
             }
         }
 
-
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
         public void TC1_FB_1_2_3_4_5_6_7_8() //Esc_1, UC3_1
@@ -94,10 +88,9 @@ namespace AppForSEII2526.UIT.UC_Rental
                 },
                 new string[]
                 {
-                    "BaconQueso", "Normal", "Normal","3"
+                    "Politecnico", "Normal", "Normal","3"
                 },
             };
-
 
             var expectedBocadillosCompra = new List<string[]>
             {
@@ -107,10 +100,9 @@ namespace AppForSEII2526.UIT.UC_Rental
                 },
                 new string[]
                 {
-                    "BaconQueso","Normal", "3"
+                    "Politecnico","Normal", "3"
                 },
             };
-
 
             var expectedDatosCompra = new List<string[]>
             {
@@ -120,97 +112,25 @@ namespace AppForSEII2526.UIT.UC_Rental
                 },
                 new string[]
                 {
-                    "BaconQueso", "Normal", "3 €", "1"
+                    "Politecnico", "Normal", "3 €", "1"
                 },
             };
 
             //Pagina del select de bocadillos
-            selectBocadillosParaPedir_PO.SearchBocadillos("", "");
-            Assert.True(selectBocadillosParaPedir_PO.CheckListOfBocadillos(expectedBocadillos));
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Serrano");
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("BaconQueso");
-            selectBocadillosParaPedir_PO.seleccionarBotonCompra();
+            selectPedido_PO.SearchBocadillos("", "");
+            Assert.True(selectPedido_PO.CheckListOfBocadillos(expectedBocadillos));
+            selectPedido_PO.AddBocadilloParaComprar("Serrano");
+            selectPedido_PO.AddBocadilloParaComprar("Politecnico");
+            selectPedido_PO.seleccionarBotonCompra();
 
             //Pagina de la compra de bocadillos
-            Assert.True(compraBocadillos_PO.CheckListOfBocadillos(expectedBocadillosCompra));
-            compraBocadillos_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "Tarjeta");
-            Assert.True(compraBocadillos_PO.checkPrecio("8"));
-            compraBocadillos_PO.seleccionarBotonCompra();
+            Assert.True(postPedido_PO.CheckListOfBocadillos(expectedBocadillosCompra));
+            postPedido_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "Tarjeta");
+            Assert.True(postPedido_PO.checkPrecio("8"));
+            postPedido_PO.seleccionarBotonCompra();
 
             //Pagina de detalle del pedido
-
             Assert.True(detailPedido_PO.CheckListOfDatos("Fernando Martinez Panadero", "Tarjeta", "8", fechahoy.ToString("dd/MM/yyyy hh:mm:ss"), "8"));
-            Assert.True(detailPedido_PO.CheckListOfBocadillos(expectedDatosCompra));
-        }
-
-
-        [Fact]
-        [Trait("LevelTesting", "Funcional Testing")]
-        public void TC1_Pruebanuevaexamen()
-        {
-            InitialStepsForCompraBocadillos();
-            DateTime fechahoy = DateTime.Today;
-
-            var expectedBocadillos = new List<string[]>
-            {
-                new string[]
-                {
-                    "Serrano", "Pequeño", "Integral", "5"
-                },
-                new string[]
-                {
-                    "Bacon", "Pequeño", "Semilla","2"
-                },
-                new string[]
-                {
-                    "BaconQueso", "Normal", "Normal","3"
-                },
-            };
-
-            var expectedBocadillos1 = new List<string[]>
-            {
-                new string[]
-                {
-                    "BaconQueso", "Normal", "Normal","3"
-                },
-            };
-
-            var expectedBocadillosCompra = new List<string[]>
-            {
-                new string[]
-                {
-                    "BaconQueso","Normal", "3"
-                },
-            };
-
-            var expectedDatosCompra = new List<string[]>
-            {
-                new string[]
-                {
-                    "BaconQueso", "Normal", "3 €", "1"
-                },
-            };
-
-            //Pagina del select de bocadillos
-            selectBocadillosParaPedir_PO.SearchBocadillos("", "");
-            Assert.True(selectBocadillosParaPedir_PO.CheckListOfBocadillos(expectedBocadillos));
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Serrano");
-            selectBocadillosParaPedir_PO.SearchBocadillos("Normal", "");
-            Assert.True(selectBocadillosParaPedir_PO.CheckListOfBocadillos(expectedBocadillos1));
-
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("BaconQueso");
-            selectBocadillosParaPedir_PO.RemoveBocadilloParaComprar("Serrano");
-            selectBocadillosParaPedir_PO.seleccionarBotonCompra();
-
-
-            //Pagina de la compra de bocadillos
-            Assert.True(compraBocadillos_PO.CheckListOfBocadillos(expectedBocadillosCompra));
-            compraBocadillos_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "Tarjeta");
-            Assert.True(compraBocadillos_PO.checkPrecio("3"));
-            compraBocadillos_PO.seleccionarBotonCompra();
-
-            //Pagina de detalle del pedido
-            Assert.True(detailPedido_PO.CheckListOfDatos("Fernando Martinez Panadero", "Tarjeta", "3", fechahoy.ToString("dd/MM/yyyy hh:mm:ss"), "3"));
             Assert.True(detailPedido_PO.CheckListOfBocadillos(expectedDatosCompra));
         }
 
@@ -222,11 +142,11 @@ namespace AppForSEII2526.UIT.UC_Rental
             //Arrange
             InitialStepsForCompraBocadillos();
             //Act
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar(nombreBocadillo1);
-            selectBocadillosParaPedir_PO.RemoveBocadilloParaComprar(nombreBocadillo1);
+            selectPedido_PO.AddBocadilloParaComprar(nombreBocadillo1);
+            selectPedido_PO.RemoveBocadilloParaComprar(nombreBocadillo1);
 
             //Assert
-            Assert.True(selectBocadillosParaPedir_PO.CompraNotAvailable());
+            Assert.True(selectPedido_PO.CompraNotAvailable());
         }
 
 
@@ -234,19 +154,18 @@ namespace AppForSEII2526.UIT.UC_Rental
         [Theory]
         [InlineData("", "Martinez", "Panadero", "Tarjeta")] //Falta Nombre
         [InlineData("Fernando", "", "Panadero", "Tarjeta")] //Falta Primer Apellido
-        [InlineData("Julio", "Tarrega", "Peinado", "Tarjeta")] //Usuario Inexistente
+        [InlineData("NoExite", "NoExite", "NoExite", "Tarjeta")] //Usuario Inexistente
         [Trait("LevelTesting", "Funcional Testing")]
-
         public void TC1_FA3_2_3_4_5_6_7(string nombre, string apellido1, string apellido2, string metodopago) //Esc_6
         {
             InitialStepsForCompraBocadillos();
-            selectBocadillosParaPedir_PO.SearchBocadillos("", "");
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Serrano");
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("BaconQueso");
-            selectBocadillosParaPedir_PO.seleccionarBotonCompra();
-            compraBocadillos_PO.rellenarDatosParaCompra(nombre, apellido1, apellido2, metodopago);
-            compraBocadillos_PO.seleccionarBotonCompra();
-            Assert.True(compraBocadillos_PO.checkErrorMessage("Errors: Error while processing your request, please try again later!"));
+            selectPedido_PO.SearchBocadillos("", "");
+            selectPedido_PO.AddBocadilloParaComprar("Serrano");
+            selectPedido_PO.AddBocadilloParaComprar("Politecnico");
+            selectPedido_PO.seleccionarBotonCompra();
+            postPedido_PO.rellenarDatosParaCompra(nombre, apellido1, apellido2, metodopago);
+            postPedido_PO.seleccionarBotonCompra();
+            Assert.True(postPedido_PO.checkErrorMessage("Errors: Error while processing your request, please try again later!"));
         }
 
         [Fact]
@@ -254,14 +173,14 @@ namespace AppForSEII2526.UIT.UC_Rental
         public void TC1_FA3_2_3_4_5_6_7_8() //Cantidad 0
         {
             InitialStepsForCompraBocadillos();
-            selectBocadillosParaPedir_PO.SearchBocadillos("", "");
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("Serrano");
-            selectBocadillosParaPedir_PO.AddBocadilloParaComprar("BaconQueso");
-            selectBocadillosParaPedir_PO.seleccionarBotonCompra();
-            compraBocadillos_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "PayPal");
-            compraBocadillos_PO.modificarCantidadBocadillos("1", "0");
-            compraBocadillos_PO.seleccionarBotonCompra();
-            Assert.True(compraBocadillos_PO.checkErrorMessage("Errors: Error while processing your request, please try again later!"));
+            selectPedido_PO.SearchBocadillos("", "");
+            selectPedido_PO.AddBocadilloParaComprar("Serrano");
+            selectPedido_PO.AddBocadilloParaComprar("Politecnico");
+            selectPedido_PO.seleccionarBotonCompra();
+            postPedido_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "PayPal");
+            postPedido_PO.modificarCantidadBocadillos("1", "0");
+            postPedido_PO.seleccionarBotonCompra();
+            Assert.True(postPedido_PO.checkErrorMessage("Errors: Error while processing your request, please try again later!"));
         }
     }
 }

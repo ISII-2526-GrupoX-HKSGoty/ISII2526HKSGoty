@@ -8,7 +8,6 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
 {
     internal class DetailPedido_PO : PageObject
     {
-
         By tabladeBocadillos = By.Id("BocadilloComprado");
         By nombreYapellido = By.Id("NombreApellidos");
         By metododepago = By.Id("MetodoPago");

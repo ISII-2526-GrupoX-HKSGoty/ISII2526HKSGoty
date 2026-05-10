@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using OpenQA.Selenium.Support.UI;
 namespace AppForSEII2526.UIT.UC_Rental
 {
-    public class SelectBocadillosParaPedir_PO : PageObject
+    public class SelectPedido_PO : PageObject
     {
         By inputTamanyo = By.Id("selectTamanyo");
         By inputTipoPan = By.Id("selectTipoPan");
@@ -14,7 +14,7 @@ namespace AppForSEII2526.UIT.UC_Rental
         By tableOfBocadillos = By.Id("TableOfBocadillos");
         By errorShownBy = By.Id("ErrorsShown");
         By buttonComprarBocadillos = By.Id("purchaseMovieButton");
-        public SelectBocadillosParaPedir_PO(IWebDriver driver, ITestOutputHelper output) : base(driver, output)
+        public SelectPedido_PO(IWebDriver driver, ITestOutputHelper output) : base(driver, output)
         {
         }
         public void SearchBocadillos(string tamanyo, string tipoPan)

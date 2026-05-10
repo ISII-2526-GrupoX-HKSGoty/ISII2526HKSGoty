@@ -21,7 +21,6 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
         {
         }
 
-
         public void rellenarDatosParaCompra(string nombre, string apellido1, string apellido2, string metodopago)
         {
             WaitForBeingClickable(inputNombre);
@@ -56,14 +55,12 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
             return (actualname.Contains(nombre) && actualap1.Contains(apellido1) && actualap2.Contains(apellido2) && actualpago.Contains(metodopago));
         }
 
-
         public void modificarCantidadBocadillos(string id, string cantidad)
         {
             By cantidadBocadillosInput = By.Id("Cantidad:" + id);
             _driver.FindElement(cantidadBocadillosInput).Clear();
             _driver.FindElement(cantidadBocadillosInput).SendKeys(cantidad);
         }
-
 
         public bool checkPrecio(string precio)
         {
@@ -72,7 +69,6 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
             string actualmessage = container.Text;
             return actualmessage.Contains(precio);
         }
-
 
         public void seleccionarBotonCompra()
         {
@@ -83,19 +79,16 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
             _driver.FindElement(buttondialog).Click();
         }
 
-
         public void seleccionarBotonModificar()
         {
             WaitForBeingClickable(buttonModify);
             _driver.FindElement(buttonModify).Click();
         }
 
-
         public bool CheckListOfBocadillos(List<string[]> expectedBocadillos)
         {
             return CheckBodyTable(expectedBocadillos, tablaofBocadillos);
         }
-
 
         public bool checkErrorMessage(string error)
         {
