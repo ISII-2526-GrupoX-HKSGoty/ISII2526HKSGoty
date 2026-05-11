@@ -12,6 +12,17 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
             this.tipoBocadillo = tipoBocadillo;
         }
 
+        public ItemBonoDTO(int id, double PVP, int nBocadillos, string nombreBono, int cantidad, string tipoBocadillo)
+        {
+            this.bonoId = id;
+            this.PVP = PVP;
+            this.nBocadillos = nBocadillos;
+            this.nombreBono = nombreBono;
+            this.cantidad = cantidad;
+            this.tipoBocadillo = tipoBocadillo;
+        }
+
+        public int bonoId { get; set; }
         public double PVP { get; set; }
         public int nBocadillos { get; set; }
         public string nombreBono { get; set; }

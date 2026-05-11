@@ -554,13 +554,13 @@
           "metdoPago": {
             "$ref": "#/components/schemas/MetodoPago"
           },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "precioTotal": {
             "type": "number",
             "format": "double"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
           },
           "compraT": {
             "type": "string",
@@ -635,6 +635,10 @@
       "ItemBonoDTO": {
         "type": "object",
         "properties": {
+          "bonoId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "pvp": {
             "type": "number",
             "format": "double"

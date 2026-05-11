@@ -26,7 +26,7 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
         [Required]
         public MetodoPago metdoPago { get; set; }
 
-        public double precioTotal
+        public double PrecioTotal
         {
             get
             {
