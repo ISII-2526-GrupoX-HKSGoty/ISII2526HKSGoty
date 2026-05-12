@@ -26,6 +26,7 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
         [Required]
         public MetodoPago metdoPago { get; set; }
 
+
         public override bool Equals(object? obj)
         {
             return obj is CompraBonoDTO dTO &&

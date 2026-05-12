@@ -1,0 +1,112 @@
+﻿@page "/bonos/detailsBonos"
+
+@using AppForSEII2526.Web.API
+@using Microsoft.AspNetCore.Authorization
+
+@inject AppForSEII2526APIClient apiservice
+
+@*@attribute [Authorize]*@
+
+<h3>Compra</h3>
+
+@if(compra == null)
+{
+    
+    <p>@error</p>
+
+}
+else
+{
+    <table class="table table-borderless table-sm">
+        <tr>
+            <th>Usuario</th>
+            <td id="Usuario"> @compra.NombreCliente @compra.Apellido1Cliente</td>
+        </tr>
+
+        <tr>
+            <th>Metodo de pago</th>
+            <td id="MetodoPago"> @compra.MetdoPago</td>
+        </tr>
+
+        <tr>
+            <th>Fecha compra</th>
+            <td id="FechaCompra"> @compra.CompraT</td>
+        </tr>
+    </table>
+
+    <table class="table" id="BonosComprados">
+        <thead>
+            <tr>
+
+                <th scope="col">Bono</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Bocadillos</th>
+                <th scope="col">Tipo Bocadillo</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ItemBonoDTO item in compra.Items)
+            {
+                <tr id="ItemCompra_@item.NombreBono">
+
+                    <td>@item.NombreBono</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.Pvp</td>
+                    <td>@item.NBocadillos</td>
+                    <td>@item.TipoBocadillo</td>
+                   
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <th scope="row" colspan="2" class="text-end">Precio total</th>
+            <td id="PrecioTotal">@compra.PrecioTotal €</td>
+        </tfoot>
+    </table>
+}
+
+@code{
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int CompraID { get; set; }
+    private Detail_CompraBonoDTO compra;
+    private string error = "";
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        string userName ="";
+
+        if(authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user is not null)
+            {
+                if (user.Identity is not null && user.Identity.IsAuthenticated && user.IsInRole("User"))
+                {
+                    userName = user.Identity.Name;
+                }
+            }
+
+            try
+            {
+                compra = await apiservice.GetCompraAsync(CompraID);
+            }
+            catch (ApiException exception)
+            {
+                compra = null;
+            }
+
+            if ((compra == null) || (compra.NombreCliente != userName))
+            {
+                error = $"Error, no estas autorizado o no existe compra con id={CompraID}";
+            }
+        }
+    }
+}

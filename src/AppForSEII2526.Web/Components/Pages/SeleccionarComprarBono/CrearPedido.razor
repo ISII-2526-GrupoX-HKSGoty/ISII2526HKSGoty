@@ -1,0 +1,243 @@
+﻿@page "/bonos/createCompraBonos"
+@using AppForSEII2526.Web.API
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using System.Text.Json
+@using AppForSEII2526.Web.Components.Shared
+
+@inject AppForSEII2526.Web.API.AppForSEII2526APIClient apiservice
+@inject CompraBonoStateContainer compraState
+@inject NavigationManager Navigation
+
+@*@attribute [Authorize]*@
+
+<h3>Compra</h3>
+<EditForm Model="compra" OnValidSubmit="OpenDialog">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="form-floating mb-3">
+
+                <input type="text" class="form-control" @bind="compra.NombreCliente" id="NombreCliente">
+                <label for="Nomre">Nombre</label>
+
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="form-floating mb-3">
+
+                <input type="text" class="form-control" @bind="compra.Apellido1Cliente" id="Apellido1Cliente">
+                <label for="Apellido">Apellido1</label>
+
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="form-floating mb-3">
+
+                <input type="text" class="form-control" @bind="compra.Apellido2Cliente" id="Apellido2Cliente">
+                <label for="Apellido">Apellido2</label>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating">
+
+                    <InputSelect class="form-select" @bind-Value="@compra.MetdoPago" id="MetodoPago">
+
+                        <option value="@MetodoPago.Tarjeta" default> Tarjeta</option>
+                        <option value="@MetodoPago.Paypal"> Paypal</option>
+                        <option value="@MetodoPago.GooglePay"> GooglePay</option>
+
+                    </InputSelect>
+
+                    <label for="MetodoPago">Metodo de pago</label>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+
+                    <button class="btn btn-primary" type="submit" id="submit">
+                        Comprar bonos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+<p></p>
+
+<h4>Deatalles compra</h4>
+<p>
+    <b>Precio total:</b>@compraState.TotalPrice €
+    <button class="btn btn-outline-primary" type"submit" @onclick="ModificarCompra" id="ModificarCompra">
+
+        Modificar bonos
+
+    </button>
+</p>
+
+    <div class="mh-100 table table-responsive">
+        <table class="table table-condensed table-hover" id="TablaCompraBonos">
+            <thead>
+                <tr>
+
+                    <th>NombreBono</th>
+                    <th>TipoBocadillo</th>
+                    <th>Precio</th>
+                    <th>Bocadillos</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var bono in compra.Items)
+            {
+
+                <tr id="DatosBono_@bono.NombreBono">
+
+                    <td>@bono.NombreBono</td>
+                    <td>@bono.TipoBocadillo</td>
+                    <td>@bono.Pvp</td>
+                    <td>@bono.NBocadillos</td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+@if (DialogIsOpen)
+{
+    <Dialog Caption="Compra Bonos"
+    Message="¿Quiere proseguir con la compra?"
+    OnClose="@OnDialogClose"
+    Type="Dialog.Category.SaveNot">
+    </Dialog>
+}
+
+@if (DialogOKIsOpen)
+{
+    <Dialog Caption="Error"
+    Message="@DialogOKMessage"
+    OnClose="@OnDialogOKClose"
+    Type="Dialog.Category.Okay">
+    </Dialog>
+}
+
+
+@code{
+
+    private CompraBonoDTO compra => compraState.Compra;
+
+    private bool DialogIsOpen;
+    private bool OkCancel = false;
+    private bool DialogOKIsOpen;
+
+    private string DialogOKMessage;
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    private void OpenDialog()
+    {
+        DialogIsOpen = true;
+    }
+
+    private void OpenDialogOK(string message)
+    {
+        DialogOKIsOpen = true;
+        DialogOKMessage = message;
+    }
+
+    private void ModificarCompra()
+    {
+        Navigation.NavigateTo("/bonos/listbonos");
+    }
+
+    private async Task OnDialogOKClose()
+    {
+        DialogOKIsOpen = false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if(user is not null)
+            {
+                if(user.Identity is not null && user.Identity.IsAuthenticated)
+                {
+                    compra.NombreCliente = user.Identity.Name;
+                }
+            }
+        }
+    }
+
+    private async Task OnDialogClose(bool isOk)
+    {
+        if (compra.Items.Count() > 0)
+        {
+            try
+            {
+
+                AppForSEII2526.Web.API.CompraBonoDTO compraBonoDTO = new API.CompraBonoDTO()
+                    {
+
+                        NombreCliente = compra.NombreCliente,
+                        Apellido1Cliente = compra.Apellido1Cliente,
+                        Apellido2Cliente = compra.Apellido2Cliente,
+                        MetdoPago = compra.MetdoPago,
+                        Items = compra.Items.Select(ri => new API.ItemBonoDTO()
+                        {
+
+                            BonoId = ri.BonoId,
+                            Pvp = ri.Pvp,
+                            NBocadillos = ri.NBocadillos,
+                            NombreBono = ri.NombreBono,
+                            Cantidad = ri.Cantidad,
+                            TipoBocadillo = ri.TipoBocadillo
+
+                        }).ToList(),
+
+                    };
+
+                var comprado = await apiservice.CreateCompraBonosAsync(compraBonoDTO);
+                compraState.CompraBonosProcesada();
+                Navigation.NavigateTo($"/bonos/detailsBonos/?CompraID={comprado.Id}");
+
+            }
+            catch (AppForSEII2526.Web.API.ApiException<AppForSEII2526.Web.API.ValidationProblemDetails> apiexceptionvalidation)
+            {
+                string message = "Error al procesar la compra";
+                if (apiexceptionvalidation.Result.Errors.Values != null)
+                {
+                    message = "";
+                    foreach (var errors in apiexceptionvalidation.Result.Errors.Values)
+                    {
+                        message = string.Join("(*) ", message, string.Join(" (*)", errors));
+                    }
+                }
+                OpenDialogOK(message);
+            }
+
+            catch (AppForSEII2526.Web.API.ApiException apiexception)
+            {
+                string message = "Error al procesar la compra";
+                OpenDialogOK(message);
+                
+            }
+        }
+    }
+
+}

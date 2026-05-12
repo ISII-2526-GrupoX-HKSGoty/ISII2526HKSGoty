@@ -1,0 +1,33 @@
+﻿@using AppForSEII2526.Web.API
+
+<div class="card" style="width: 18 rem;" >
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+            
+            <div>
+
+                <p class="card-title" id="BonoSelecccionado_@Item.NombreBono">@Item.NombreBono (@Item.Pvp €) Cantidad (@Item.Cantidad)</p>
+
+            </div>
+
+            <div class="p-2">
+
+                <button class="btnbtn-close" aria-label="Close" id="removeBono_@Item.NombreBono" @onclick="@(() => OnRemovedItem.InvokeAsync(Item))"></button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+@code{
+
+    [Parameter] public ItemBonoDTO Item { get; set; }
+
+    [Parameter] public EventCallback<ItemBonoDTO> OnRemovedItem { get; set; }
+}

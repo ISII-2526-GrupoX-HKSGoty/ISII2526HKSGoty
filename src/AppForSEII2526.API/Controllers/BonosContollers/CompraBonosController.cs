@@ -81,7 +81,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
             foreach (var item in compra.Items)
             {
-                var bono = _context.BonoBocadillos.FirstOrDefault(b => b.nombre == item.nombreBono);
+                var bono = _context.BonoBocadillos.Include(b=>b.TipoBocadillo).FirstOrDefault(b => b.nombre == item.nombreBono);
 
                 if ((bono == null) || (bono.cantidadDisponible < item.cantidad))
                 {

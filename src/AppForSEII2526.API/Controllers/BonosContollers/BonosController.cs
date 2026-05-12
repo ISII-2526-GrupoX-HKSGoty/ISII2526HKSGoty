@@ -20,7 +20,7 @@ namespace AppForSEII2526.API.Controllers.BonosContollers
 
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(IList<BonoBocadillo>),(int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<Get_BonosDTO>),(int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetBonos(string? nombre, string? tipo)
         {
             var bonos = await _context.BonoBocadillos

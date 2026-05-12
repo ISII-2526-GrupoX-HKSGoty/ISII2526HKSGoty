@@ -54,6 +54,8 @@ builder.Services.AddHttpClient<AppForSEII2526APIClient>(client =>
     return new AppForSEII2526APIClient(finalBaseUrl, httpClient);
 });
 
+builder.Services.AddScoped<CompraBonoStateContainer>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
