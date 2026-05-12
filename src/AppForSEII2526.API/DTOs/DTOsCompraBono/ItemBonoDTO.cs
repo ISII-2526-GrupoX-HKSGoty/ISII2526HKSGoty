@@ -3,6 +3,9 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
 {
     public class ItemBonoDTO
     {
+        public ItemBonoDTO()
+        {
+        }
         public ItemBonoDTO(double PVP,int nBocadillos, string nombreBono,int cantidad, string tipoBocadillo)
         {
             this.PVP = PVP;
