@@ -1,6 +1,7 @@
-﻿@page "/SeleccionarPedirBocadillos/DetailPedido"
+﻿@page "/SeleccionarPedirBocadillo/DetailPedido"
 
 @using AppForSEII2526.Web.API
+@using Microsoft.AspNetCore.Authorization
 @inject AppForSEII2526APIClient apiclient
 
 <h3>Detalle Compra</h3>
@@ -13,7 +14,7 @@ else
 {
     <table class="table table-borderless table-sm">
         <tr>
-            <th>Nombre and Apellidos</th>
+            <th>Nombre y Apellidos</th>
             <td id="NombreApellidos">@compra.Nombre @compra.Apellido1 @(compra.Apellido2 ?? "")</td>
         </tr>
         <tr>
@@ -58,11 +59,8 @@ else
         <th scope="row" colspan="2" class="text-end">Precio Total</th>
         <td id="PrecioTotal">@compra.PrecioTotal €</td>
         </tfoot>
-
     </table>
-
 }
-
 
 @code {
     [Parameter]
@@ -70,7 +68,6 @@ else
     public int CompraID { get; set; }
     private DetallesPedidoDTO compra;
     private string error = "";
-
 
     protected override async Task OnInitializedAsync()
     {

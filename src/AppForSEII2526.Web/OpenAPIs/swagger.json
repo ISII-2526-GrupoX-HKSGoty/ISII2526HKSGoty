@@ -401,6 +401,54 @@
           }
         }
       }
+    },
+    "/GetTipoPanes": {
+      "get": {
+        "tags": [
+          "TipoPan"
+        ],
+        "operationId": "GetTipoPanes",
+        "parameters": [
+          {
+            "name": "tipoBocadilloString",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -486,11 +534,6 @@
           },
           "metdoPago": {
             "$ref": "#/components/schemas/MetodoPago"
-          },
-          "precioTotal": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -554,13 +597,13 @@
           "metdoPago": {
             "$ref": "#/components/schemas/MetodoPago"
           },
-          "precioTotal": {
-            "type": "number",
-            "format": "double"
-          },
           "id": {
             "type": "integer",
             "format": "int32"
+          },
+          "precioTotal": {
+            "type": "number",
+            "format": "double"
           },
           "compraT": {
             "type": "string",
@@ -593,6 +636,10 @@
               "$ref": "#/components/schemas/ArticuloPedidoDTO"
             },
             "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
           },
           "fechaPedido": {
             "type": "string",

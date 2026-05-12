@@ -1,4 +1,4 @@
-﻿@page "/PedirBocadillo/SelectBocadilloParaPedir"
+﻿@page "/SeleccionarPedirBocadillo/SelectBocadillo"
 
 @using AppForSEII2526.Web.API
 @inject AppForSEII2526APIClient apiclient
@@ -9,15 +9,22 @@
 
 <h3>Select Bocadillo Para Pedir</h3>
 <div class="container-fluid">
-    <div class="row">
-        <p>Aquí se muestran los errores</p>
+    <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+        <p id="ErrorsShown">Errors: @errors</p>
     </div>
-    <div class="row" hidden="@hideErrors">
+    <div class="row">
         <div class="col-8">
             <div class="row">
                 <div class="col">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Tamaño</span>
+                        <select class="form-select" aria-label="Default select" @bind="tamañoSelected" id="selectTamaño">
+                            <option value="All" selected>All</option>
+                            @foreach (string tamañoNombr in tamañoNombre)
+                            {
+                                <option value="@tamañoNombr" id="tamañoSelected_@tamañoNombr">@tamañoNombr</option>
+                            }
+                        </select>
                         <input type="text" id="inputTamaño" @bind=tamaño class="form-control" placeholder="Tamaño" aria-label="Tamaño" aria-describedby="basic-addon1">
                     </div>
                 </div>
@@ -27,7 +34,7 @@
                         
                         <select class="form-select" aria-label="Default select" @bind="TipoPanSelected" id="selectTipoPan">
                             <option value="All" selected>All</option>
-                            @foreach (string tipoPanName in tipoPanNames)
+                            @foreach (string tipoPanName in tipoPanNombre)
                             {
                                 <option value="@tipoPanName" id="tipoPanSelected_@tipoPanName">@tipoPanName</option>
                             }
@@ -97,20 +104,29 @@
     private bool hideErrors { get { return errors.Length == 0; } }
 
     private string errors = "";
-    private Tamaño tamaño { get; set; }
+    private Tamaño? tamaño { get; set; }
     private string tipoPan { get; set; }
 
     private string TipoPanSelected;
-    private ICollection<string>? tipoPanNames = new List<string>();
+    private string tamañoSelected;
+    private ICollection<string>? tipoPanNombre = new List<string>();
+    private ICollection<string>? tamañoNombre = new List<string>();
 
     private bool hideRentingCart { get { return compra.ArticuloPedido.Count == 0; } }
 
-    public async void BuscarBocadillos()
+    // Cambia la firma de BuscarBocadillos de 'async void' a 'async Task'
+    public async Task BuscarBocadillos()
     {
         try
         {
+            tamaño = tamañoSelected == "All" || string.IsNullOrEmpty(tamañoSelected)
+                ? (Tamaño?)null
+                : Enum.Parse<Tamaño>(tamañoSelected);
+
+            tipoPan = TipoPanSelected == "All" ? null : TipoPanSelected;
             bocadillos = await apiclient.GetBocadillosParaPedirAsync(tamaño, tipoPan);
 
+            errors = "";
         }
         catch (ApiException ex)
         {
@@ -134,24 +150,24 @@
         compraState.RemoveCompraArticuloParaComprar(articulo);
         if (compra.ArticuloPedido.Count == 0) hiddenRentingCart = true;
     }
-
-
-    /*protected override Task OnInitializedAsync()
+    
+    protected override async Task OnInitializedAsync()
     {
         try
         {
-            //tipoPanNames = await apiclient.GetTipoPanesAsync(null);
-        }
+            tamañoNombre = Enum.GetNames(typeof(Tamaño)).Cast<string>().ToList();
+            tipoPanNombre = await apiclient.GetTipoPanesAsync(null);
+            }
         catch (ApiException ex)
         {
-            if (tipoPanNames == null) tipoPanNames = new List<string>() { "All", };
+            if (tamañoNombre == null) tamañoNombre = Enum.GetNames(typeof(Tamaño)).Cast<string>().ToList();
+            if (tipoPanNombre == null) tipoPanNombre = new List<string>() { "All", };
             logger.LogError("Error! There was an error while connecting to the GetGenresAsync service");
-        }
+            }
 
-        BuscarBocadillos();
+        await BuscarBocadillos();
+    }
 
-        //return base.OnInitializedAsync();
-    }*/
     private void CompraBocadillo()
     {
         navigation.NavigateTo("/SeleccionarPedirBocadillo/CrearPedido");

@@ -2,7 +2,6 @@
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 
-
 namespace AppForMovies.UIT.Shared {
     public class UC_UIT : IDisposable {
 
@@ -20,8 +19,7 @@ namespace AppForMovies.UIT.Shared {
         public string _URI {
             get {
                 //set url of your web page 
-                return "https://localhost:7083/";
-
+                return "https://localhost:7067/";
             }
         }
 
@@ -70,7 +68,6 @@ namespace AppForMovies.UIT.Shared {
                 .Click();
         }
 
-
         protected void SetUp_Chrome4UIT() {
             var optionsc = new ChromeOptions {
                 PageLoadStrategy = PageLoadStrategy.Normal,
@@ -80,7 +77,6 @@ namespace AppForMovies.UIT.Shared {
             if (_pipeline) optionsc.AddArgument("--headless");
 
             _driver = new ChromeDriver(optionsc);
-
         }
 
         protected void SetUp_FireFox4UIT() {
@@ -92,7 +88,6 @@ namespace AppForMovies.UIT.Shared {
             if (_pipeline) optionsff.AddArgument("--headless");
 
             _driver = new FirefoxDriver(optionsff);
-
         }
 
         protected void SetUp_EdgeFor4UIT() {
@@ -113,7 +108,6 @@ namespace AppForMovies.UIT.Shared {
             if (_pipeline) optionsEdge.AddArgument("--headless");
 
             _driver = new EdgeDriver(optionsEdge);
-
         }
 
 

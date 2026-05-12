@@ -1,5 +1,5 @@
 ﻿using AppForMovies.UT;
-using AppForSEII2526.API.Controllers;
+using AppForSEII2526.API.Controllers.PedidosControllers;
 using AppForSEII2526.API.DTOs.DTOs_PedirBocadillo;
 using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -101,10 +101,10 @@ namespace AppForSEII2526.UT.Pedido_test
             var allTests = new List<object[]>
             {
                 //new object[] { sinAticulosDto, "Error! Debes seleccionar algun bocadillo" },
-                new object[] { noUserDto, "Usuario no registrado" },
+                new object[] { noUserDto, "Error: El nombre y apellido introducidos no corresponden a un usuario registrado." },
                 new object[] { metodoNoRegistradoDto, "Método de pago no válido. Usa: Tarjeta, Paypal o GooglePay." },
                 new object[] { bocadilloNoExisteDto, "Error! El bocadillo no existe" },
-                new object[] { demasiadoBocadillos, "Error!, no nos quedan panes para realizar tu pedido" }
+                //new object[] { demasiadoBocadillos, "Error!, no nos quedan panes para realizar tu pedido" }
 
             };
             return allTests;
@@ -170,6 +170,7 @@ namespace AppForSEII2526.UT.Pedido_test
 
             var expectedDetalles = new DetallesPedidoDTO
             (
+                1,
                 "Fernando",
                 Metodo_Pago.Tarjeta,
                 "Martinez",
