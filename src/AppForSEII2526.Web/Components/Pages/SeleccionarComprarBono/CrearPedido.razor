@@ -214,7 +214,7 @@
 
                 var comprado = await apiservice.CreateCompraBonosAsync(compraBonoDTO);
                 compraState.CompraBonosProcesada();
-                Navigation.NavigateTo($"/bonos/detailsBonos");
+                Navigation.NavigateTo($"/bonos/detailsBonos/?CompraID={comprado.Id}");
 
             }
             catch (AppForSEII2526.Web.API.ApiException<AppForSEII2526.Web.API.ValidationProblemDetails> apiexceptionvalidation)
