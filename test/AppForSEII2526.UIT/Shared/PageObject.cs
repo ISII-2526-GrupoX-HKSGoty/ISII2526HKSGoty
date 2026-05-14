@@ -101,8 +101,6 @@ namespace AppForSEII2526.UIT.Shared {
             _driver.FindElement(_okModalDialog).Click();
         }
 
-
-
         public void WaitForBeingClickable(By IdElement) {
             //used whenever the webelement needs a delay for being clickable
             var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 30));
