@@ -158,8 +158,8 @@
                 catch (ApiException apiexception)
                 {
                     //we need to inform user that there was some other error while processing the request
-                    //messageError = "Error while processing your request, please try again later!";
-                    messageError = $"Error {apiexception.StatusCode}: {apiexception.Response}";
+                    messageError = "Error while processing your request, please try again later!";
+                    //messageError = $"Error {apiexception.StatusCode}: {apiexception.Response}";
                 }
             }
         }
