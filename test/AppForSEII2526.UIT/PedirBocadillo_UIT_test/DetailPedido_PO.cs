@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppForSEII2526.UIT.UC_PedirBocadillo
+namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
 {
     internal class DetailPedido_PO : PageObject
     {

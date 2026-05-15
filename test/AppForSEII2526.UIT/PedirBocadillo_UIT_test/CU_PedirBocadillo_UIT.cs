@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AppForMovies.UIT.Shared;
 using AppForSEII2526.UIT.Shared;
-using AppForSEII2526.UIT.UC_PedirBocadillo;
+using AppForSEII2526.UIT.PedirBocadillo_UIT_test;
 
-namespace AppForSEII2526.UIT.UC_Rental
+
+namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
 {
-    public class UC_PedirBocadillo_UIT : UC_UIT
+    public class CU_PedirBocadillo_UIT : UC_UIT
     {
         private SelectPedido_PO selectPedido_PO;
         private PostPedido_PO postPedido_PO;
@@ -18,14 +19,14 @@ namespace AppForSEII2526.UIT.UC_Rental
         private const string nombreBocadillo1 = "Politecnico";
         private const string tipoPan1 = "Normal";
         private const string precio1 = "3";
-        private const string tamanyo1 = "Normal";
+        private const string tamaño1 = "Normal";
 
-        private const string nombreBocadillo2 = "Serrano";
+        private const string nombreBocadillo2 = "Completo2";
         private const string tipoPan2 = "Integral";
         private const string precio2 = "5";
-        private const string tamanyo2 = "Pequeño";
+        private const string tamaño2 = "Pequeño";
 
-        public UC_PedirBocadillo_UIT(ITestOutputHelper output) : base(output)
+        public CU_PedirBocadillo_UIT(ITestOutputHelper output) : base(output)
         {
             selectPedido_PO = new SelectPedido_PO(_driver, _output);
             postPedido_PO = new PostPedido_PO(_driver, _output);
@@ -71,7 +72,7 @@ namespace AppForSEII2526.UIT.UC_Rental
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void TC1_FB_1_2_3_4_5_6_7_8() //Esc_1, UC3_1
+        public void CU1_1_FB_Compranormal() //UC1_1	Esc-1: Flujo Básico
         {
             InitialStepsForCompraBocadillos();
             DateTime fechahoy = DateTime.Today;
@@ -80,15 +81,16 @@ namespace AppForSEII2526.UIT.UC_Rental
             {
                 new string[]
                 {
-                    "Serrano", "Pequeño", "Integral", "5"
+                    "Politecnico", "Normal", "Normal","3"
+                    
+                },
+                new string[]
+                {
+                    "Completo2", "Pequeño", "Integral", "5"
                 },
                 new string[]
                 {
                     "Bacon", "Pequeño", "Semilla","2"
-                },
-                new string[]
-                {
-                    "Politecnico", "Normal", "Normal","3"
                 },
             };
 
@@ -96,30 +98,29 @@ namespace AppForSEII2526.UIT.UC_Rental
             {
                 new string[]
                 {
-                    "Serrano","Integral", "5"
+                    "Completo2", "Integral", "5"
                 },
                 new string[]
                 {
-                    "Politecnico","Normal", "3"
+                    "Politecnico", "Normal", "3"
                 },
             };
-
             var expectedDatosCompra = new List<string[]>
             {
                 new string[]
                 {
-                    "Serrano", "Integral", "5 €", "1"
+                    "Politecnico", "Normal", "3 €", "1"
                 },
                 new string[]
                 {
-                    "Politecnico", "Normal", "3 €", "1"
+                    "Completo2", "Integral", "5 €", "1"
                 },
             };
 
             //Pagina del select de bocadillos
             selectPedido_PO.SearchBocadillos("", "");
             Assert.True(selectPedido_PO.CheckListOfBocadillos(expectedBocadillos));
-            selectPedido_PO.AddBocadilloParaComprar("Serrano");
+            selectPedido_PO.AddBocadilloParaComprar("Completo2");
             selectPedido_PO.AddBocadilloParaComprar("Politecnico");
             selectPedido_PO.seleccionarBotonCompra();
 
@@ -137,7 +138,7 @@ namespace AppForSEII2526.UIT.UC_Rental
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void TC1_AF1_TC1_2_CompraNotAvailable() //No hay bocadillos seleccionados
+        public void CU1_v2_CompraNoValida() //UC1_2	Esc-2: Sin Disponibilidad No hay bocadillos seleccionados
         {
             //Arrange
             InitialStepsForCompraBocadillos();
@@ -154,13 +155,12 @@ namespace AppForSEII2526.UIT.UC_Rental
         [Theory]
         [InlineData("", "Martinez", "Panadero", "Tarjeta")] //Falta Nombre
         [InlineData("Fernando", "", "Panadero", "Tarjeta")] //Falta Primer Apellido
-        [InlineData("NoExite", "NoExite", "NoExite", "Tarjeta")] //Usuario Inexistente
+        [InlineData("Fernando", "Alonso", "NoExite", "Tarjeta")] //Usuario Inexistente
         [Trait("LevelTesting", "Funcional Testing")]
-        public void TC1_FA3_2_3_4_5_6_7(string nombre, string apellido1, string apellido2, string metodopago) //Esc_6
+        public void CU1_5_6_7_Falta_De_Datos(string nombre, string apellido1, string apellido2, string metodopago) //Esc_5, Esc_6, Esc_7 y Esc_8.
         {
             InitialStepsForCompraBocadillos();
-            selectPedido_PO.SearchBocadillos("", "");
-            selectPedido_PO.AddBocadilloParaComprar("Serrano");
+            selectPedido_PO.AddBocadilloParaComprar("Completo2");
             selectPedido_PO.AddBocadilloParaComprar("Politecnico");
             selectPedido_PO.seleccionarBotonCompra();
             postPedido_PO.rellenarDatosParaCompra(nombre, apellido1, apellido2, metodopago);
@@ -170,17 +170,60 @@ namespace AppForSEII2526.UIT.UC_Rental
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void TC1_FA3_2_3_4_5_6_7_8() //Cantidad 0
+        public void CU1_8_Cantida_Menor_1() //UC1_8	Esc-4:Falta introducir Cantidad mayor que 0
         {
             InitialStepsForCompraBocadillos();
-            selectPedido_PO.SearchBocadillos("", "");
-            selectPedido_PO.AddBocadilloParaComprar("Serrano");
+            selectPedido_PO.AddBocadilloParaComprar("Completo2");
             selectPedido_PO.AddBocadilloParaComprar("Politecnico");
             selectPedido_PO.seleccionarBotonCompra();
             postPedido_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "PayPal");
             postPedido_PO.modificarCantidadBocadillos("1", "0");
             postPedido_PO.seleccionarBotonCompra();
             Assert.True(postPedido_PO.checkErrorMessage("Errors: Error while processing your request, please try again later!"));
+        }
+
+        [Theory]
+        [InlineData("Politecnico", "Normal", "3 €", "1")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_10_Modificar_Carrito_Select(string bocadillo, string pan, string precio, string cantidad) //CU1_10	Esc-5: Modificar el carrito Select
+        {
+            InitialStepsForCompraBocadillos();
+            selectPedido_PO.AddBocadilloParaComprar("Completo2");
+            selectPedido_PO.AddBocadilloParaComprar("Politecnico");
+            selectPedido_PO.RemoveBocadilloParaComprar("Completo2");
+            selectPedido_PO.seleccionarBotonCompra();
+            postPedido_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "PayPal");
+            postPedido_PO.seleccionarBotonCompra();
+            var expectedDatosCompraModificSelect = new List<string[]>
+            {
+                new string[]
+                {
+                    bocadillo, pan, precio, cantidad
+                },
+            };
+            Assert.True(detailPedido_PO.CheckListOfBocadillos(expectedDatosCompraModificSelect));
+        }
+
+        [Theory]
+        [InlineData("Politecnico", "Normal", "3 €", "2")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_11_Modificar_Carrito_Post(string bocadillo, string pan, string precio, string cantidad) //CU1_11	Esc-5: Modificar el carrito Post
+        {
+            InitialStepsForCompraBocadillos();
+            selectPedido_PO.AddBocadilloParaComprar("Politecnico");
+            selectPedido_PO.seleccionarBotonCompra();
+            postPedido_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "PayPal");
+            postPedido_PO.modificarCantidadBocadillos("1", "2");
+            postPedido_PO.seleccionarBotonCompra();
+
+            var expectedDatosCompraModificPost = new List<string[]>
+            {
+                new string[]
+                {
+                    bocadillo, pan, precio, cantidad
+                },
+            };
+            Assert.True(detailPedido_PO.CheckListOfBocadillos(expectedDatosCompraModificPost));
         }
     }
 }

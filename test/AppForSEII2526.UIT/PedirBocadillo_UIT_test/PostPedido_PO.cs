@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppForSEII2526.UIT.UC_PedirBocadillo
+namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
 {
     internal class PostPedido_PO : PageObject
     {
         By inputNombre = By.Id("Nombre");
         By inputApellido1 = By.Id("Apellido1");
         By inputApellido2 = By.Id("Apellido2");
-        By inputMetododePago = By.Id("MetodoPago");
+        By inputMetododePago = By.Id("Metodo_Pago");
         By compraButton = By.Id("Submit");
         By buttonModify = By.Id("ModifyCompra");
         By tablaofBocadillos = By.Id("TableOfRentalItems");
