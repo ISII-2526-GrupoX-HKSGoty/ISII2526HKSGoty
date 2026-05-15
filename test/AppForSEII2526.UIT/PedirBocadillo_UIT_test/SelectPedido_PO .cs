@@ -4,34 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Support.UI;
-namespace AppForSEII2526.UIT.UC_Rental
+namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
 {
     public class SelectPedido_PO : PageObject
     {
-        By inputTamanyo = By.Id("selectTamanyo");
+        By inputTamaño = By.Id("selectTamaño");
         By inputTipoPan = By.Id("selectTipoPan");
-        By buttonSearchBocadillos = By.Id("searchBocadillos");
+        By buttonSearchBocadillos = By.Id("BuscarBocadillos");
         By tableOfBocadillos = By.Id("TableOfBocadillos");
         By errorShownBy = By.Id("ErrorsShown");
-        By buttonComprarBocadillos = By.Id("purchaseMovieButton");
+        By buttonComprarBocadillos = By.Id("purchaseBocadilloButton");
         public SelectPedido_PO(IWebDriver driver, ITestOutputHelper output) : base(driver, output)
         {
         }
-        public void SearchBocadillos(string tamanyo, string tipoPan)
+        public void SearchBocadillos(string tamaño, string tipoPan)
         {
-            WaitForBeingVisibleIgnoringExeptionTypes(inputTamanyo);
+            WaitForBeingVisibleIgnoringExeptionTypes(inputTamaño);
             //wait for the webelement to be clickable
-            WaitForBeingClickable(inputTamanyo);
-            _driver.FindElement(inputTamanyo).SendKeys(tamanyo);
+            WaitForBeingClickable(inputTamaño);
+            _driver.FindElement(inputTamaño).SendKeys(tamaño);
 
 
             if (tipoPan == "") tipoPan = "All";
             SelectElement selectElement = new SelectElement(_driver.FindElement(inputTipoPan));
             selectElement.SelectByText(tipoPan);
 
-            if (tamanyo == "") tamanyo = "All";
-            selectElement = new SelectElement(_driver.FindElement(inputTamanyo));
-            selectElement.SelectByText(tamanyo);
+            if (tamaño == "") tamaño = "All";
+            selectElement = new SelectElement(_driver.FindElement(inputTamaño));
+            selectElement.SelectByText(tamaño);
 
             var createCompraButton = _driver.FindElement(buttonSearchBocadillos);
             createCompraButton.Click();
@@ -44,9 +44,9 @@ namespace AppForSEII2526.UIT.UC_Rental
 
         public void AddBocadilloParaComprar(string nombreBocadillo)
         {
-            WaitForBeingClickable(By.Id("movieToRent_" + nombreBocadillo));
+            WaitForBeingClickable(By.Id("bocadilloParaComprar_" + nombreBocadillo));
 
-            _driver.FindElement(By.Id("movieToRent_" + nombreBocadillo)).Click();
+            _driver.FindElement(By.Id("bocadilloParaComprar_" + nombreBocadillo)).Click();
         }
 
         public void seleccionarBotonCompra()
@@ -58,8 +58,8 @@ namespace AppForSEII2526.UIT.UC_Rental
 
         public void RemoveBocadilloParaComprar(string nombreBocadillo)
         {
-            WaitForBeingClickable(By.Id("removeMovie_" + nombreBocadillo));
-            _driver.FindElement(By.Id("removeMovie_" + nombreBocadillo)).Click();
+            WaitForBeingClickable(By.Id("removeBocadillo_" + nombreBocadillo));
+            _driver.FindElement(By.Id("removeBocadillo_" + nombreBocadillo)).Click();
         }
 
         public bool CompraNotAvailable()
