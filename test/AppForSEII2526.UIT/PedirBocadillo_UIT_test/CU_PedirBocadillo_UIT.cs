@@ -72,7 +72,7 @@ namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_1_FB_Compranormal() //UC1_1	Esc-1: Flujo Básico
+        public void CU1_1_FB_Compranormal() //CU1_1	Esc-1: Flujo Básico
         {
             InitialStepsForCompraBocadillos();
             DateTime fechahoy = DateTime.Today;
@@ -135,10 +135,10 @@ namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
             Assert.True(detailPedido_PO.CheckListOfBocadillos(expectedDatosCompra));
         }
 
-
+        
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_v2_CompraNoValida() //UC1_2	Esc-2: Sin Disponibilidad No hay bocadillos seleccionados
+        public void CU1_2_CompraNoValida() //CU1_2	Esc-2: Sin Disponibilidad No hay bocadillos seleccionados
         {
             //Arrange
             InitialStepsForCompraBocadillos();
@@ -148,6 +148,50 @@ namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
 
             //Assert
             Assert.True(selectPedido_PO.CompraNotAvailable());
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_3_FiltroTamaño() //CU1_3	Esc-3: Filtrado de bocadillos por Tamaño
+        {
+            InitialStepsForCompraBocadillos();
+            DateTime fechahoy = DateTime.Today;
+
+            var expectedBocadillos = new List<string[]>
+            {
+                new string[]
+                {
+                    "Completo2", "Pequeño", "Integral", "5"
+                },
+                new string[]
+                {
+                    "Bacon", "Pequeño", "Semilla","2"
+                },
+            };
+
+            //Pagina del select de bocadillos
+            selectPedido_PO.SearchBocadillos("Pequeño", "");
+            Assert.True(selectPedido_PO.CheckListOfBocadillos(expectedBocadillos));
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_4_FiltroTipoPan() //CU1_4	Esc-3: Filtrado de bocadillos por Tipo_pan
+        {
+            InitialStepsForCompraBocadillos();
+            DateTime fechahoy = DateTime.Today;
+
+            var expectedBocadillos = new List<string[]>
+            {
+                new string[]
+                {
+                    "Bacon", "Pequeño", "Semilla","2"
+                },
+            };
+
+            //Pagina del select de bocadillos
+            selectPedido_PO.SearchBocadillos("", "Semilla");
+            Assert.True(selectPedido_PO.CheckListOfBocadillos(expectedBocadillos));
         }
 
 
@@ -170,7 +214,7 @@ namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_8_Cantida_Menor_1() //UC1_8	Esc-4:Falta introducir Cantidad mayor que 0
+        public void CU1_8_Cantida_Menor_1() //CU1_8	Esc-4:Falta introducir Cantidad mayor que 0
         {
             InitialStepsForCompraBocadillos();
             selectPedido_PO.AddBocadilloParaComprar("Completo2");
@@ -185,7 +229,7 @@ namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
         [Theory]
         [InlineData("Politecnico", "Normal", "3 €", "1")]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_10_Modificar_Carrito_Select(string bocadillo, string pan, string precio, string cantidad) //CU1_10	Esc-5: Modificar el carrito Select
+        public void CU1_10_Modificar_Carrito_Select(string bocadillo, string pan, string precio, string cantidad) //CU1_10	Esc-10: Modificar el carrito Select
         {
             InitialStepsForCompraBocadillos();
             selectPedido_PO.AddBocadilloParaComprar("Completo2");
@@ -207,7 +251,7 @@ namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
         [Theory]
         [InlineData("Politecnico", "Normal", "3 €", "2")]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void CU1_11_Modificar_Carrito_Post(string bocadillo, string pan, string precio, string cantidad) //CU1_11	Esc-5: Modificar el carrito Post
+        public void CU1_11_Modificar_Carrito_Post(string bocadillo, string pan, string precio, string cantidad) //CU1_11	Esc-11: Modificar el carrito Post
         {
             InitialStepsForCompraBocadillos();
             selectPedido_PO.AddBocadilloParaComprar("Politecnico");
