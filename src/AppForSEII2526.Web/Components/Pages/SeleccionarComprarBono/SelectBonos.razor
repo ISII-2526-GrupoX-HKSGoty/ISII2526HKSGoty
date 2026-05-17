@@ -112,7 +112,7 @@
                                     <td>
 
                                         <input type="number" min="0" id="cantidadComprar_@bono.Nombre" @bind = "cantidad[bono.Nombre]"/>
-                                        <button class="btn btn-outline-secondary" id="bonoaComprar_@bono.Nombre" onclick="@(()=>AddBono(bono, cantidad[bono.Nombre]))">Add</button>
+                                        <button class="btn btn-outline-secondary" id="bonoaComprar_@bono.Nombre" @onclick="@(()=>AddBono(bono, cantidad[bono.Nombre]))">Add</button>
 
                                     </td>
 
