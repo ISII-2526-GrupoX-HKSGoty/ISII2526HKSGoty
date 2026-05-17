@@ -507,7 +507,6 @@
       "CompraBonoDTO": {
         "required": [
           "apellido1Cliente",
-          "apellido2Cliente",
           "metdoPago",
           "nombreCliente"
         ],
@@ -529,8 +528,8 @@
             "type": "string"
           },
           "apellido2Cliente": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "metdoPago": {
             "$ref": "#/components/schemas/MetodoPago"
@@ -569,7 +568,6 @@
       "Detail_CompraBonoDTO": {
         "required": [
           "apellido1Cliente",
-          "apellido2Cliente",
           "metdoPago",
           "nombreCliente"
         ],
@@ -591,8 +589,8 @@
             "type": "string"
           },
           "apellido2Cliente": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "metdoPago": {
             "$ref": "#/components/schemas/MetodoPago"

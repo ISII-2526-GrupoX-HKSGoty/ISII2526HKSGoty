@@ -21,8 +21,8 @@ namespace AppForSEII2526.API.DTOs.DTOsCompraBono
         public string nombreCliente { get; set; }
         [Required]
         public string apellido1Cliente { get; set; }
-        [Required]
-        public string apellido2Cliente { get; set; }
+  
+        public string? apellido2Cliente { get; set; }
         [Required]
         public MetodoPago metdoPago { get; set; }
 
