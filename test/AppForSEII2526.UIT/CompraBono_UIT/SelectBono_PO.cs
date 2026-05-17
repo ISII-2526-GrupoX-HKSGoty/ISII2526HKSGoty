@@ -43,25 +43,18 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
 
         }
 
-        public void SelectBonos(List<string> nombreBonos)
+        public void SelectBonos(Dictionary<string, string> nombreBonos)
         {
             foreach (var nombreBono in nombreBonos)
             {
+                string nombre = nombreBono.Key;
+                string cantidad = nombreBono.Value;
                 Thread.Sleep(1000);
-                WaitForBeingVisible(By.Id($"cantidadComprar_{nombreBono}"));
-                _driver.FindElement(By.Id($"cantidadComprar_{nombreBono}")).SendKeys("1");
-                WaitForBeingVisible(By.Id($"bonoaComprar_{nombreBono}"));
-                _driver.FindElement(By.Id($"bonoaComprar_{nombreBono}")).Click();
+                WaitForBeingVisible(By.Id($"cantidadComprar_{nombre}"));
+                _driver.FindElement(By.Id($"cantidadComprar_{nombre}")).SendKeys(cantidad);
+                WaitForBeingVisible(By.Id($"bonoaComprar_{nombre}"));
+                _driver.FindElement(By.Id($"bonoaComprar_{nombre}")).Click();
             }
-        }
-
-        public void SelectCantidadBonos(string nombreBono, string cantidad)
-        {
-            Thread.Sleep(1000);
-            WaitForBeingVisible(By.Id($"cantidadComprar_{nombreBono}"));
-            _driver.FindElement(By.Id($"cantidadComprar_{nombreBono}")).SendKeys(cantidad);
-            WaitForBeingVisible(By.Id($"bonoaComprar_{nombreBono}"));
-            _driver.FindElement(By.Id($"bonoaComprar_{nombreBono}")).Click();
         }
 
         public void ComprarBonos()

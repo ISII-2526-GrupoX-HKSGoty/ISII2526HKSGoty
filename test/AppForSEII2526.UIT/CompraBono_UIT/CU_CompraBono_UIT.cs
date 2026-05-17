@@ -41,7 +41,7 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
         [InlineData(nombreBono1, nBocadillos1, pvp1, tipoBocata1, "bonoVegano", "")]
         [InlineData(nombreBono2, nBocadillos2, pvp2, tipoBocata2, "", "vegetariano")]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC_AF1_filtrosNombreTipo(string nombreBono, string nBocadillos, string pvp, string tipoBocadillo, string filtroNombre, string filtroTipo)
+        public void CU3_FA1_3_4_filtrosNombreTipo(string nombreBono, string nBocadillos, string pvp, string tipoBocadillo, string filtroNombre, string filtroTipo)
         {
             var expectedBonos = new List<string[]> { new string[] {nombreBono, tipoBocadillo, pvp, nBocadillos, "Add"}, };
 
@@ -49,30 +49,43 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
 
             listbonos.FiltroBono(filtroNombre, filtroTipo);
 
+            Thread.Sleep(500);
+
             Assert.True(listbonos.CheckListaBonos(expectedBonos));
         }
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void cantidadBono()
+        public void CU3_FA0_2_NoHayBonos()
         {
             InitialStepsCompraBonos_UIT();
-            listbonos.FiltroBono("", "");
-            listbonos.SelectCantidadBonos(nombreBono1, "2");
-
+            var expectedError = "No hay bonos";
+            listbonos.FiltroBono("NoExiste", "NoExiste");
             Thread.Sleep(500);
-            Assert.True(listbonos.CheckCompraCart("20"));
+            Assert.True(listbonos.CheckMessageErrorBonosNoDisponibles(expectedError));
         }
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC2_10_AF3_ModificarBonos()
+        public void CU3_FA2_6_cantidadBono()
+        {
+            InitialStepsCompraBonos_UIT();
+            listbonos.FiltroBono("", "");
+            listbonos.SelectBonos(new Dictionary<string, string> { { nombreBono1, "0" } });
+
+            Thread.Sleep(500);
+            Assert.True(listbonos.ChekComprarBonosDisabled(), "Rent button should be disabled");
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU3_FA3_10_ModificarBonos()
         {
             
             InitialStepsCompraBonos_UIT();
 
             listbonos.FiltroBono("", "");
-            listbonos.SelectBonos(new List<string> { nombreBono1, nombreBono2 });
+            listbonos.SelectBonos(new Dictionary<string, string> { { nombreBono1, "1" }, { nombreBono2, "1" } });
             listbonos.ModificarCompraCart(nombreBono2);
 
             Thread.Sleep(500);
@@ -82,13 +95,13 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC2_11_AF4_BotonCompraNotAvailable()
+        public void CU3_FA2_5_BotonCompraNoDisponibles()
         {
 
             InitialStepsCompraBonos_UIT();
 
             listbonos.FiltroBono("", "");
-            listbonos.SelectBonos(new List<string> { nombreBono1 });
+            listbonos.SelectBonos(new Dictionary<string, string> { { nombreBono1, "1" } });
             listbonos.ModificarCompraCart(nombreBono1);
 
             Thread.Sleep(1000);
@@ -100,13 +113,14 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
         [InlineData("", "Cifuentes","Paypal", "The NombreCliente field is required.")]
         [InlineData("Miguel", "", "Paypal", "The Apellido1Cliente field is required.")]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC_errorDatosObligatorios(string nombre, string apellido1, string metodoPago, string expectedError)
+        public void CU3_FA4_7_8(string nombre, string apellido1, string metodoPago, string expectedError)
         {
             var createBono = new CreateBono_PO(_driver, _output);
 
             InitialStepsCompraBonos_UIT();
             listbonos.FiltroBono("", "");
-            listbonos.SelectBonos(new List<string> { nombreBono1 });
+            listbonos.SelectBonos(new Dictionary<string, string> { { nombreBono1, "1" } });
+            Thread.Sleep(500);
             listbonos.ComprarBonos();
             createBono.rellenarCompra(nombre, apellido1, "", metodoPago);
 
@@ -121,14 +135,15 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC_ModificarCompra()
+        public void CU3_FA5_11ModificarCompra()
         {
             var createBono = new CreateBono_PO(_driver, _output);
 
             InitialStepsCompraBonos_UIT();
 
-            listbonos.FiltroBono("", "");   
-            listbonos.SelectBonos(new List<string> { nombreBono1, nombreBono2 });
+            listbonos.FiltroBono("", "");
+            listbonos.SelectBonos(new Dictionary<string, string> { {nombreBono1, "1" }, {nombreBono2, "1"}});
+            Thread.Sleep(500);
             listbonos.ComprarBonos();
             createBono.botonModificar();
 
@@ -141,7 +156,7 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
 
         [Fact]
         [Trait("LevelTesting", "Funcional Testing")]
-        public void UC_BasicFlow()
+        public void CU3_BasicFlow()
         {
             var createBono = new CreateBono_PO(_driver, _output);
             var detailCompra = new DeatailCompra_PO(_driver, _output);
@@ -149,12 +164,14 @@ namespace AppForSEII2526.UIT.CompraBono_UIT
             InitialStepsCompraBonos_UIT();
 
             listbonos.FiltroBono("", "");
-            listbonos.SelectBonos(new List<string> { nombreBono1 });
+            listbonos.SelectBonos(new Dictionary<string, string> { { nombreBono1, "1" } });
+            Thread.Sleep(500);
             listbonos.ComprarBonos();
 
             createBono.rellenarCompra("Miguel", "Cifuentes", "", "Paypal");
             createBono.botonComprar();
             createBono.PressOkModalDialog();
+
 
             Assert.True(detailCompra.CheckCompraDetail("Miguel","Cifuentes","Paypal",DateTime.Now,pvp1),"Error: detail compra no concide");
 
