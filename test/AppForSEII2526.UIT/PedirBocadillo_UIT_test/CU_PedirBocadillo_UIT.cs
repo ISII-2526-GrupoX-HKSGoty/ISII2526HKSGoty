@@ -269,5 +269,29 @@ namespace AppForSEII2526.UIT.PedirBocadillo_UIT_test
             };
             Assert.True(detailPedido_PO.CheckListOfBocadillos(expectedDatosCompraModificPost));
         }
+        [Theory]
+        [InlineData("Bacon", "Semilla", "2 €", "1")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU1_12_Exam_Extra_todo (string bocadillo, string pan, string precio, string cantidad)
+        {
+            InitialStepsForCompraBocadillos();
+            selectPedido_PO.SearchBocadillos("", "Normal");
+            selectPedido_PO.AddBocadilloParaComprar("Politecnico");
+            selectPedido_PO.SearchBocadillos("Pequeño", "");
+            selectPedido_PO.AddBocadilloParaComprar("Bacon");
+            selectPedido_PO.RemoveBocadilloParaComprar("Politecnico");
+            selectPedido_PO.seleccionarBotonCompra();
+            postPedido_PO.rellenarDatosParaCompra("Fernando", "Martinez", "Panadero", "PayPal");
+            postPedido_PO.seleccionarBotonCompra();
+
+            var expectedDatosCompraModificPost = new List<string[]>
+            {
+                new string[]
+                {
+                    bocadillo, pan, precio, cantidad
+                },
+            };
+            Assert.True(detailPedido_PO.CheckListOfBocadillos(expectedDatosCompraModificPost));
+        }
     }
 }
